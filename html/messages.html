@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Messages | HouseHunt</title>
+    <link rel="stylesheet" href="../css/messages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Messages</h1>
+            <div class="search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search chats...">
+            </div>
+        </header>
+
+        <!-- Chat List -->
+        <div class="content-wrapper">
+            <!-- Chat Item 1 -->
+            <div class="chat-item unread">
+                <div class="img-container">
+                    <img src="../assets/profile.png" alt="Profile">
+                    <div class="online-indicator"></div>
+                </div>
+                <div class="chat-info">
+                    <div class="name-row">
+                        <h3>Rahul Sharma</h3>
+                        <span class="time">10:45 AM</span>
+                    </div>
+                    <p class="last-msg">Is the 3BHK flat still available for visit today?</p>
+                </div>
+                <div class="badge">2</div>
+            </div>
+
+            <!-- Chat Item 2 -->
+            <div class="chat-item">
+                <div class="img-container">
+                    <img src="../assets/profile.png" alt="Profile">
+                </div>
+                <div class="chat-info">
+                    <div class="name-row">
+                        <h3>Priya Kapoor</h3>
+                        <span class="time">Yesterday</span>
+                    </div>
+                    <p class="last-msg">Thank you, I will discuss with my family and get back.</p>
+                </div>
+            </div>
+
+            <!-- Chat Item 3 -->
+            <div class="chat-item">
+                <div class="img-container">
+                    <img src="../assets/profile.png" alt="Profile">
+                </div>
+                <div class="chat-info">
+                    <div class="name-row">
+                        <h3>Vikas Mehta</h3>
+                        <span class="time">2 days ago</span>
+                    </div>
+                    <p class="last-msg">What is the final negotiable price for the plot?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="my-properties.html" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="messages.html" class="nav-item active">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

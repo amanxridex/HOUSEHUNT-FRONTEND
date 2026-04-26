@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Property Details | HouseHunt</title>
+    <link rel="stylesheet" href="../css/property-view.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Scrollable Content -->
+        <div class="content-wrapper">
+            <!-- Image Gallery -->
+            <div class="gallery-container">
+                <button class="floating-back" onclick="window.history.back()">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <img src="../assets/house.png" alt="Property Image" class="main-img">
+                <div class="gallery-badge">
+                    <i data-lucide="image"></i> 1/8
+                </div>
+            </div>
+
+            <!-- Property Info -->
+            <div class="info-section">
+                <div class="price-row">
+                    <h1 class="price">₹ 85.50 L</h1>
+                    <div class="type-tag">For Sale</div>
+                </div>
+                <h2 class="title">Modern 3BHK Apartment</h2>
+                <p class="location"><i data-lucide="map-pin"></i> Sector 62, Noida, Uttar Pradesh</p>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i data-lucide="maximize"></i>
+                        <span>1850 Sqft</span>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="bed"></i>
+                        <span>3 BHK</span>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="bath"></i>
+                        <span>3 Bath</span>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="navigation"></i>
+                        <span>East Facing</span>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Description -->
+                <div class="description">
+                    <h3>About this property</h3>
+                    <p>Experience luxury living in this beautifully designed 3BHK apartment located in the heart of Noida. Featuring modern amenities, spacious balconies, and premium finishes throughout.</p>
+                </div>
+
+                <!-- Amenities -->
+                <div class="amenities">
+                    <h3>Key Amenities</h3>
+                    <div class="amenity-grid">
+                        <div class="amenity-item"><i data-lucide="shield-check"></i> Gated Society</div>
+                        <div class="amenity-item"><i data-lucide="parking-circle"></i> Car Parking</div>
+                        <div class="amenity-item"><i data-lucide="zap"></i> Power Backup</div>
+                        <div class="amenity-item"><i data-lucide="droplet"></i> 24/7 Water</div>
+                    </div>
+                </div>
+
+                <!-- Seller Info -->
+                <div class="seller-card">
+                    <img src="../assets/profile.png" alt="Seller" class="seller-img">
+                    <div class="seller-info">
+                        <h4>Aman Mishra</h4>
+                        <p>Individual Owner</p>
+                    </div>
+                    <button class="verify-badge"><i data-lucide="check-circle"></i> Verified</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Action Bar -->
+        <div class="action-bar">
+            <button class="wishlist-btn"><i data-lucide="heart"></i></button>
+            <button class="chat-btn"><i data-lucide="message-circle"></i> Chat Now</button>
+            <button class="call-btn"><i data-lucide="phone"></i> Call</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

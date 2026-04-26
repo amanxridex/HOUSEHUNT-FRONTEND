@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile | HouseHunt</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="header-top">
+                <button class="settings-btn"><i data-lucide="settings"></i></button>
+            </div>
+            <div class="user-avatar-container">
+                <img src="../assets/profile.png" alt="User Profile" class="avatar">
+                <button class="edit-avatar"><i data-lucide="camera"></i></button>
+            </div>
+            <h1 class="user-name">Aman Mishra</h1>
+            <p class="user-handle">Premium Member</p>
+            <button class="edit-profile-btn">Edit Profile</button>
+        </div>
+
+        <!-- Menu Section -->
+        <div class="content-wrapper">
+            <div class="menu-group">
+                <h3>Account Settings</h3>
+                <div class="menu-item">
+                    <div class="icon-box"><i data-lucide="user"></i></div>
+                    <span>Personal Information</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+                <div class="menu-item">
+                    <div class="icon-box"><i data-lucide="heart"></i></div>
+                    <span>My Favorites</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+                <div class="menu-item">
+                    <div class="icon-box"><i data-lucide="bell"></i></div>
+                    <span>Notifications</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <h3>Support & Legal</h3>
+                <div class="menu-item">
+                    <div class="icon-box"><i data-lucide="help-circle"></i></div>
+                    <span>Help Center</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+                <div class="menu-item">
+                    <div class="icon-box"><i data-lucide="shield"></i></div>
+                    <span>Privacy Policy</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+            </div>
+
+            <button class="logout-btn">
+                <i data-lucide="log-out"></i>
+                Logout
+            </button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="my-properties.html" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item active">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
