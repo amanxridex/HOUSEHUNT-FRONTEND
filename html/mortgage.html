@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EMI Calculator | HouseHunt</title>
+    <link rel="stylesheet" href="../css/mortgage.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+            <h1>EMI Calculator</h1>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- Summary Card -->
+            <div class="emi-card">
+                <p>Monthly Installment</p>
+                <h2>₹ 45,680<span>/mo</span></h2>
+                <div class="emi-details">
+                    <div><span>Total Interest</span><strong>₹ 12.5 L</strong></div>
+                    <div class="divider"></div>
+                    <div><span>Total Payable</span><strong>₹ 58.2 L</strong></div>
+                </div>
+            </div>
+
+            <!-- Chart Mock -->
+            <div class="chart-section">
+                <div class="pie-chart">
+                    <div class="inner-circle">72%<br>Principal</div>
+                </div>
+                <div class="legend">
+                    <div class="l-item"><span class="dot principal"></span> Principal</div>
+                    <div class="l-item"><span class="dot interest"></span> Interest</div>
+                </div>
+            </div>
+
+            <!-- Sliders -->
+            <div class="sliders-section">
+                <div class="slider-group">
+                    <div class="s-label"><span>Loan Amount</span> <strong>₹ 45,00,000</strong></div>
+                    <input type="range" min="100000" max="10000000" value="4500000" class="premium-range">
+                </div>
+                <div class="slider-group">
+                    <div class="s-label"><span>Interest Rate (%)</span> <strong>8.5 %</strong></div>
+                    <input type="range" min="5" max="15" value="8.5" step="0.1" class="premium-range">
+                </div>
+                <div class="slider-group">
+                    <div class="s-label"><span>Loan Tenure (Years)</span> <strong>15 Years</strong></div>
+                    <input type="range" min="1" max="30" value="15" class="premium-range">
+                </div>
+            </div>
+
+            <button class="apply-btn">Apply for Home Loan</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

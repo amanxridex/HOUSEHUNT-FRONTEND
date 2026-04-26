@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Map View | HouseHunt</title>
+    <link rel="stylesheet" href="../css/map-view.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Map Overlay Header -->
+        <header class="map-header">
+            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+            <div class="search-pill">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search in Noida...">
+            </div>
+            <button class="filter-btn"><i data-lucide="sliders-horizontal"></i></button>
+        </header>
+
+        <!-- Mock Map Background -->
+        <div class="map-area">
+            <!-- Mock Markers -->
+            <div class="marker" style="top: 30%; left: 40%;">₹ 85L</div>
+            <div class="marker active" style="top: 45%; left: 60%;">₹ 2.4Cr</div>
+            <div class="marker" style="top: 20%; left: 20%;">₹ 1.2Cr</div>
+            <div class="marker" style="top: 60%; left: 30%;">₹ 45L</div>
+        </div>
+
+        <!-- Floating Card -->
+        <div class="property-preview">
+            <div class="preview-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Villa">
+                <div class="preview-info">
+                    <div class="price">₹ 2.40 Cr</div>
+                    <h3>Premium 4BHK Villa</h3>
+                    <p><i data-lucide="map-pin"></i> Jaypee Greens, Noida</p>
+                </div>
+                <button class="go-btn"><i data-lucide="arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="map-view.html" class="nav-item active">
+                <i data-lucide="map"></i>
+                <span>Map</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
