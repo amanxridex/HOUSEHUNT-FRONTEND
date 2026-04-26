@@ -105,4 +105,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.lucide) {
         window.lucide.createIcons();
     }
+
+    // Filter Bottom Sheet Logic
+    const filterBtn = document.querySelector('.filter-btn');
+    const filterSheet = document.getElementById('filterSheet');
+    const filterOverlay = document.getElementById('filterOverlay');
+    const closeSheet = document.getElementById('closeSheet');
+    const applyFilter = document.getElementById('applyFilter');
+
+    const toggleSheet = () => {
+        filterSheet.classList.toggle('active');
+        filterOverlay.classList.toggle('active');
+    };
+
+    if (filterBtn) filterBtn.addEventListener('click', toggleSheet);
+    if (closeSheet) closeSheet.addEventListener('click', toggleSheet);
+    if (filterOverlay) filterOverlay.addEventListener('click', toggleSheet);
+    if (applyFilter) applyFilter.addEventListener('click', toggleSheet);
+
+    // Pill Toggle Logic
+    const pills = document.querySelectorAll('.pill');
+    pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            pill.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+        });
+    });
 });

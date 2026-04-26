@@ -197,6 +197,58 @@
         </nav>
     </div>
 
+    <!-- Filter Bottom Sheet -->
+    <div class="filter-overlay" id="filterOverlay"></div>
+    <div class="filter-bottom-sheet" id="filterSheet">
+        <div class="sheet-header">
+            <div class="handle"></div>
+            <h3>Filter Search</h3>
+            <button class="close-sheet" id="closeSheet"><i data-lucide="x"></i></button>
+        </div>
+        <div class="sheet-content">
+            <div class="filter-group">
+                <label>Select City</label>
+                <div class="pill-group">
+                    <span class="pill active">Noida</span>
+                    <span class="pill">Gurgaon</span>
+                    <span class="pill">Delhi</span>
+                    <span class="pill">Faridabad</span>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>BHK Preference</label>
+                <div class="pill-group">
+                    <span class="pill">1 BHK</span>
+                    <span class="pill active">2 BHK</span>
+                    <span class="pill">3 BHK</span>
+                    <span class="pill">4+ BHK</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Price Range (₹)</label>
+                <div class="price-inputs">
+                    <input type="number" placeholder="Min">
+                    <span>to</span>
+                    <input type="number" placeholder="Max">
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>Property Status</label>
+                <div class="pill-group">
+                    <span class="pill active">Ready to Move</span>
+                    <span class="pill">Under Construction</span>
+                </div>
+            </div>
+        </div>
+        <div class="sheet-footer">
+            <button class="reset-btn">Reset</button>
+            <button class="apply-btn" id="applyFilter">Apply Filter</button>
+        </div>
+    </div>
+
     <script src="js/data.js"></script>
     <script src="js/index.js"></script>
     <script>
