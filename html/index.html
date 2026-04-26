@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HouseHunt | Find Your Dream Home</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="content-wrapper">
+            <!-- Header -->
+            <header>
+                <div class="user-info">
+                    <img src="../assets/profile.png" alt="Profile" class="profile-pic">
+                    <div class="greeting">
+                        <h2>Aman Mishra</h2>
+                        <p><i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>Noida</p>
+                    </div>
+                </div>
+                <button class="notification-btn">
+                    <i data-lucide="bell"></i>
+                    <div class="dot"></div>
+                </button>
+            </header>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Search Governance, Area, PACI number">
+                </div>
+                <button class="filter-btn">
+                    <i data-lucide="sliders-horizontal"></i>
+                </button>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories">
+                <div class="category-item active">
+                    <div class="category-icon">
+                        <i data-lucide="home"></i>
+                    </div>
+                    <p>Independent</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-icon">
+                        <i data-lucide="building"></i>
+                    </div>
+                    <p>Commercial</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-icon">
+                        <i data-lucide="building-2"></i>
+                    </div>
+                    <p>Apartments</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-icon">
+                        <i data-lucide="palmtree"></i>
+                    </div>
+                    <p>Villas</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-icon">
+                        <i data-lucide="map"></i>
+                    </div>
+                    <p>Plots</p>
+                </div>
+            </div>
+
+            <!-- Promo Banner -->
+            <div class="promo-banner">
+                <div class="promo-content">
+                    <h3>Post your Property for <span>Free</span></h3>
+                    <p>List it on Dillal and get genuine leads</p>
+                <a href="hosttype.html" style="text-decoration: none;">
+                    <button class="post-btn">Post your property</button>
+                </a>
+                </div>
+                <img src="../assets/banner.png" alt="Promo" class="promo-img">
+            </div>
+
+            <!-- Filters & Sort -->
+            <div class="listings-header">
+                <div class="tabs">
+                    <div class="tab active">For Rent</div>
+                    <div class="tab">For Sale</div>
+                </div>
+                <button class="sort-btn">
+                    <i data-lucide="arrow-up-down"></i>
+                    Sort
+                </button>
+            </div>
+
+            <!-- Featured Listings -->
+            <div class="section-title">
+                <h2>Featured Listings</h2>
+                <a href="#" class="see-all">See All</a>
+            </div>
+
+            <div class="property-card">
+                <img src="../assets/house.png" alt="Property" class="property-img">
+                <div class="tag">1 year old</div>
+                <div class="map-overlay">
+                    <i data-lucide="map"></i>
+                    Map
+                </div>
+                <div class="property-details">
+                    <!-- Details can be added here as needed -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../js/index.js"></script>
+</body>
+</html>

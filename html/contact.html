@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Information | HouseHunt</title>
+    <link rel="stylesheet" href="../css/contact.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="top-bar">
+                <button class="back-btn" onclick="window.history.back()">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <div class="step-badge">
+                    <span class="step-current">2</span>
+                    <span class="step-divider">/</span>
+                    <span class="step-total">3</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+            <h1>Contact details</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <div class="input-container">
+                    <i data-lucide="user"></i>
+                    <input type="text" id="fullName" placeholder="Enter your full name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-container">
+                    <i data-lucide="mail"></i>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <div class="input-container">
+                    <i data-lucide="phone"></i>
+                    <input type="tel" id="phone" placeholder="Enter phone number">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <button class="next-btn" id="continueBtn">
+                Continue
+                <i data-lucide="arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/contact.js"></script>
+</body>
+</html>

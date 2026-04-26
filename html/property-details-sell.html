@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Details | HouseHunt</title>
+    <link rel="stylesheet" href="../css/property-details-sell.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="top-bar">
+                <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+                <div class="step-badge"><span class="step-current">3</span>/3</div>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <h1 id="page-title">Sell Details</h1>
+        </div>
+        <div class="content">
+            <div id="dynamic-fields">
+                <!-- JavaScript will inject sections here -->
+            </div>
+        </div>
+        <div class="footer">
+            <button class="submit-btn" id="submitBtn">List for Sale</button>
+        </div>
+
+        <!-- Submission Modal -->
+        <div id="submitModal" class="modal-overlay">
+            <div class="modal-card">
+                <div id="modal-loading">
+                    <div class="premium-loader"></div>
+                    <h3>Verifying Details...</h3>
+                    <p>We are finalizing your property valuation.</p>
+                </div>
+                <div id="modal-success" style="display: none;">
+                    <div class="success-icon">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <h3>Listing Created!</h3>
+                    <p>Your property is now live for buyers to see. 💰</p>
+                    <button class="home-btn" onclick="window.location.href='index.html'">Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/property-details-sell.js"></script>
+</body>
+</html>

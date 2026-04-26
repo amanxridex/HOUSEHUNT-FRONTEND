@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Post Property | HouseHunt</title>
+    <link rel="stylesheet" href="../css/hosttype.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="top-bar">
+                <button class="back-btn" onclick="window.history.back()" aria-label="Go back">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <div class="step-badge">
+                    <span class="step-current">1</span>
+                    <span class="step-divider">/</span>
+                    <span class="step-total">3</span>
+                </div>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 33%"></div>
+                <div class="progress-glow"></div>
+            </div>
+
+            <div class="header-text">
+                <p class="header-subtitle">Let's get started</p>
+                <h1>Basic details</h1>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="content">
+            <!-- Question 1: Who are you? -->
+            <section class="question-group" data-question="role">
+                <h2>Who are you?</h2>
+                <div class="options-grid">
+                    <div class="option-card active" data-value="owner">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="user"></i>
+                        </div>
+                        <span class="card-label">Owner</span>
+                        <span class="card-desc">I own this property</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card" data-value="agent">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <span class="card-label">Agent</span>
+                        <span class="card-desc">I'm posting for someone</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 2: You want to? -->
+            <section class="question-group" data-question="intent">
+                <h2>You want to?</h2>
+                <div class="options-grid">
+                    <div class="option-card active" data-value="rent">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="key"></i>
+                        </div>
+                        <span class="card-label">Rent</span>
+                        <span class="card-desc">List for tenants</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card" data-value="sell">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="shopping-bag"></i>
+                        </div>
+                        <span class="card-label">Sell</span>
+                        <span class="card-desc">Find a buyer</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 3: Property Type -->
+            <section class="question-group" data-question="type">
+                <h2>Property Type?</h2>
+                <div class="options-grid">
+                    <div class="option-card" data-value="independent">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="home"></i>
+                        </div>
+                        <span class="card-label">Independent</span>
+                        <span class="card-desc">House / Villa</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card" data-value="commercial">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="building"></i>
+                        </div>
+                        <span class="card-label">Commercial</span>
+                        <span class="card-desc">Office / Shop</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card active" data-value="apartment">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="building-2"></i>
+                        </div>
+                        <span class="card-label">Apartments</span>
+                        <span class="card-desc">Flat / Builder floor</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card" data-value="villa">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="palmtree"></i>
+                        </div>
+                        <span class="card-label">Villas</span>
+                        <span class="card-desc">Luxury estate</span>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+
+                    <div class="option-card full-width" data-value="plot">
+                        <div class="card-glow"></div>
+                        <div class="card-icon">
+                            <i data-lucide="map"></i>
+                        </div>
+                        <div class="card-text">
+                            <span class="card-label">Plots</span>
+                            <span class="card-desc">Land for sale</span>
+                        </div>
+                        <div class="check-indicator">
+                            <i data-lucide="check"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom spacer for scroll -->
+            <div class="scroll-spacer"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="selection-summary">
+                <div class="summary-item">
+                    <i data-lucide="user" class="summary-icon"></i>
+                    <span id="summary-role">Owner</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-item">
+                    <i data-lucide="key" class="summary-icon"></i>
+                    <span id="summary-intent">Rent</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-item">
+                    <i data-lucide="building-2" class="summary-icon"></i>
+                    <span id="summary-type">Apartments</span>
+                </div>
+            </div>
+
+            <button class="next-btn" id="continueBtn">
+                <span class="btn-text">Continue</span>
+                <span class="btn-shine"></span>
+                <i data-lucide="arrow-right" class="btn-icon"></i>
+            </button>
+        </footer>
+    </div>
+
+    <script src="../js/hosttype.js"></script>
+</body>
+
+</html>
