@@ -1,6 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
     const featuredContainer = document.getElementById('featured-listings-container');
-    const data = window.propertyData;
+    
+    let data = window.propertyData; // Fallback to mock data
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/properties`);
+        const liveData = await response.json();
+        if (liveData && liveData.length > 0) {
+            // Map live data to our frontend format if necessary
+            data = liveData.map(p => ({
+                id: p.id,
+                type: p.type,
+                price: p.price,
+                location: p.location,
+                image: p.images ? p.images[0] : 'assets/househuntlogo.png',
+                beds: p.beds || '',
+                tag: p.status === 'approved' ? 'Verified' : 'New'
+            }));
+        }
+    } catch (e) {
+        console.warn("Backend unavailable, using mock data.", e);
+    }
 
     if (!data) return;
 
