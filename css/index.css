@@ -52,8 +52,9 @@ body {
 .content-wrapper {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal bleed from scroll sections */
     padding: 20px;
-    scrollbar-width: none; /* Hide scrollbar for cleaner look */
+    scrollbar-width: none;
 }
 
 .content-wrapper::-webkit-scrollbar {
