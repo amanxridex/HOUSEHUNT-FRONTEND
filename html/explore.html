@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Explore Properties | HouseHunt</title>
+    <link rel="stylesheet" href="../css/explore.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Search Header -->
+        <header class="explore-header">
+            <div class="search-row">
+                <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Search locality, project...">
+                </div>
+                <button class="filter-btn"><i data-lucide="sliders-horizontal"></i></button>
+            </div>
+            <!-- Quick Chips -->
+            <div class="filter-chips">
+                <div class="f-chip active">All</div>
+                <div class="f-chip">Rent</div>
+                <div class="f-chip">Sale</div>
+                <div class="f-chip">Commercial</div>
+            </div>
+        </header>
+
+        <!-- Listings -->
+        <div class="content-wrapper">
+            <div class="results-count">Showing 158 properties in Noida</div>
+            
+            <!-- List Item 1 -->
+            <a href="property-view.html" class="list-item">
+                <img src="../assets/house.png" alt="Property">
+                <div class="item-info">
+                    <div class="item-price">₹ 85.50 L</div>
+                    <h3>Modern 3BHK Apartment</h3>
+                    <p class="item-loc">Sector 62, Noida</p>
+                    <div class="item-stats">
+                        <span>3 BHK</span> • <span>1850 sqft</span>
+                    </div>
+                </div>
+                <button class="fav-btn"><i data-lucide="heart"></i></button>
+            </a>
+
+            <!-- List Item 2 -->
+            <a href="property-view.html" class="list-item">
+                <img src="../assets/villa.png" alt="Property">
+                <div class="item-info">
+                    <div class="item-price">₹ 2.40 Cr</div>
+                    <h3>Premium 4BHK Villa</h3>
+                    <p class="item-loc">Jaypee Greens, Noida</p>
+                    <div class="item-stats">
+                        <span>4 BHK</span> • <span>3200 sqft</span>
+                    </div>
+                </div>
+                <button class="fav-btn"><i data-lucide="heart"></i></button>
+            </a>
+
+            <!-- List Item 3 -->
+            <a href="property-view.html" class="list-item">
+                <img src="../assets/office.png" alt="Property">
+                <div class="item-info">
+                    <div class="item-price">₹ 1.25 Cr</div>
+                    <h3>Corporate Office Space</h3>
+                    <p class="item-loc">Knowledge Park, G. Noida</p>
+                    <div class="item-stats">
+                        <span>Office</span> • <span>1200 sqft</span>
+                    </div>
+                </div>
+                <button class="fav-btn"><i data-lucide="heart"></i></button>
+            </a>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="my-properties.html" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

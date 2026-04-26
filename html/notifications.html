@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notifications | HouseHunt</title>
+    <link rel="stylesheet" href="../css/notifications.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+            <h1>Notifications</h1>
+            <button class="mark-btn">Mark all read</button>
+        </header>
+
+        <!-- Notification List -->
+        <div class="content-wrapper">
+            <!-- Item 1 -->
+            <div class="notif-item unread">
+                <div class="icon-box msg"><i data-lucide="message-circle"></i></div>
+                <div class="notif-content">
+                    <h4>New Message Received</h4>
+                    <p>Rahul Sharma sent you a message regarding your 3BHK flat.</p>
+                    <span class="time">Just now</span>
+                </div>
+                <div class="dot"></div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="notif-item unread">
+                <div class="icon-box success"><i data-lucide="check-circle"></i></div>
+                <div class="notif-content">
+                    <h4>Property Approved!</h4>
+                    <p>Your listing for "Corporate Office" has been verified and is now live.</p>
+                    <span class="time">2 hours ago</span>
+                </div>
+                <div class="dot"></div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="notif-item">
+                <div class="icon-box promo"><i data-lucide="tag"></i></div>
+                <div class="notif-content">
+                    <h4>Price Drop Alert!</h4>
+                    <p>A property in your favorites just dropped its price by ₹ 2.00 L.</p>
+                    <span class="time">Yesterday</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="my-properties.html" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
