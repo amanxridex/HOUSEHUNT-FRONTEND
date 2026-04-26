@@ -32,6 +32,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const profileLink = document.getElementById('userProfile');
         if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
 
+        // Sync User to Supabase (Auto-Register)
+        try {
+            await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    name: user.name,
+                    email: user.email
+                })
+            });
+        } catch (e) { console.error("Sync error", e); }
+
         // Check Phone in DB
         try {
             const res = await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`);
