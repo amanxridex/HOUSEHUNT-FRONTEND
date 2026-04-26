@@ -13,14 +13,14 @@
         <div class="content-wrapper">
             <!-- Header -->
             <header>
-                <div class="user-info">
-                    <img src="assets/profile.png" alt="Profile" class="profile-pic">
+                <div class="user-info" id="userProfile" onclick="window.location.href='html/login.html'">
+                    <img src="assets/profile.png" alt="Profile" class="profile-pic" id="headerProfilePic">
                     <div class="greeting">
-                        <h2>Aman Mishra</h2>
+                        <h2 id="headerUserName">Aman Mishra</h2>
                         <p><i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>Noida</p>
                     </div>
                 </div>
-                <button class="notification-btn">
+                <button class="notification-btn" onclick="window.location.href='html/notifications.html'">
                     <i data-lucide="bell"></i>
                     <div class="dot"></div>
                 </button>

@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(`${BACKEND_URL}/api/properties`);
         const liveData = await response.json();
         if (liveData && liveData.length > 0) {
-            // Map live data to our frontend format if necessary
             data = liveData.map(p => ({
                 id: p.id,
                 type: p.type,
@@ -21,6 +20,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (e) {
         console.warn("Backend unavailable, using mock data.", e);
+    }
+
+    // User Auth Check
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        const nameEl = document.getElementById('headerUserName');
+        const picEl = document.getElementById('headerProfilePic');
+        if (nameEl) nameEl.innerText = user.name;
+        if (picEl && user.photo) picEl.src = user.photo;
+        const profileLink = document.getElementById('userProfile');
+        if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
     }
 
     if (!data) return;
