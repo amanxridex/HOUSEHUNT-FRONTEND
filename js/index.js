@@ -29,8 +29,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Populate Featured (Top 5)
-    renderSection('featured-listings-container', data.slice(0, 5));
+    // Helper to render featured slider
+    const renderFeaturedSlider = (items) => {
+        const container = document.getElementById('featured-listings-container');
+        const dotsContainer = document.getElementById('slider-dots');
+        if (!container) return;
+
+        items.forEach((prop, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'hero-slide';
+            slide.innerHTML = `
+                <div class="hero-slide-content">
+                    <img src="${prop.image}" alt="${prop.type}" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
+                    <div class="hero-overlay">
+                        <div class="price">${prop.price}</div>
+                        <h3>${prop.beds ? prop.beds + ' ' : ''}${prop.type}</h3>
+                    </div>
+                </div>
+            `;
+            container.appendChild(slide);
+
+            // Add dots
+            const dot = document.createElement('div');
+            dot.className = `dot ${index === 0 ? 'active' : ''}`;
+            dotsContainer.appendChild(dot);
+        });
+
+        // Auto slide logic
+        let currentSlide = 0;
+        const totalSlides = items.length;
+        const dots = dotsContainer.querySelectorAll('.dot');
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            container.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentSlide);
+            });
+        }, 3000);
+    };
+
+    // Populate Featured
+    renderFeaturedSlider(data.slice(0, 5));
 
     // Populate Near You (Next 5)
     renderSection('near-you-container', data.slice(5, 10));
