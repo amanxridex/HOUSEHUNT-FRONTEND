@@ -28,8 +28,8 @@ window.signInWithGoogle = async () => {
         }));
         window.location.href = '../index.html';
     } catch (error) {
-        console.error("Auth Error:", error.message);
-        alert("Authentication failed. Please try again.");
+        console.error("Auth Error:", error.code, error.message);
+        alert("Authentication failed: " + error.message);
     }
 };
 
