@@ -12,7 +12,7 @@
         <!-- Profile Header -->
         <div class="profile-header">
             <div class="header-top">
-                <button class="settings-btn"><i data-lucide="settings"></i></button>
+                <button class="settings-btn" onclick="window.location.href='settings.html'"><i data-lucide="settings"></i></button>
             </div>
             <div class="user-avatar-container">
                 <img src="../assets/profile.png" alt="User Profile" class="avatar" id="profileAvatar" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
@@ -20,24 +20,24 @@
             </div>
             <h1 class="user-name" id="profileName">Aman Mishra</h1>
             <p class="user-handle" id="userHandle">Premium Member</p>
-            <button class="edit-profile-btn">Edit Profile</button>
+            <button class="edit-profile-btn" onclick="window.location.href='settings.html'">Edit Profile</button>
         </div>
 
         <!-- Menu Section -->
         <div class="content-wrapper">
             <div class="menu-group">
                 <h3>Account Settings</h3>
-                <div class="menu-item">
+                <div class="menu-item" onclick="window.location.href='settings.html'">
                     <div class="icon-box"><i data-lucide="user"></i></div>
                     <span>Personal Information</span>
                     <i data-lucide="chevron-right" class="chevron"></i>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" onclick="window.location.href='favorites.html'">
                     <div class="icon-box"><i data-lucide="heart"></i></div>
                     <span>My Favorites</span>
                     <i data-lucide="chevron-right" class="chevron"></i>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" onclick="window.location.href='notifications.html'">
                     <div class="icon-box"><i data-lucide="bell"></i></div>
                     <span>Notifications</span>
                     <i data-lucide="chevron-right" class="chevron"></i>
@@ -46,12 +46,12 @@
 
             <div class="menu-group">
                 <h3>Support & Legal</h3>
-                <div class="menu-item">
+                <div class="menu-item" onclick="window.location.href='help.html'">
                     <div class="icon-box"><i data-lucide="help-circle"></i></div>
                     <span>Help Center</span>
                     <i data-lucide="chevron-right" class="chevron"></i>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" onclick="window.location.href='privacy.html'">
                     <div class="icon-box"><i data-lucide="shield"></i></div>
                     <span>Privacy Policy</span>
                     <i data-lucide="chevron-right" class="chevron"></i>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Help Center | HouseHunt</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .help-content { padding: 20px; }
+        .faq-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .faq-item h3 { font-size: 1rem; margin-bottom: 8px; color: #111; }
+        .faq-item p { font-size: 0.9rem; color: #666; margin: 0; }
+        .contact-box {
+            background: #0066ff10;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="page-header" style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee;">
+            <button onclick="history.back()" style="background: none; border: none; font-size: 20px; color: #333;"><i data-lucide="arrow-left"></i></button>
+            <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Help Center</h1>
+        </header>
+
+        <div class="help-content">
+            <div class="faq-item">
+                <h3>How to post a property?</h3>
+                <p>Click on the 'My Properties' tab and use the 'Add Property' button to start listing.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is my data secure?</h3>
+                <p>Yes, we use industry-standard encryption to protect your data and identity.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How to contact a seller?</h3>
+                <p>You can use the 'Message' button on any property listing to start a chat.</p>
+            </div>
+
+            <div class="contact-box">
+                <i data-lucide="mail" style="color: #0066ff; margin-bottom: 10px;"></i>
+                <p>Still need help?</p>
+                <a href="mailto:support@househunt.com" style="color: #0066ff; text-decoration: none; font-weight: 600;">support@househunt.com</a>
+            </div>
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

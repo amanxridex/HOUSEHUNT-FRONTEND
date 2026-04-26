@@ -4,40 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Favorites | HouseHunt</title>
-    <link rel="stylesheet" href="../css/favorites.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/profile.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .favorites-container {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .empty-state i {
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Header -->
-        <header class="header">
-            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
-            <h1>My Favorites</h1>
-            <div class="count">3 Items</div>
+        <header class="page-header" style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee;">
+            <button onclick="history.back()" style="background: none; border: none; font-size: 20px; color: #333;"><i data-lucide="arrow-left"></i></button>
+            <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">My Favorites</h1>
         </header>
 
-        <!-- Favorites List -->
-        <div class="content-wrapper">
-            <!-- Item 1 -->
-            <div class="fav-card animate-in">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" alt="Villa">
-                <div class="fav-info">
-                    <div class="price">₹ 2.40 Cr</div>
-                    <h3>Luxury 4BHK Villa</h3>
-                    <p><i data-lucide="map-pin"></i> Jaypee Greens, Noida</p>
-                </div>
-                <button class="remove-btn"><i data-lucide="trash-2"></i></button>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="fav-card animate-in delay-1">
-                <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=400&q=80" alt="Apartment">
-                <div class="fav-info">
-                    <div class="price">₹ 85.50 L</div>
-                    <h3>Modern 3BHK Apartment</h3>
-                    <p><i data-lucide="map-pin"></i> Sector 62, Noida</p>
-                </div>
-                <button class="remove-btn"><i data-lucide="trash-2"></i></button>
+        <div class="favorites-container" id="favoritesGrid">
+            <!-- Loading -->
+            <div class="empty-state">
+                <i data-lucide="loader" class="spin"></i>
+                <p>Loading your favorites...</p>
             </div>
         </div>
 
@@ -55,7 +53,7 @@
                 <i data-lucide="message-square"></i>
                 <span>Messages</span>
             </a>
-            <a href="profile.html" class="nav-item">
+            <a href="profile.html" class="nav-item active">
                 <i data-lucide="user"></i>
                 <span>More</span>
             </a>
@@ -64,6 +62,32 @@
 
     <script>
         lucide.createIcons();
+        
+        async function loadFavorites() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const container = document.getElementById('favoritesGrid');
+            
+            if (!user) {
+                container.innerHTML = '<div class="empty-state"><p>Please login to see favorites</p></div>';
+                return;
+            }
+
+            // In a real app, you would fetch from /api/user/favorites
+            // For now, we show an empty state or a placeholder
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i data-lucide="heart" style="width: 64px; height: 64px;"></i>
+                        <h2>No favorites yet</h2>
+                        <p>Start exploring properties and save the ones you love!</p>
+                        <button onclick="window.location.href='../index.html'" style="margin-top: 20px; padding: 12px 24px; background: #0066ff; color: white; border: none; border-radius: 12px; font-weight: 600;">Explore Now</button>
+                    </div>
+                `;
+                lucide.createIcons();
+            }, 800);
+        }
+
+        loadFavorites();
     </script>
 </body>
 </html>

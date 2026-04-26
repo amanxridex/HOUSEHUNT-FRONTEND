@@ -4,76 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Notifications | HouseHunt</title>
-    <link rel="stylesheet" href="../css/notifications.css">
+    <link rel="stylesheet" href="../css/profile.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .notif-item {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .notif-icon {
+            width: 45px;
+            height: 45px;
+            background: #0066ff10;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0066ff;
+            flex-shrink: 0;
+        }
+        .notif-info h4 { margin: 0; font-size: 0.95rem; font-weight: 600; color: #111; }
+        .notif-info p { margin: 5px 0 0; font-size: 0.85rem; color: #666; }
+        .notif-time { font-size: 0.75rem; color: #999; margin-top: 5px; }
+    </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
-            <h1>Notifications</h1>
-            <button class="mark-btn">Mark all read</button>
+        <header class="page-header" style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee;">
+            <button onclick="history.back()" style="background: none; border: none; font-size: 20px; color: #333;"><i data-lucide="arrow-left"></i></button>
+            <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Notifications</h1>
         </header>
 
-        <!-- Notification List -->
-        <div class="content-wrapper">
-            <!-- Item 1 -->
-            <div class="notif-item unread">
-                <div class="icon-box msg"><i data-lucide="message-circle"></i></div>
-                <div class="notif-content">
-                    <h4>New Message Received</h4>
-                    <p>Rahul Sharma sent you a message regarding your 3BHK flat.</p>
-                    <span class="time">Just now</span>
-                </div>
-                <div class="dot"></div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="notif-item unread">
-                <div class="icon-box success"><i data-lucide="check-circle"></i></div>
-                <div class="notif-content">
-                    <h4>Property Approved!</h4>
-                    <p>Your listing for "Corporate Office" has been verified and is now live.</p>
-                    <span class="time">2 hours ago</span>
-                </div>
-                <div class="dot"></div>
-            </div>
-
-            <!-- Item 3 -->
+        <div class="notifications-list">
             <div class="notif-item">
-                <div class="icon-box promo"><i data-lucide="tag"></i></div>
-                <div class="notif-content">
-                    <h4>Price Drop Alert!</h4>
-                    <p>A property in your favorites just dropped its price by ₹ 2.00 L.</p>
-                    <span class="time">Yesterday</span>
+                <div class="notif-icon"><i data-lucide="check-circle"></i></div>
+                <div class="notif-info">
+                    <h4>Welcome to HouseHunt!</h4>
+                    <p>Your profile is now complete. Start searching for your dream home.</p>
+                    <div class="notif-time">Just now</div>
+                </div>
+            </div>
+            <div class="notif-item">
+                <div class="notif-icon"><i data-lucide="info"></i></div>
+                <div class="notif-info">
+                    <h4>Verify your email</h4>
+                    <p>Please check your inbox to verify your email address for better security.</p>
+                    <div class="notif-time">2 hours ago</div>
                 </div>
             </div>
         </div>
-
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="../index.html" class="nav-item">
-                <i data-lucide="home"></i>
-                <span>Home</span>
-            </a>
-            <a href="my-properties.html" class="nav-item">
-                <i data-lucide="layout-list"></i>
-                <span>My Properties</span>
-            </a>
-            <a href="messages.html" class="nav-item">
-                <i data-lucide="message-square"></i>
-                <span>Messages</span>
-            </a>
-            <a href="profile.html" class="nav-item">
-                <i data-lucide="user"></i>
-                <span>More</span>
-            </a>
-        </nav>
     </div>
-
-    <script>
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
