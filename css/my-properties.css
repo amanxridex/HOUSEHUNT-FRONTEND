@@ -116,6 +116,7 @@ body {
 }
 
 .status-badge.active { background: #DCFCE7; color: #16A34A; }
+.status-badge.warn { background: #FEF3C7; color: #D97706; }
 
 .card-info { flex: 1; }
 .card-info .price { font-size: 18px; font-weight: 900; color: var(--primary); }
