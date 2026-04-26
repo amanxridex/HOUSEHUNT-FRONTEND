@@ -54,7 +54,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const patchRes = await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`, {
                             method: 'PATCH',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ phone })
+                            body: JSON.stringify({ 
+                                phone,
+                                name: user.name,
+                                email: user.email
+                            })
                         });
                         
                         if (patchRes.ok) {
