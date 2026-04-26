@@ -675,26 +675,27 @@ header {
 }
 
 .social-links a {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: #F0F4FF;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--primary);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--primary);
+    color: var(--white);
     transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(45, 104, 255, 0.2);
 }
 
 .social-links a i {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
 }
 
 .social-links a:hover {
-    background: var(--primary);
-    color: var(--white);
-    transform: translateY(-2px);
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(45, 104, 255, 0.3);
 }
 
 .copyright {
