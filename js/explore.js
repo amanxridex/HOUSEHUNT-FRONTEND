@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.className = 'list-item';
         
         item.innerHTML = `
-            <img src="${prop.image}" alt="${prop.type}">
+            <img src="${prop.image}" alt="${prop.type}" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
             <div class="item-info">
                 <div class="item-price">${prop.price}</div>
                 <h3>${prop.beds ? prop.beds + ' ' : ''}${prop.type}</h3>

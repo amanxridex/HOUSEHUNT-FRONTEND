@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         card.innerHTML = `
             <div class="property-card">
-                <img src="${prop.image}" alt="${prop.type}" class="property-img">
+                <img src="${prop.image}" alt="${prop.type}" class="property-img" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
                 <div class="tag">${prop.tag}</div>
                 <div class="map-overlay"><i data-lucide="map"></i> Map</div>
                 <div class="property-details">
