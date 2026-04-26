@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edit Profile | HouseHunt</title>
+    <link rel="stylesheet" href="../css/edit-profile.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" onclick="window.history.back()"><i data-lucide="chevron-left"></i></button>
+            <h1>Edit Profile</h1>
+            <button class="save-btn">Save</button>
+        </header>
+
+        <!-- Form -->
+        <div class="content-wrapper">
+            <div class="avatar-section">
+                <div class="avatar-box">
+                    <img src="../assets/profile.png" alt="Profile">
+                    <button class="change-pic"><i data-lucide="camera"></i></button>
+                </div>
+                <p>Change Profile Photo</p>
+            </div>
+
+            <div class="form-section">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" value="Aman Mishra">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" value="aman@example.com">
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" value="+91 9876543210">
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <input type="text" value="Noida, India">
+                </div>
+                <div class="input-group">
+                    <label>Bio</label>
+                    <textarea placeholder="Tell us about yourself...">Real estate enthusiast and premium property seeker.</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
