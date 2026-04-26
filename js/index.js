@@ -28,6 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
         featuredContainer.appendChild(card);
     });
 
+    // Make categories clickable
+    const categoryItems = document.querySelectorAll('.category-item');
+    categoryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const type = item.querySelector('p').textContent;
+            window.location.href = `html/explore.html?type=${type}`;
+        });
+    });
+
+    // Make tabs clickable
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const intent = tab.textContent.includes('Rent') ? 'Rent' : 'Buy';
+            window.location.href = `html/explore.html?intent=${intent}`;
+        });
+    });
+
     if (window.lucide) {
         window.lucide.createIcons();
     }

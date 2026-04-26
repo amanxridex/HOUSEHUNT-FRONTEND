@@ -336,6 +336,7 @@ header {
     color: var(--text-muted);
     cursor: pointer;
     transition: var(--transition);
+    user-select: none;
 }
 
 .tab.active {
