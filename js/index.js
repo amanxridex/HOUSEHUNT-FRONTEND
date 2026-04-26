@@ -4,9 +4,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let data = window.propertyData; // Fallback to mock data
 
+    // Show Skeletons
+    if (window.showSkeletons) {
+        window.showSkeletons('featured-listings-container', 1);
+        window.showSkeletons('near-you-container', 3);
+        window.showSkeletons('top-listings-container', 3);
+        window.showSkeletons('plots-container', 3);
+    }
+
     try {
         const response = await fetch(`${BACKEND_URL}/api/properties`);
         const liveData = await response.json();
+        
+        // Clear Skeletons
+        document.getElementById('featured-listings-container').innerHTML = '';
+        document.getElementById('near-you-container').innerHTML = '';
+        document.getElementById('top-listings-container').innerHTML = '';
+        document.getElementById('plots-container').innerHTML = '';
+
         if (liveData && liveData.length > 0) {
             data = liveData.map(p => ({
                 id: p.id,

@@ -3,7 +3,7 @@
   "short_name": "HouseHunt",
   "description": "Find your dream home with HouseHunt India. Premium listings at your fingertips.",
   "start_url": "/html/login.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#0066ff",
   "icons": [
