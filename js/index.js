@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn("Backend unavailable, using mock data.", e);
     }
 
-    // User Auth Check
+    // User Auth Check & Phone Enforcement
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
         const nameEl = document.getElementById('headerUserName');
@@ -31,6 +31,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (picEl && user.photo) picEl.src = user.photo;
         const profileLink = document.getElementById('userProfile');
         if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
+
+        // Check Phone in DB
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`);
+            const profile = await res.json();
+            
+            if (!profile || !profile.phone) {
+                const modal = document.getElementById('phoneModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    const updateBtn = document.getElementById('updatePhoneBtn');
+                    const phoneInput = document.getElementById('userPhoneInput');
+                    
+                    updateBtn.onclick = async () => {
+                        const phone = phoneInput.value.trim();
+                        if (phone.length < 10) return alert("Please enter a valid mobile number");
+                        
+                        updateBtn.disabled = true;
+                        updateBtn.innerText = "Updating...";
+                        
+                        const patchRes = await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ phone })
+                        });
+                        
+                        if (patchRes.ok) {
+                            modal.style.display = 'none';
+                        } else {
+                            alert("Failed to update. Try again.");
+                            updateBtn.disabled = false;
+                            updateBtn.innerText = "Update & Continue";
+                        }
+                    };
+                }
+            }
+        } catch (e) {
+            console.error("Profile check failed", e);
+        }
     }
 
     if (!data) return;
