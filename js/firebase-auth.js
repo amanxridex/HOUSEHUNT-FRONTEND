@@ -35,9 +35,20 @@ window.signInWithGoogle = async () => {
 
 // Sign Out Function
 window.userLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem('user');
-    window.location.href = 'login.html';
+    try {
+        await signOut(auth);
+        localStorage.removeItem('user');
+        // Check if we are in html/ folder or root
+        if (window.location.pathname.includes('/html/')) {
+            window.location.href = 'login.html';
+        } else {
+            window.location.href = 'html/login.html';
+        }
+    } catch (e) {
+        console.error("Logout error", e);
+        localStorage.removeItem('user');
+        window.location.href = '/html/login.html';
+    }
 };
 
 // Check Auth State
