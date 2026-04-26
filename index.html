@@ -101,44 +101,9 @@
                 <a href="#" class="see-all">See All</a>
             </div>
 
-            <a href="html/property-view.html" style="text-decoration: none;">
-                <div class="property-card">
-                    <img src="assets/house.png" alt="Property" class="property-img">
-                    <div class="tag">1 year old</div>
-                    <div class="map-overlay"><i data-lucide="map"></i> Map</div>
-                    <div class="property-details">
-                        <div class="prop-price">₹ 85.50 L</div>
-                        <div class="prop-title">Modern 3BHK Apartment</div>
-                        <div class="prop-loc">Sector 62, Noida</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="html/property-view.html" style="text-decoration: none;">
-                <div class="property-card">
-                    <img src="assets/villa.png" alt="Villa" class="property-img">
-                    <div class="tag">New Launch</div>
-                    <div class="map-overlay"><i data-lucide="map"></i> Map</div>
-                    <div class="property-details">
-                        <div class="prop-price">₹ 2.40 Cr</div>
-                        <div class="prop-title">Premium 4BHK Villa</div>
-                        <div class="prop-loc">Jaypee Greens, Noida</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="html/property-view.html" style="text-decoration: none;">
-                <div class="property-card">
-                    <img src="assets/office.png" alt="Office" class="property-img">
-                    <div class="tag">Fully Furnished</div>
-                    <div class="map-overlay"><i data-lucide="map"></i> Map</div>
-                    <div class="property-details">
-                        <div class="prop-price">₹ 1.25 Cr</div>
-                        <div class="prop-title">Corporate Office Space</div>
-                        <div class="prop-loc">Knowledge Park, Greater Noida</div>
-                    </div>
-                </div>
-            </a>
+            <div id="featured-listings-container">
+                <!-- Dynamic featured listings will be injected here -->
+            </div>
         </div>
 
         <!-- Bottom Navigation -->
@@ -162,6 +127,10 @@
         </nav>
     </div>
 
+    <script src="js/data.js"></script>
     <script src="js/index.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

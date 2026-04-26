@@ -1,66 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Category selection
-    const categoryItems = document.querySelectorAll('.category-item');
-    categoryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            categoryItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-        });
-    });
+    const featuredContainer = document.getElementById('featured-listings-container');
+    const data = window.propertyData;
 
-    // Rent/Sale tabs
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-    });
+    if (!featuredContainer || !data) return;
 
-    // Typewriter Placeholder effect
-    const searchInput = document.querySelector('.search-bar input');
-    const placeholders = [
-        "Search for 3 BHK apartments...",
-        "Search for properties in Noida...",
-        "Modern villas in New York...",
-        "Luxury penthouses for sale...",
-        "Affordable land in Dubai..."
-    ];
-    
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typeSpeed = 100;
+    // Show first 5 properties as featured
+    const featured = data.slice(0, 5);
 
-    function type() {
-        const currentPlaceholder = placeholders[wordIndex];
+    featured.forEach(prop => {
+        const card = document.createElement('a');
+        card.href = 'html/property-view.html';
+        card.style.textDecoration = 'none';
         
-        if (isDeleting) {
-            searchInput.placeholder = currentPlaceholder.substring(0, charIndex - 1);
-            charIndex--;
-            typeSpeed = 50;
-        } else {
-            searchInput.placeholder = currentPlaceholder.substring(0, charIndex + 1);
-            charIndex++;
-            typeSpeed = 100;
-        }
+        card.innerHTML = `
+            <div class="property-card">
+                <img src="${prop.image}" alt="${prop.type}" class="property-img">
+                <div class="tag">${prop.tag}</div>
+                <div class="map-overlay"><i data-lucide="map"></i> Map</div>
+                <div class="property-details">
+                    <div class="prop-price">${prop.price}</div>
+                    <div class="prop-title">${prop.beds ? prop.beds + ' ' : ''}${prop.type}</div>
+                    <div class="prop-loc">${prop.location}</div>
+                </div>
+            </div>
+        `;
+        
+        featuredContainer.appendChild(card);
+    });
 
-        if (!isDeleting && charIndex === currentPlaceholder.length) {
-            isDeleting = true;
-            typeSpeed = 2000; // Pause at end
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % placeholders.length;
-            typeSpeed = 500;
-        }
-
-        setTimeout(type, typeSpeed);
-    }
-
-    type();
-
-    // Lucide icons initialization
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    if (window.lucide) {
+        window.lucide.createIcons();
     }
 });

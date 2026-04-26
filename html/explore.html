@@ -29,50 +29,8 @@
         </header>
 
         <!-- Listings -->
-        <div class="content-wrapper">
-            <div class="results-count">Showing 158 properties in Noida</div>
-            
-            <!-- List Item 1 -->
-            <a href="property-view.html" class="list-item">
-                <img src="../assets/house.png" alt="Property">
-                <div class="item-info">
-                    <div class="item-price">₹ 85.50 L</div>
-                    <h3>Modern 3BHK Apartment</h3>
-                    <p class="item-loc">Sector 62, Noida</p>
-                    <div class="item-stats">
-                        <span>3 BHK</span> • <span>1850 sqft</span>
-                    </div>
-                </div>
-                <button class="fav-btn"><i data-lucide="heart"></i></button>
-            </a>
-
-            <!-- List Item 2 -->
-            <a href="property-view.html" class="list-item">
-                <img src="../assets/villa.png" alt="Property">
-                <div class="item-info">
-                    <div class="item-price">₹ 2.40 Cr</div>
-                    <h3>Premium 4BHK Villa</h3>
-                    <p class="item-loc">Jaypee Greens, Noida</p>
-                    <div class="item-stats">
-                        <span>4 BHK</span> • <span>3200 sqft</span>
-                    </div>
-                </div>
-                <button class="fav-btn"><i data-lucide="heart"></i></button>
-            </a>
-
-            <!-- List Item 3 -->
-            <a href="property-view.html" class="list-item">
-                <img src="../assets/office.png" alt="Property">
-                <div class="item-info">
-                    <div class="item-price">₹ 1.25 Cr</div>
-                    <h3>Corporate Office Space</h3>
-                    <p class="item-loc">Knowledge Park, G. Noida</p>
-                    <div class="item-stats">
-                        <span>Office</span> • <span>1200 sqft</span>
-                    </div>
-                </div>
-                <button class="fav-btn"><i data-lucide="heart"></i></button>
-            </a>
+        <div class="content-wrapper" id="explore-results">
+            <!-- Dynamic content will be injected here -->
         </div>
 
         <!-- Bottom Navigation -->
@@ -96,6 +54,8 @@
         </nav>
     </div>
 
+    <script src="../js/data.js"></script>
+    <script src="../js/explore.js"></script>
     <script>
         lucide.createIcons();
     </script>
