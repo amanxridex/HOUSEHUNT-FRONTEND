@@ -21,7 +21,7 @@
 }
 
 body {
-    background-color: #121212; /* Dark background for desktop */
+    background-color: var(--bg-light); /* Changed from dark to prevent black bleed */
     color: var(--text-main);
     display: flex;
     justify-content: center;
@@ -32,11 +32,12 @@ body {
 /* Mobile Container */
 .app-container {
     width: 100%;
-    max-width: 430px; /* Standard mobile width */
+    max-width: 430px;
     background-color: var(--bg-light);
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
     position: relative;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -415,15 +416,15 @@ header {
 
 /* Bottom Nav */
 .bottom-nav {
-    position: relative; /* Changed from absolute to work with flex layout */
     background: var(--white);
     display: flex;
     justify-content: space-around;
-    padding: 15px 10px 25px; /* Extra padding for home indicator feel */
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+    padding: 12px 10px calc(12px + env(safe-area-inset-bottom, 12px));
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
     z-index: 100;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
+    flex-shrink: 0;
 }
 
 .nav-item {
