@@ -248,6 +248,85 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // --- CITY SWITCHER LOGIC ---
+    const popularCities = [
+        { name: "Delhi", icon: "🏙️" },
+        { name: "Mumbai", icon: "🏢" },
+        { name: "Noida", icon: "🏡" },
+        { name: "Bangalore", icon: "💻" },
+        { name: "Lucknow", icon: "🏛️" },
+        { name: "Pune", icon: "🎓" },
+        { name: "Gurgaon", icon: "🏢" },
+        { name: "Hyderabad", icon: "🕌" },
+        { name: "Kolkata", icon: "🎨" }
+    ];
+
+    const citySheet = document.getElementById('citySheet');
+    const cityOverlay = document.getElementById('cityOverlay');
+    const cityGrid = document.getElementById('popularCitiesGrid');
+
+    const toggleCitySheet = () => {
+        citySheet.classList.toggle('active');
+        cityOverlay.classList.toggle('active');
+    };
+
+    // Make Location Header Clickable
+    const locTrigger = document.getElementById('headerUserLocation');
+    if (locTrigger) {
+        locTrigger.style.cursor = 'pointer';
+        locTrigger.onclick = (e) => {
+            e.stopPropagation();
+            toggleCitySheet();
+        };
+    }
+
+    if (document.getElementById('closeCitySheet')) document.getElementById('closeCitySheet').onclick = toggleCitySheet;
+    if (cityOverlay) cityOverlay.onclick = toggleCitySheet;
+
+    // Populate Popular Cities
+    const renderCities = (filter = "") => {
+        if (!cityGrid) return;
+        cityGrid.innerHTML = "";
+        popularCities.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())).forEach(city => {
+            const div = document.createElement('div');
+            div.className = `city-option ${localStorage.getItem('userCity') === city.name ? 'active' : ''}`;
+            div.innerHTML = `
+                <div style="font-size: 2rem; margin-bottom: 5px;">${city.icon}</div>
+                <span>${city.name}</span>
+            `;
+            div.onclick = () => {
+                localStorage.setItem('userCity', city.name);
+                // Update header immediately
+                const locEl = document.getElementById('headerUserLocation');
+                if (locEl) {
+                    locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>${city.name}`;
+                    if (window.lucide) window.lucide.createIcons();
+                }
+                toggleCitySheet();
+                // Reload data for the new city
+                loadProperties();
+            };
+            cityGrid.appendChild(div);
+        });
+    };
+
+    renderCities();
+
+    // Search Logic
+    const citySearch = document.getElementById('citySearchInput');
+    if (citySearch) {
+        citySearch.oninput = (e) => renderCities(e.target.value);
+    }
+
+    // Auto-detect button in sheet
+    const autoDetectBtn = document.getElementById('autoDetectCity');
+    if (autoDetectBtn) {
+        autoDetectBtn.onclick = () => {
+            localStorage.removeItem('userCity'); // Force re-detection
+            location.reload(); 
+        };
+    }
+
     if (window.lucide) {
         window.lucide.createIcons();
     }
