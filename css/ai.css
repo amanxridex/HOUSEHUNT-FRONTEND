@@ -109,13 +109,18 @@ body, .app-container {
 }
 
 .chat-container {
-    padding: 20px;
-    height: calc(100vh - 260px);
+    padding: 20px 20px 180px;
+    height: calc(100vh - 120px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 25px;
     scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.chat-container::-webkit-scrollbar {
+    display: none;
 }
 
 .message {
@@ -173,19 +178,22 @@ body, .app-container {
     backdrop-filter: blur(10px);
 }
 
-.ai-message .text {
-    background: var(--ai-glass);
-    border: 1px solid var(--ai-border);
-    color: #e2e8f0;
-    border-top-left-radius: 4px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.ai-header h1 {
+    color: #1A1D1E !important;
+    font-size: 1.2rem;
+    font-weight: 800;
 }
 
-.user-message .text {
-    background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
-    color: white;
-    border-top-right-radius: 4px;
-    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.2);
+.online-status {
+    color: #666 !important;
+    font-size: 0.8rem;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .input-area {
