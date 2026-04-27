@@ -1,64 +1,67 @@
-const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
-const CATEGORY = 'Independent';
-
 document.addEventListener('DOMContentLoaded', () => {
+    const PROPERTIES = window.propertyData;
     const propertyList = document.getElementById('propertyList');
     const resultsCount = document.getElementById('resultsCount');
     const searchInput = document.getElementById('propertySearch');
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    
+    let currentMode = 'Buy'; // Capitalized to match data.js
 
-    let allProperties = [];
+    const filterAndRender = () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        // Filter by type (Independent House) AND mode (Buy/Rent) AND search
+        const filtered = PROPERTIES.filter(p => {
+            const isIndependent = p.type === 'Independent House';
+            const matchesMode = p.intent === currentMode;
+            const matchesSearch = p.location.toLowerCase().includes(searchTerm);
+            return isIndependent && matchesMode && matchesSearch;
+        });
 
-    const renderProperties = (props) => {
+        resultsCount.innerText = `${filtered.length} Independent Houses Found`;
+        renderBento(filtered);
+    };
+
+    const renderBento = (properties) => {
         propertyList.innerHTML = '';
-        resultsCount.innerText = `${props.length} Properties found`;
+        if (properties.length === 0) {
+            propertyList.innerHTML = '<p style="grid-column: span 2; text-align: center; padding: 40px; color: #666;">No properties found in this mode.</p>';
+            return;
+        }
 
-        props.forEach(prop => {
+        properties.forEach((p, index) => {
             const card = document.createElement('div');
-            card.className = 'category-card';
+            // Assign large/wide classes randomly or based on index for bento look
+            let sizeClass = '';
+            if (index % 5 === 0) sizeClass = 'large';
+            else if (index % 5 === 3) sizeClass = 'wide';
+            
+            card.className = `bento-card ${sizeClass}`;
             card.innerHTML = `
-                <img src="${prop.images ? prop.images[0] : '../assets/househuntlogo.png'}" alt="${prop.type}">
-                <div class="card-body">
-                    <div class="card-price">₹${prop.price}</div>
-                    <div class="card-title">${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</div>
-                    <div class="card-loc"><i data-lucide="map-pin" style="width:12px"></i> ${prop.location}</div>
+                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="bento-overlay">
+                    <div class="price">${p.price}</div>
+                    <div class="loc">${p.location}</div>
                 </div>
             `;
             card.onclick = () => {
-                window.location.href = `property-view.html?id=${prop.id}`;
+                localStorage.setItem('selectedProperty', JSON.stringify(p));
+                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
             };
             propertyList.appendChild(card);
         });
-        if (window.lucide) window.lucide.createIcons();
     };
 
-    const fetchProperties = async () => {
-        if (window.showSkeletons) window.showSkeletons('propertyList', 4);
-        
-        try {
-            const res = await fetch(`${BACKEND_URL}/api/properties`);
-            const data = await res.json();
-            
-            // Filter by category
-            allProperties = data.filter(p => 
-                p.type.toLowerCase().includes(CATEGORY.toLowerCase()) || 
-                p.category?.toLowerCase() === CATEGORY.toLowerCase()
-            );
-
-            renderProperties(allProperties);
-        } catch (error) {
-            console.error("Fetch failed", error);
-            resultsCount.innerText = "Error loading properties";
-        }
-    };
-
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = allProperties.filter(p => 
-            p.location.toLowerCase().includes(term) || 
-            p.type.toLowerCase().includes(term)
-        );
-        renderProperties(filtered);
+    // Mode Toggle Logic
+    modeBtns.forEach(btn => {
+        btn.onclick = () => {
+            modeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            filterAndRender();
+        };
     });
 
-    fetchProperties();
+    searchInput.oninput = filterAndRender;
+    filterAndRender();
 });
