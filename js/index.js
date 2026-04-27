@@ -55,11 +55,39 @@ document.addEventListener('DOMContentLoaded', async () => {
             picEl.classList.remove('skeleton');
         }
         if (locEl) {
-            locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>Noida`;
-            locEl.classList.remove('skeleton');
-            locEl.style.height = 'auto';
-            locEl.style.width = 'auto';
-            if (window.lucide) window.lucide.createIcons();
+            // Geolocation Logic
+            const updateLocationUI = (city) => {
+                locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>${city}`;
+                locEl.classList.remove('skeleton');
+                locEl.style.height = 'auto';
+                locEl.style.width = 'auto';
+                if (window.lucide) window.lucide.createIcons();
+            };
+
+            const cachedCity = localStorage.getItem('userCity');
+            if (cachedCity) updateLocationUI(cachedCity);
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                        const geoData = await geoRes.json();
+                        const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || "India";
+                        
+                        localStorage.setItem('userCity', city);
+                        updateLocationUI(city);
+                    } catch (err) {
+                        console.error("Geocoding failed", err);
+                        if (!cachedCity) updateLocationUI("India");
+                    }
+                }, (err) => {
+                    console.warn("Location denied/failed", err);
+                    if (!cachedCity) updateLocationUI("India");
+                });
+            } else {
+                if (!cachedCity) updateLocationUI("India");
+            }
         }
         const profileLink = document.getElementById('userProfile');
         if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
