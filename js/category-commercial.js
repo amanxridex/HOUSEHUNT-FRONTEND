@@ -92,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderData = () => {
         const filtered = PROPERTIES.filter(p => {
-            const isCommercial = p.type === 'Commercial Office' || p.type === 'Commercial';
+            const commercialTypes = ['Commercial Office', 'Shop', 'Showroom', 'Warehouse', 'Co-working'];
+            const isCommercial = commercialTypes.includes(p.type);
             const matchesMode = p.intent === currentMode;
             return isCommercial && matchesMode;
         });
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderCarousel = (props) => {
         mostViewedList.innerHTML = props.map(p => `
             <div class="carousel-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" alt="${p.type}">
+                <img src="${p.image}" alt="${p.type}" onerror="this.src='../assets/househuntlogo.png'">
                 <div class="carousel-overlay">
                     <div class="badge-row">
                         ${p.tag === 'Verified' ? '<span class="pro-badge metro">Near Metro</span>' : ''}

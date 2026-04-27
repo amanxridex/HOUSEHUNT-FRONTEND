@@ -121,18 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
         quickChips.innerHTML = (currentMode === 'Buy' ? QUICK_CHIPS_BUY : QUICK_CHIPS_RENT)
             .map(c => `<div class="chip">${c}</div>`).join('');
         
-        // Re-setup option clicks for dynamic content
         setupOptions('bhkFilter', 'bhk');
         setupOptions(currentMode === 'Buy' ? 'buyBudget' : 'rentBudget', 'budget');
         setupOptions('furnishFilter', 'furnish');
         setupOptions('statusFilter', 'status');
         
-        // Multi-select for legal/convenience
         const multiOptions = document.querySelectorAll('#legalFilter .option, #convFilter .option');
         multiOptions.forEach(opt => {
-            opt.onclick = () => {
-                opt.classList.toggle('selected');
-            };
+            opt.onclick = () => opt.classList.toggle('selected');
         });
 
         if (window.lucide) window.lucide.createIcons();
@@ -172,14 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const priceStr = p.price.replace(/[^\d.]/g, '');
                 const val = parseFloat(priceStr);
                 const isCr = p.price.includes('Cr');
-                const isK = p.price.includes(','); // Rent values like 20,000
-
                 if (currentMode === 'Buy') {
                     if (activeFilters.budget === 'Under 50L') matchesBudget = !isCr && val < 50;
                     else if (activeFilters.budget === '50L - 1Cr') matchesBudget = !isCr && val >= 50;
                     else if (activeFilters.budget === '1Cr+') matchesBudget = isCr;
                 } else {
-                    // Rent
                     const rentVal = parseInt(p.price.replace(/[^\d]/g, ''));
                     if (activeFilters.budget === 'Under 20k') matchesBudget = rentVal < 20000;
                     else if (activeFilters.budget === '20k - 50k') matchesBudget = rentVal >= 20000 && rentVal <= 50000;
@@ -196,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderStandard(filtered.slice(9));
     };
 
-    // UI Rendering helpers
     const renderNearest = (props) => {
         const nearestList = document.getElementById('nearestList');
         const nearestSection = document.getElementById('nearestSection');
@@ -213,10 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="font-size: 12px; color: #666;">${p.location}</div>
                 </div>
             `;
-            card.onclick = () => {
-                localStorage.setItem('selectedProperty', JSON.stringify(p));
-                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
-            };
+            card.onclick = () => viewDetails(p.id);
             nearestList.appendChild(card);
         });
     };
@@ -228,11 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             let size = i % 5 === 0 ? 'large' : (i % 5 === 3 ? 'wide' : '');
             card.className = `bento-card ${size}`;
-            card.innerHTML = `<img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'"><div class="bento-overlay"><div class="price">${p.price}</div><div class="loc">${p.location}</div></div>`;
-            card.onclick = () => {
-                localStorage.setItem('selectedProperty', JSON.stringify(p));
-                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
-            };
+            card.innerHTML = `
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="bento-overlay">
+                    <div class="price">${p.price}</div>
+                    <div class="loc">${p.location}</div>
+                </div>
+            `;
+            card.onclick = () => viewDetails(p.id);
             bentoGrid.appendChild(card);
         });
     };
@@ -246,17 +238,27 @@ document.addEventListener('DOMContentLoaded', () => {
         props.forEach(p => {
             const card = document.createElement('div');
             card.className = 'standard-card';
-            card.innerHTML = `<img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'"><div class="standard-info"><h3>${p.beds || ''} House</h3><div class="price">${p.price}</div><div class="loc">${p.location}</div></div><i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>`;
-            card.onclick = () => {
-                localStorage.setItem('selectedProperty', JSON.stringify(p));
-                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
-            };
+            card.innerHTML = `
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="standard-info">
+                    <h3>${p.beds || ''} House</h3>
+                    <div class="price">${p.price}</div>
+                    <div class="loc">${p.location}</div>
+                </div>
+                <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>
+            `;
+            card.onclick = () => viewDetails(p.id);
             standardList.appendChild(card);
         });
         if (window.lucide) window.lucide.createIcons();
     };
 
-    // Event Listeners
+    window.viewDetails = (id) => {
+        const p = PROPERTIES.find(prop => prop.id === id);
+        localStorage.setItem('selectedProperty', JSON.stringify(p));
+        window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+    };
+
     modeBtns.forEach(btn => {
         btn.onclick = () => {
             modeBtns.forEach(b => b.classList.remove('active'));
@@ -276,11 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
     openFilter.onclick = () => toggleSheet(true);
     closeFilter.onclick = () => toggleSheet(false);
     sheetOverlay.onclick = () => toggleSheet(false);
-
     applyFilters.onclick = () => { toggleSheet(false); filterAndRender(); };
     searchInput.oninput = filterAndRender;
 
-    // Initial Load
     renderFilterSheet();
     filterAndRender();
 });
