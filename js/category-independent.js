@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filterAndRender = () => {
         const searchTerm = searchInput.value.toLowerCase();
+        const nearestList = document.getElementById('nearestList');
         
         // Filter by type (Independent House) AND mode (Buy/Rent) AND search
         const filtered = PROPERTIES.filter(p => {
@@ -18,8 +19,40 @@ document.addEventListener('DOMContentLoaded', () => {
             return isIndependent && matchesMode && matchesSearch;
         });
 
+        // Dynamic Nearest (Top 3 of the current filtered list)
+        renderNearest(filtered.slice(0, 3));
+
         resultsCount.innerText = `${filtered.length} Independent Houses Found`;
-        renderBento(filtered);
+        renderBento(filtered.slice(3)); // Remaining go to bento
+    };
+
+    const renderNearest = (properties) => {
+        const nearestList = document.getElementById('nearestList');
+        const nearestSection = document.getElementById('nearestSection');
+        nearestList.innerHTML = '';
+        
+        if (properties.length === 0) {
+            nearestSection.style.display = 'none';
+            return;
+        }
+        nearestSection.style.display = 'block';
+
+        properties.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'nearest-card';
+            card.innerHTML = `
+                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="nearest-info">
+                    <div class="price">${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.location}</div>
+                </div>
+            `;
+            card.onclick = () => {
+                localStorage.setItem('selectedProperty', JSON.stringify(p));
+                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+            };
+            nearestList.appendChild(card);
+        });
     };
 
     const renderBento = (properties) => {
