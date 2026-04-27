@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HuntAI | Your Real Estate Assistant</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/ai.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/transitions.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="ai-header">
+            <button onclick="window.location.href='../index.html'" class="back-btn"><i data-lucide="arrow-left"></i></button>
+            <div class="ai-title">
+                <div class="ai-icon-small">
+                    <i data-lucide="sparkles"></i>
+                </div>
+                <div>
+                    <h1>HuntAI</h1>
+                    <span class="online-status">Powered by GPT-4</span>
+                </div>
+            </div>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="message ai-message">
+                <div class="avatar">🤖</div>
+                <div class="text">Hello! I'm HuntAI, your personal real estate assistant. Looking for a home, an investment, or just want to know the market trends in Noida? Ask me anything!</div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="suggestions">
+                <span class="suggestion">Best 3BHK in Noida</span>
+                <span class="suggestion">Plots under 50L</span>
+                <span class="suggestion">Rental trends</span>
+            </div>
+            <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="Ask HuntAI anything...">
+                <button id="sendBtn" class="send-btn">
+                    <i data-lucide="send"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="my-properties.html" class="nav-item">
+                <i data-lucide="layout-list"></i>
+                <span>My Properties</span>
+            </a>
+            <a href="ai.html" class="nav-item active">
+                <i data-lucide="sparkles"></i>
+                <span>HuntAI</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>More</span>
+            </a>
+        </nav>
+    </div>
+
+    <script type="module" src="../js/ai.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
