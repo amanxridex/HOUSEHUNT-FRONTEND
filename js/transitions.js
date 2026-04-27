@@ -24,6 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    // Global Security: Block Right Click, Selection, and Dragging
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => {
+        if (e.target.nodeName === 'IMG' || e.target.nodeName === 'VIDEO') {
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('keydown', e => {
+        if (
+            (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i' || e.key === 'j' || e.key === 'c' || e.key === 'p')) ||
+            (e.metaKey && (e.key === 's' || e.key === 'u' || e.key === 'i' || e.key === 'j' || e.key === 'c' || e.key === 'p')) ||
+            e.key === 'F12'
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
 });
 
 // Show Skeleton Logic (to be used by other scripts)
