@@ -258,6 +258,35 @@ body, .app-container {
     outline: none;
 }
 
+.send-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--ai-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+}
+
+.send-btn:hover {
+    background: var(--ai-secondary);
+    transform: scale(1.05);
+}
+
+.send-btn:active {
+    transform: scale(0.95);
+}
+
+.send-btn svg, .send-btn i {
+    width: 20px;
+    height: 20px;
+}
+
 .bottom-nav {
     background: white !important;
     border-top: 1px solid #eee !important;
