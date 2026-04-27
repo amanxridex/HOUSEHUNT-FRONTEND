@@ -42,8 +42,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (user) {
         const nameEl = document.getElementById('headerUserName');
         const picEl = document.getElementById('headerProfilePic');
-        if (nameEl) nameEl.innerText = user.name;
-        if (picEl && user.photo) picEl.src = user.photo;
+        const locEl = document.getElementById('headerUserLocation');
+
+        if (nameEl) {
+            nameEl.innerText = user.name;
+            nameEl.classList.remove('skeleton');
+            nameEl.style.height = 'auto';
+            nameEl.style.width = 'auto';
+        }
+        if (picEl && user.photo) {
+            picEl.src = user.photo;
+            picEl.classList.remove('skeleton');
+        }
+        if (locEl) {
+            locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>Noida`;
+            locEl.classList.remove('skeleton');
+            locEl.style.height = 'auto';
+            locEl.style.width = 'auto';
+            if (window.lucide) window.lucide.createIcons();
+        }
         const profileLink = document.getElementById('userProfile');
         if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
 
