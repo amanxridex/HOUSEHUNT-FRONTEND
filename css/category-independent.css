@@ -46,6 +46,41 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
+/* Filter Pills */
+.filter-pills {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 20px;
+    scrollbar-width: none;
+}
+
+.filter-pills::-webkit-scrollbar { display: none; }
+
+.pill {
+    padding: 8px 16px;
+    background: #f0f2f5;
+    color: var(--text-muted);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pill.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.pill i { width: 14px; }
+
 .content-wrapper {
     flex: 1;
     overflow-y: auto;

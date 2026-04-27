@@ -4,19 +4,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsCount = document.getElementById('resultsCount');
     const searchInput = document.getElementById('propertySearch');
     const modeBtns = document.querySelectorAll('.mode-btn');
+    const pills = document.querySelectorAll('.pill');
     
     let currentMode = 'Buy'; // Capitalized to match data.js
+    let currentFilter = 'all';
 
     const filterAndRender = () => {
         const searchTerm = searchInput.value.toLowerCase();
         const nearestList = document.getElementById('nearestList');
         
-        // Filter by type (Independent House) AND mode (Buy/Rent) AND search
+        // Filter logic
         const filtered = PROPERTIES.filter(p => {
             const isIndependent = p.type === 'Independent House';
             const matchesMode = p.intent === currentMode;
             const matchesSearch = p.location.toLowerCase().includes(searchTerm);
-            return isIndependent && matchesMode && matchesSearch;
+            
+            let matchesPill = true;
+            if (currentFilter !== 'all') {
+                if (currentFilter.includes('BHK')) {
+                    if (currentFilter === '4+ BHK') {
+                        const num = parseInt(p.beds);
+                        matchesPill = num >= 4;
+                    } else {
+                        matchesPill = p.beds === currentFilter;
+                    }
+                } else if (currentFilter === 'Under 1Cr') {
+                    matchesPill = p.price.includes('L') || (p.price.includes('Cr') && parseFloat(p.price.split(' ')[1]) < 1);
+                } else if (currentFilter === 'Verified') {
+                    matchesPill = p.tag === 'Verified';
+                }
+            }
+
+            return isIndependent && matchesMode && matchesSearch && matchesPill;
         });
 
         // Dynamic Nearest (Top 3 of the current filtered list)
@@ -128,6 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
             modeBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentMode = btn.dataset.mode;
+            filterAndRender();
+        };
+    });
+
+    // Pill Logic
+    pills.forEach(pill => {
+        pill.onclick = () => {
+            pills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentFilter = pill.dataset.filter;
             filterAndRender();
         };
     });
