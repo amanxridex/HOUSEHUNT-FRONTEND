@@ -35,7 +35,7 @@ body {
 /* Header */
 .profile-header {
     background: var(--white);
-    padding: 32px 20px 40px;
+    padding: calc(env(safe-area-inset-top, 25px) + 20px) 20px 20px;
     text-align: center;
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;

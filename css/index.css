@@ -768,7 +768,7 @@ header {
 }
 
 .sheet-header {
-    padding: 20px;
+    padding: calc(env(safe-area-inset-top, 25px) + 20px) 20px 20px;
     text-align: center;
     position: relative;
     border-bottom: 1px solid rgba(0,0,0,0.05);

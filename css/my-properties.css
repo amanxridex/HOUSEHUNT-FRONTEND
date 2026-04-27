@@ -39,15 +39,39 @@ body {
 }
 
 .header {
-    padding: 32px 20px 24px;
+    padding: calc(env(safe-area-inset-top, 25px) + 20px) 20px 20px;
     background: var(--white);
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn:active {
+    transform: scale(0.9);
+    background: #f0f0f0;
+}
+
 .header h1 { font-size: 24px; font-weight: 900; color: var(--text-main); }
-.header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.header p { font-size: 14px; color: var(--text-muted); margin-top: 8px; margin-left: 55px; }
 
 /* Tabs */
 .tabs {

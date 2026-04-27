@@ -50,7 +50,7 @@ body {
 
 /* Header */
 .header {
-    padding: 24px 20px 16px;
+    padding: calc(env(safe-area-inset-top, 25px) + 20px) 20px 20px;
     display: flex;
     flex-direction: column;
     gap: 16px;
