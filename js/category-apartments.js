@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="standard-info">
                     <h3>${p.beds} Apartment</h3>
                     <div class="price">${p.price}</div>
-                    <div style="font-size: 12px; color: #666;">${p.location}</div>
+                    <div class="loc">${p.location}</div>
                 </div>
                 <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>
             </div>
