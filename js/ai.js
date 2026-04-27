@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ` : text;
 
         msgDiv.innerHTML = `
-            <div class="avatar">${isUser ? '👤' : '🤖'}</div>
+            <div class="avatar">${isUser ? '👤' : '<img src="../assets/aipage.png" alt="AI">'}</div>
             <div class="text">${innerContent}</div>
         `;
         
