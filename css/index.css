@@ -468,15 +468,20 @@ header {
 
 /* Bottom Nav */
 .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
     background: var(--white);
     display: flex;
     justify-content: space-around;
     padding: 12px 10px calc(12px + env(safe-area-inset-bottom, 12px));
     box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
-    z-index: 100;
+    z-index: 1000;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
-    flex-shrink: 0;
 }
 
 .nav-item {
