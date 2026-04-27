@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const suggestions = document.querySelectorAll('.suggestion');
 
+    const GEMINI_API_KEY = 'AIzaSyCHK4oM3AmWEyNuZP9xo8JBvwjDFe0GeaE';
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
     const addMessage = (text, isUser = false) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
@@ -16,37 +19,49 @@ document.addEventListener('DOMContentLoaded', () => {
         chatContainer.appendChild(msgDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         
-        // Animate entrance
         gsap.from(msgDiv, {
             y: 20,
             opacity: 0,
             duration: 0.4,
             ease: "power2.out"
         });
+        return msgDiv;
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
         const text = userInput.value.trim();
         if (!text) return;
 
         addMessage(text, true);
         userInput.value = '';
 
-        // Mock AI Thinking
-        setTimeout(() => {
-            const response = getAIResponse(text);
-            addMessage(response);
-        }, 1000);
-    };
+        // Typing Indicator
+        const typingDiv = addMessage("Typing...", false);
+        const typingText = typingDiv.querySelector('.text');
 
-    const getAIResponse = (query) => {
-        const q = query.toLowerCase();
-        if (q.includes('noida')) return "Noida is currently seeing a massive boom in Sectors 150 and 144. Would you like me to show you some verified 3BHK listings there?";
-        if (q.includes('plot')) return "Plots are a great investment! In the Yamuna Expressway area, prices have appreciated by 20% this year. I can filter some upcoming plot deals for you.";
-        if (q.includes('rent')) return "For rentals, Indirapuram and Noida Sector 62 are the most popular for families. What is your budget range?";
-        if (q.includes('3bhk')) return "A 3BHK in a premium society usually starts from ₹85 Lakhs in Greater Noida West and goes up to ₹2.5 Cr in South Delhi. Which area should I focus on?";
-        
-        return "That's an interesting question! As your HouseHunt assistant, I'm here to help you find the perfect property. Could you tell me more about your preferred location and budget?";
+        try {
+            const response = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `You are HuntAI, a premium real estate assistant for HouseHunt India. 
+                            Your goal is to help users find properties (Apartments, Villas, Plots) in India (especially Noida, Delhi, Gurgaon).
+                            Be professional, helpful, and concise. 
+                            The user says: ${text}`
+                        }]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            const aiResponse = data.candidates[0].content.parts[0].text;
+            typingText.innerText = aiResponse;
+        } catch (e) {
+            console.error("AI Error", e);
+            typingText.innerText = "Sorry, I'm having trouble connecting right now. Please try again later!";
+        }
     };
 
     sendBtn.onclick = handleSend;
