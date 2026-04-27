@@ -245,18 +245,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         const response = await fetch(`${BACKEND_URL}/api/properties`);
-        allData = await response.json();
+        const liveData = await response.json();
         
-        // Initial Render
-        const initialFiltered = allData.filter(p => p.intent === currentIntent);
-        renderAllSections(initialFiltered);
+        if (liveData && liveData.length > 0) {
+            allData = liveData;
+        } else {
+            allData = window.propertyData;
+        }
+        
+        renderAllSections(allData.filter(p => p.intent === currentIntent));
     } catch (e) {
         console.error("Fetch error", e);
-        // Fallback to local data if available
-        if (window.propertyData) {
-            allData = window.propertyData;
-            renderAllSections(allData.filter(p => p.intent === currentIntent));
-        }
+        allData = window.propertyData || [];
+        renderAllSections(allData.filter(p => p.intent === currentIntent));
     }
 
     // Make categories clickable
