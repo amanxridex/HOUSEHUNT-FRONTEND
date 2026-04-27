@@ -66,13 +66,11 @@ body, .app-container {
 .ai-icon-small {
     width: 45px;
     height: 45px;
-    background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+    background: transparent;
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
-    animation: pulseIcon 2s infinite;
 }
 
 @keyframes pulseIcon {
@@ -82,17 +80,16 @@ body, .app-container {
 }
 
 .ai-title h1 {
-    font-size: 1.2rem;
-    font-weight: 900;
+    font-size: 1.1rem;
+    font-weight: 800;
     margin: 0;
-    background: linear-gradient(to right, #fff, #a5b4fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #1A1D1E !important;
+    -webkit-text-fill-color: initial !important;
 }
 
 .online-status {
-    font-size: 0.7rem;
-    color: #4ade80;
+    font-size: 0.75rem;
+    color: #4ade80 !important;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -159,8 +156,11 @@ body, .app-container {
 }
 
 .avatar {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: white;
     border: 1px solid #eee;
@@ -168,6 +168,7 @@ body, .app-container {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .message .text {
