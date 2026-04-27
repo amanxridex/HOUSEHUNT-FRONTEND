@@ -1,11 +1,12 @@
-const CACHE_NAME = 'househunt-v3';
+const CACHE_NAME = 'househunt-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/index.css',
   './js/index.js',
   './js/transitions.js',
-  './assets/househuntappicon.png'
+  './assets/househuntappicon.png',
+  './assets/huntai.mp4'
 ];
 
 // Install Service Worker
