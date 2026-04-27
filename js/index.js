@@ -234,8 +234,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const categoryItems = document.querySelectorAll('.category-item');
     categoryItems.forEach(item => {
         item.addEventListener('click', () => {
-            const type = item.querySelector('p').textContent;
-            window.location.href = `html/explore.html?type=${type}`;
+            const type = item.querySelector('p').textContent.toLowerCase();
+            let page = 'explore.html';
+            
+            if (type.includes('independent')) page = 'category-independent.html';
+            else if (type.includes('commercial')) page = 'category-commercial.html';
+            else if (type.includes('apartment')) page = 'category-apartments.html';
+            else if (type.includes('villa')) page = 'category-villas.html';
+            else if (type.includes('plot')) page = 'category-plots.html';
+            
+            window.location.href = `html/${page}`;
         });
     });
 

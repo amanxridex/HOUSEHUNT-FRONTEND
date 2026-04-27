@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Apartments | HouseHunt</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/category-apartments.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#0066ff">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/transitions.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="category-header">
+            <button onclick="history.back()" class="back-btn"><i data-lucide="arrow-left"></i></button>
+            <h1>Apartments</h1>
+            <div style="width: 40px;"></div>
+        </header>
+        <div class="search-section">
+            <div class="search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" id="propertySearch" placeholder="Search Apartments...">
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <div class="results-info"><span id="resultsCount">Loading...</span></div>
+            <div id="propertyList" class="property-grid"></div>
+        </div>
+    </div>
+    <script type="module" src="../js/category-apartments.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
