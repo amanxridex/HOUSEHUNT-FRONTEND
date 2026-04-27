@@ -132,6 +132,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    cursor: pointer;
 }
 
 .filter-pill-large span:first-child { font-size: 10px; color: var(--text-muted); }

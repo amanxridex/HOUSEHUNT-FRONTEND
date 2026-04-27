@@ -197,6 +197,13 @@ document.addEventListener('DOMContentLoaded', () => {
     sheetOverlay.onclick = () => toggleSheet(false);
     document.getElementById('applyFilters').onclick = () => toggleSheet(false);
 
+    // Pill click logic
+    const pills = ['budgetPill', 'typePill', 'areaPill'];
+    pills.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.onclick = () => toggleSheet(true);
+    });
+
     // Initial Render
     renderFilterSheet();
     renderData();
