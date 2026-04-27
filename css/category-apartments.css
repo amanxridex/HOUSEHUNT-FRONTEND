@@ -46,19 +46,20 @@
 }
 
 /* Most Viewed Carousel (Hotstar Style) */
+.carousel-section { padding-top: 5px; }
 .carousel-container {
     display: flex;
     gap: 12px;
     overflow-x: auto;
-    padding: 10px 20px;
+    padding: 5px 20px 15px; /* Tighter padding */
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
 }
 .carousel-container::-webkit-scrollbar { display: none; }
 
 .carousel-card {
-    min-width: 85%;
-    height: 200px;
+    min-width: 88%; /* Match Commercial */
+    height: 210px; /* Match Commercial */
     border-radius: 24px;
     position: relative;
     overflow: hidden;
