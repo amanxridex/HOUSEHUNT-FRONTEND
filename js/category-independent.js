@@ -1,5 +1,102 @@
+const PROPERTIES = window.propertyData;
+const filterContent = document.getElementById('filterContent');
+const quickChips = document.getElementById('quickChips');
+
+const RENT_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-section-title">💰 Budget & Rent</div>
+        <label class="filter-label">Monthly Rent</label>
+        <div class="filter-options grid" id="rentBudget">
+            <div class="option selected" data-value="all">All</div>
+            <div class="option" data-value="Under 20k">Under 20k</div>
+            <div class="option" data-value="20k - 50k">20k - 50k</div>
+            <div class="option" data-value="50k+">50k+</div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <div class="filter-section-title">🏡 Property Basics</div>
+        <label class="filter-label">BHK</label>
+        <div class="filter-options" id="bhkFilter">
+            <div class="option selected" data-value="all">All</div>
+            <div class="option" data-value="1 BHK">1 BHK</div>
+            <div class="option" data-value="2 BHK">2 BHK</div>
+            <div class="option" data-value="3 BHK">3 BHK</div>
+            <div class="option" data-value="4+ BHK">4+ BHK</div>
+        </div>
+        <label class="filter-label" style="margin-top: 15px;">Furnishing</label>
+        <div class="filter-options" id="furnishFilter">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Unfurnished">Unfurnished</div>
+            <div class="option" data-value="Semi">Semi</div>
+            <div class="option" data-value="Fully">Fully</div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <div class="filter-section-title">👥 Tenant & Convenience</div>
+        <label class="filter-label">Tenant Preference</label>
+        <div class="filter-options" id="tenantFilter">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Family">Family</div>
+            <div class="option" data-value="Bachelor">Bachelor</div>
+        </div>
+        <label class="filter-label" style="margin-top: 15px;">Convenience</label>
+        <div class="filter-options" id="convFilter">
+            <div class="option" data-value="Parking">Parking</div>
+            <div class="option" data-value="Power Backup">Power Backup</div>
+            <div class="option" data-value="Lift">Lift</div>
+        </div>
+    </div>
+`;
+
+const BUY_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-section-title">💰 Pricing & Deals</div>
+        <label class="filter-label">Price Range</label>
+        <div class="filter-options grid" id="buyBudget">
+            <div class="option selected" data-value="all">Any Price</div>
+            <div class="option" data-value="Under 50L">Under 50L</div>
+            <div class="option" data-value="50L - 1Cr">50L - 1Cr</div>
+            <div class="option" data-value="1Cr+">1Cr+</div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <div class="filter-section-title">🏡 Property Basics</div>
+        <label class="filter-label">BHK</label>
+        <div class="filter-options" id="bhkFilter">
+            <div class="option selected" data-value="all">All</div>
+            <div class="option" data-value="1 BHK">1 BHK</div>
+            <div class="option" data-value="2 BHK">2 BHK</div>
+            <div class="option" data-value="3 BHK">3 BHK</div>
+            <div class="option" data-value="4+ BHK">4+ BHK</div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <div class="filter-section-title">📑 Legal & Ownership</div>
+        <div class="filter-options" id="legalFilter">
+            <div class="option" data-value="RERA Approved">RERA Approved</div>
+            <div class="option" data-value="Loan Available">Loan Available</div>
+            <div class="option" data-value="Freehold">Freehold</div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <div class="filter-section-title">📈 Investment & Status</div>
+        <div class="filter-options grid" id="statusFilter">
+            <div class="option selected" data-value="all">Any Status</div>
+            <div class="option" data-value="Ready to move">Ready Move</div>
+            <div class="option" data-value="Under construction">Under Const.</div>
+        </div>
+    </div>
+`;
+
+const QUICK_CHIPS_RENT = ['Ready to move', 'Fully furnished', 'Near metro', 'No Brokerage'];
+const QUICK_CHIPS_BUY = ['Best deal 🔥', 'Newly launched', 'Premium', 'High ROI'];
+
 document.addEventListener('DOMContentLoaded', () => {
-    const PROPERTIES = window.propertyData;
     const propertyList = document.getElementById('propertyList');
     const resultsCount = document.getElementById('resultsCount');
     const searchInput = document.getElementById('propertySearch');
@@ -14,13 +111,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilters = {
         bhk: 'all',
         budget: 'all',
-        verified: 'all'
+        furnish: 'all',
+        legal: [],
+        status: 'all'
+    };
+
+    const renderFilterSheet = () => {
+        filterContent.innerHTML = currentMode === 'Buy' ? BUY_FILTERS : RENT_FILTERS;
+        quickChips.innerHTML = (currentMode === 'Buy' ? QUICK_CHIPS_BUY : QUICK_CHIPS_RENT)
+            .map(c => `<div class="chip">${c}</div>`).join('');
+        
+        // Re-setup option clicks for dynamic content
+        setupOptions('bhkFilter', 'bhk');
+        setupOptions(currentMode === 'Buy' ? 'buyBudget' : 'rentBudget', 'budget');
+        setupOptions('furnishFilter', 'furnish');
+        setupOptions('statusFilter', 'status');
+        
+        // Multi-select for legal/convenience
+        const multiOptions = document.querySelectorAll('#legalFilter .option, #convFilter .option');
+        multiOptions.forEach(opt => {
+            opt.onclick = () => {
+                opt.classList.toggle('selected');
+            };
+        });
+
+        if (window.lucide) window.lucide.createIcons();
+    };
+
+    const setupOptions = (containerId, filterKey) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const options = container.querySelectorAll('.option');
+        options.forEach(opt => {
+            opt.onclick = () => {
+                container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                activeFilters[filterKey] = opt.dataset.value;
+            };
+        });
     };
 
     const filterAndRender = () => {
         const searchTerm = searchInput.value.toLowerCase();
-        
-        // Filter logic
         const filtered = PROPERTIES.filter(p => {
             const isIndependent = p.type === 'Independent House';
             const matchesMode = p.intent === currentMode;
@@ -37,85 +169,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let matchesBudget = true;
             if (activeFilters.budget !== 'all') {
-                const priceValue = parseFloat(p.price.replace(/[^\d.]/g, ''));
+                const priceStr = p.price.replace(/[^\d.]/g, '');
+                const val = parseFloat(priceStr);
                 const isCr = p.price.includes('Cr');
-                if (activeFilters.budget === 'Under 1Cr') {
-                    matchesBudget = !isCr || priceValue < 1;
-                } else if (activeFilters.budget === '1Cr - 3Cr') {
-                    matchesBudget = isCr && priceValue >= 1 && priceValue <= 3;
-                } else if (activeFilters.budget === '3Cr+') {
-                    matchesBudget = isCr && priceValue > 3;
+                const isK = p.price.includes(','); // Rent values like 20,000
+
+                if (currentMode === 'Buy') {
+                    if (activeFilters.budget === 'Under 50L') matchesBudget = !isCr && val < 50;
+                    else if (activeFilters.budget === '50L - 1Cr') matchesBudget = !isCr && val >= 50;
+                    else if (activeFilters.budget === '1Cr+') matchesBudget = isCr;
+                } else {
+                    // Rent
+                    const rentVal = parseInt(p.price.replace(/[^\d]/g, ''));
+                    if (activeFilters.budget === 'Under 20k') matchesBudget = rentVal < 20000;
+                    else if (activeFilters.budget === '20k - 50k') matchesBudget = rentVal >= 20000 && rentVal <= 50000;
+                    else if (activeFilters.budget === '50k+') matchesBudget = rentVal > 50000;
                 }
             }
 
-            let matchesVerify = true;
-            if (activeFilters.verified === 'Verified') {
-                matchesVerify = p.tag === 'Verified';
-            }
-
-            return isIndependent && matchesMode && matchesSearch && matchesBHK && matchesBudget && matchesVerify;
+            return isIndependent && matchesMode && matchesSearch && matchesBHK && matchesBudget;
         });
 
-        // Dynamic Nearest (Top 3 of the current filtered list)
         renderNearest(filtered.slice(0, 3));
-
         resultsCount.innerText = `${filtered.length} Independent Houses Found`;
-        
-        // Bento Grid (Next 6 properties)
         renderBento(filtered.slice(3, 9));
-
-        // Standard List (Remaining properties)
         renderStandard(filtered.slice(9));
     };
 
-    const renderStandard = (properties) => {
-        const standardList = document.getElementById('standardList');
-        const standardSection = document.getElementById('standardSection');
-        standardList.innerHTML = '';
-
-        if (properties.length === 0) {
-            standardSection.style.display = 'none';
-            return;
-        }
-        standardSection.style.display = 'block';
-
-        properties.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'standard-card';
-            card.innerHTML = `
-                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
-                <div class="standard-info">
-                    <h3>${p.beds || ''} Independent House</h3>
-                    <div class="price">${p.price}</div>
-                    <div class="loc">${p.location}</div>
-                </div>
-                <i data-lucide="chevron-right" style="color: #ccc; width: 20px;"></i>
-            `;
-            card.onclick = () => {
-                localStorage.setItem('selectedProperty', JSON.stringify(p));
-                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
-            };
-            standardList.appendChild(card);
-        });
-        if (window.lucide) window.lucide.createIcons();
-    };
-
-    const renderNearest = (properties) => {
+    // UI Rendering helpers
+    const renderNearest = (props) => {
         const nearestList = document.getElementById('nearestList');
         const nearestSection = document.getElementById('nearestSection');
         nearestList.innerHTML = '';
-        
-        if (properties.length === 0) {
-            nearestSection.style.display = 'none';
-            return;
-        }
+        if (props.length === 0) { nearestSection.style.display = 'none'; return; }
         nearestSection.style.display = 'block';
-
-        properties.forEach(p => {
+        props.forEach(p => {
             const card = document.createElement('div');
             card.className = 'nearest-card';
             card.innerHTML = `
-                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
+                <img src="${p.image}" alt="${p.type}" onerror="this.src='../assets/househuntlogo.png'">
                 <div class="nearest-info">
                     <div class="price">${p.price}</div>
                     <div style="font-size: 12px; color: #666;">${p.location}</div>
@@ -129,47 +221,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderBento = (properties) => {
-        propertyList.innerHTML = '';
-        if (properties.length === 0) {
-            propertyList.innerHTML = '<p style="grid-column: span 2; text-align: center; padding: 40px; color: #666;">No properties found in this mode.</p>';
-            return;
-        }
-
-        properties.forEach((p, index) => {
+    const renderBento = (props) => {
+        const bentoGrid = document.getElementById('propertyList');
+        bentoGrid.innerHTML = '';
+        props.forEach((p, i) => {
             const card = document.createElement('div');
-            // Assign large/wide classes randomly or based on index for bento look
-            let sizeClass = '';
-            if (index % 5 === 0) sizeClass = 'large';
-            else if (index % 5 === 3) sizeClass = 'wide';
-            
-            card.className = `bento-card ${sizeClass}`;
-            card.innerHTML = `
-                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
-                <div class="bento-overlay">
-                    <div class="price">${p.price}</div>
-                    <div class="loc">${p.location}</div>
-                </div>
-            `;
+            let size = i % 5 === 0 ? 'large' : (i % 5 === 3 ? 'wide' : '');
+            card.className = `bento-card ${size}`;
+            card.innerHTML = `<img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'"><div class="bento-overlay"><div class="price">${p.price}</div><div class="loc">${p.location}</div></div>`;
             card.onclick = () => {
                 localStorage.setItem('selectedProperty', JSON.stringify(p));
                 window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
             };
-            propertyList.appendChild(card);
+            bentoGrid.appendChild(card);
         });
     };
 
-    // Mode Toggle Logic
+    const renderStandard = (props) => {
+        const standardList = document.getElementById('standardList');
+        const standardSection = document.getElementById('standardSection');
+        standardList.innerHTML = '';
+        if (props.length === 0) { standardSection.style.display = 'none'; return; }
+        standardSection.style.display = 'block';
+        props.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'standard-card';
+            card.innerHTML = `<img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'"><div class="standard-info"><h3>${p.beds || ''} House</h3><div class="price">${p.price}</div><div class="loc">${p.location}</div></div><i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>`;
+            card.onclick = () => {
+                localStorage.setItem('selectedProperty', JSON.stringify(p));
+                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+            };
+            standardList.appendChild(card);
+        });
+        if (window.lucide) window.lucide.createIcons();
+    };
+
+    // Event Listeners
     modeBtns.forEach(btn => {
         btn.onclick = () => {
             modeBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentMode = btn.dataset.mode;
+            renderFilterSheet();
             filterAndRender();
         };
     });
 
-    // Bottom Sheet Logic
     const toggleSheet = (show) => {
         filterSheet.classList.toggle('open', show);
         sheetOverlay.style.display = show ? 'block' : 'none';
@@ -180,27 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
     closeFilter.onclick = () => toggleSheet(false);
     sheetOverlay.onclick = () => toggleSheet(false);
 
-    // Option Selection
-    const setupOptions = (containerId, filterKey) => {
-        const options = document.querySelectorAll(`#${containerId} .option`);
-        options.forEach(opt => {
-            opt.onclick = () => {
-                document.querySelectorAll(`#${containerId} .option`).forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-                activeFilters[filterKey] = opt.dataset.value;
-            };
-        });
-    };
-
-    setupOptions('bhkOptions', 'bhk');
-    setupOptions('budgetOptions', 'budget');
-    setupOptions('verifyOptions', 'verified');
-
-    applyFilters.onclick = () => {
-        toggleSheet(false);
-        filterAndRender();
-    };
-
+    applyFilters.onclick = () => { toggleSheet(false); filterAndRender(); };
     searchInput.oninput = filterAndRender;
+
+    // Initial Load
+    renderFilterSheet();
     filterAndRender();
 });

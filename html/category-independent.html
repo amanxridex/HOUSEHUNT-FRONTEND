@@ -44,33 +44,11 @@
                 <button class="close-sheet" id="closeFilter"><i data-lucide="x"></i></button>
             </div>
             
-            <div class="filter-group">
-                <label>Bedrooms (BHK)</label>
-                <div class="filter-options" id="bhkOptions">
-                    <div class="option selected" data-value="all">All</div>
-                    <div class="option" data-value="1 BHK">1 BHK</div>
-                    <div class="option" data-value="2 BHK">2 BHK</div>
-                    <div class="option" data-value="3 BHK">3 BHK</div>
-                    <div class="option" data-value="4+ BHK">4+ BHK</div>
-                </div>
-            </div>
+            <!-- Quick Chips (Dynamic) -->
+            <div class="quick-chips" id="quickChips"></div>
 
-            <div class="filter-group">
-                <label>Budget Range</label>
-                <div class="filter-options" id="budgetOptions">
-                    <div class="option selected" data-value="all">Any Price</div>
-                    <div class="option" data-value="Under 1Cr">Under 1Cr</div>
-                    <div class="option" data-value="1Cr - 3Cr">1Cr - 3Cr</div>
-                    <div class="option" data-value="3Cr+">Above 3Cr</div>
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <label>Verification</label>
-                <div class="filter-options" id="verifyOptions">
-                    <div class="option selected" data-value="all">All</div>
-                    <div class="option" data-value="Verified">Verified Only</div>
-                </div>
+            <div id="filterContent">
+                <!-- Dynamic mode-specific filters will be injected here -->
             </div>
 
             <button class="apply-btn" id="applyFilters">Apply Filters</button>
