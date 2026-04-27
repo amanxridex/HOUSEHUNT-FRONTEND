@@ -36,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return msgDiv;
     };
 
+    // Personalized Welcome Message
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const firstName = user.name ? user.name.split(' ')[0] : 'there';
+    setTimeout(() => {
+        addMessage(`Hi ${firstName}, how are you doing today? How may I help you find your dream home?`);
+    }, 500);
+
     const handleSend = async () => {
         const text = userInput.value.trim();
         if (!text) return;
@@ -65,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             const aiResponse = data.candidates[0].content.parts[0].text;
-            typingText.innerText = aiResponse;
+            typingTextContainer.innerText = aiResponse;
         } catch (e) {
             console.error("AI Error", e);
-            typingText.innerText = "Sorry, I'm having trouble connecting right now. Please try again later!";
+            typingTextContainer.innerText = "Sorry, I'm having trouble connecting right now. Please try again later!";
         }
     };
 
