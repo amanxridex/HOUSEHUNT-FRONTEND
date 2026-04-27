@@ -11,7 +11,12 @@
     <div class="app-container">
         <!-- Header -->
         <header class="header">
-            <h1>Messages</h1>
+            <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <button onclick="window.location.href='../index.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <i data-lucide="arrow-left" style="width: 20px; height: 20px; color: #111;"></i>
+                </button>
+                <h1 style="margin: 0; font-size: 24px; font-weight: 900;">Messages</h1>
+            </div>
             <div class="search-bar">
                 <i data-lucide="search"></i>
                 <input type="text" placeholder="Search chats...">
