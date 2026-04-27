@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const suggestions = document.querySelectorAll('.suggestion');
 
-    const GEMINI_API_KEY = 'AIzaSyCHK4oM3AmWEyNuZP9xo8JBvwjDFe0GeaE';
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
 
     const addMessage = (text, isUser = false, isTyping = false) => {
         const msgDiv = document.createElement('div');
@@ -55,22 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const typingTextContainer = typingDiv.querySelector('.text');
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent`, {
+            const response = await fetch(`${BACKEND_URL}/api/ai/chat`, {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': GEMINI_API_KEY 
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `You are HuntAI, a premium real estate assistant for HouseHunt India. 
-                            Your goal is to help users find properties (Apartments, Villas, Plots) in India (especially Noida, Delhi, Gurgaon).
-                            Be professional, helpful, and concise. 
-                            The user says: ${text}`
-                        }]
-                    }]
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
             });
 
             const data = await response.json();
@@ -83,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (e) {
             console.error("AI Error", e);
-            typingTextContainer.innerText = "Sorry, I'm having trouble connecting to Gemini right now. Please try again later!";
+            typingTextContainer.innerText = "Sorry, I'm having trouble connecting to HuntAI right now. Please try again later!";
         }
     };
 
