@@ -14,18 +14,30 @@ const RENT_FILTERS = `
         </div>
     </div>
     <div class="filter-group">
-        <div class="filter-title">🏢 Basics & Furnishing</div>
+        <div class="filter-title">🏡 Apartment Basics</div>
         <div class="option-grid">
-            <div class="option" data-value="Unfurnished">Unfurnished</div>
-            <div class="option" data-value="Semi">Semi</div>
-            <div class="option" data-value="Fully">Fully</div>
+            <div class="option" data-value="1 BHK">1 BHK</div>
+            <div class="option" data-value="2 BHK">2 BHK</div>
+            <div class="option" data-value="3 BHK">3 BHK</div>
+            <div class="option" data-value="4+ BHK">4+ BHK</div>
         </div>
     </div>
     <div class="filter-group">
-        <div class="filter-title">👥 Tenant Preferences</div>
+        <div class="filter-title">🏢 Society & Amenities</div>
         <div class="option-grid">
-            <div class="option" data-value="Family">Family</div>
-            <div class="option" data-value="Bachelor">Bachelor</div>
+            <div class="option" data-value="Gated Society">Gated Society</div>
+            <div class="option" data-value="Lift">Lift / Elevator</div>
+            <div class="option" data-value="Power Backup">Power Backup</div>
+            <div class="option" data-value="Gym">Gym / Pool</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">🛋️ Furnishing & Tenants</div>
+        <div class="option-grid">
+            <div class="option" data-value="Fully Furnished">Fully</div>
+            <div class="option" data-value="Semi">Semi</div>
+            <div class="option" data-value="Unfurnished">Unfurnished</div>
+            <div class="option" data-value="Family">Family Only</div>
         </div>
     </div>
 `;
@@ -46,6 +58,15 @@ const BUY_FILTERS = `
             <div class="option" data-value="RERA">RERA Approved</div>
             <div class="option" data-value="Loan">Loan Available</div>
             <div class="option" data-value="Ready">Ready to Move</div>
+            <div class="option" data-value="Under Construction">Under Const.</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">📐 Size & Features</div>
+        <div class="option-grid">
+            <div class="option" data-value="Park Facing">Park Facing</div>
+            <div class="option" data-value="Corner Unit">Corner Unit</div>
+            <div class="option" data-value="Premium">Premium Society</div>
         </div>
     </div>
 `;
@@ -58,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const renderData = () => {
         const filtered = PROPERTIES.filter(p => p.type === 'Apartment' && p.intent === currentMode);
-        
         renderStack(filtered.slice(0, 5));
         renderList(filtered.slice(5));
     };
@@ -74,34 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
         
-        // Auto-switching logic
-        let cards = document.querySelectorAll('.stacked-card');
-        if (cards.length > 1) {
-            setInterval(() => {
-                let first = stackContainer.firstElementChild;
-                gsap.to(first, {
-                    x: 400, opacity: 0, rotation: 20, duration: 0.6,
-                    onComplete: () => {
-                        stackContainer.appendChild(first);
-                        gsap.set(first, { x: 0, rotation: 0 });
-                        updateStackPositions();
-                    }
-                });
-            }, 3000);
-        }
-    };
-
-    const updateStackPositions = () => {
-        let cards = document.querySelectorAll('.stacked-card');
-        cards.forEach((c, i) => {
-            gsap.to(c, {
-                zIndex: 10 - i,
-                y: i * 10,
-                scale: 1 - i * 0.05,
-                opacity: 1 - i * 0.2,
-                duration: 0.4
-            });
-        });
+        // Simple manual switcher if needed
     };
 
     const renderList = (props) => {

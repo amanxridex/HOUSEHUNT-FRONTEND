@@ -19,6 +19,15 @@ const RENT_FILTERS = `
             <div class="option" data-value="Private Garden">Private Garden</div>
             <div class="option" data-value="Private Pool">Private Pool</div>
             <div class="option" data-value="Terrace">Terrace</div>
+            <div class="option" data-value="Smart Home">Smart Home</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">🚗 Parking & Layout</div>
+        <div class="option-grid">
+            <div class="option" data-value="2+ Parking">2+ Parking</div>
+            <div class="option" data-value="3+ Floors">3+ Floors</div>
+            <div class="option" data-value="Basement">Basement</div>
         </div>
     </div>
 `;
@@ -34,11 +43,20 @@ const BUY_FILTERS = `
         </div>
     </div>
     <div class="filter-group">
+        <div class="filter-title">📑 Legal & Ownership</div>
+        <div class="option-grid">
+            <div class="option" data-value="Freehold">Freehold</div>
+            <div class="option" data-value="RERA">RERA Approved</div>
+            <div class="option" data-value="Loan">Loan Available</div>
+        </div>
+    </div>
+    <div class="filter-group">
         <div class="filter-title">🌿 Premium Features</div>
         <div class="option-grid">
             <div class="option" data-value="Pool">Private Pool</div>
             <div class="option" data-value="Garden">Garden</div>
             <div class="option" data-value="Smart Home">Smart Home</div>
+            <div class="option" data-value="High End">High-End Interior</div>
         </div>
     </div>
 `;
