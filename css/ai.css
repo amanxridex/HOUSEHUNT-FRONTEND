@@ -6,10 +6,11 @@
     --ai-border: rgba(255, 255, 255, 0.1);
 }
 
-body {
-    background: var(--ai-bg);
+body, .app-container {
+    background: var(--ai-bg) !important;
     color: white;
     overflow: hidden;
+    min-height: 100vh;
 }
 
 /* Addictive Background Orb */
@@ -235,18 +236,26 @@ body {
     outline: none;
 }
 
-.send-btn {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
-    color: white;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+.bottom-nav {
+    background: rgba(10, 11, 16, 0.9) !important;
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--ai-border) !important;
+}
+
+.nav-item {
+    color: #94a3b8 !important;
+}
+
+.nav-item.active {
+    color: white !important;
+}
+
+.nav-item.active span {
+    color: white !important;
+}
+
+.nav-item span {
+    color: #94a3b8 !important;
 }
 
 .typing-indicator {
