@@ -121,8 +121,8 @@ body, .app-container {
 }
 
 .chat-container {
-    padding: 20px 20px 180px;
-    height: calc(100vh - 120px - env(safe-area-inset-top, 0px));
+    padding: 20px 20px 240px;
+    height: calc(100vh - env(safe-area-inset-top, 0px));
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -188,11 +188,17 @@ body, .app-container {
 
 .message .text {
     padding: 14px 18px;
-    border-radius: 24px;
+    border-radius: 22px;
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.5;
     backdrop-filter: blur(10px);
 }
+
+.message .text p { margin-bottom: 10px; }
+.message .text p:last-child { margin-bottom: 0; }
+.message .text ul, .message .text ol { margin-left: 15px; margin-bottom: 10px; }
+.message .text li { margin-bottom: 5px; }
+.message .text strong { font-weight: 800; }
 
 .ai-header h1 {
     color: #1A1D1E !important;
@@ -214,12 +220,15 @@ body, .app-container {
 
 .input-area {
     position: fixed;
-    bottom: 85px;
+    bottom: calc(75px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
     max-width: 430px;
     background: white;
-    padding: 20px;
+    padding: 15px 20px;
     border-top: 1px solid #eee;
+    z-index: 101;
 }
 
 .suggestions {

@@ -64,13 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                 const aiResponse = data.candidates[0].content.parts[0].text;
-                typingTextContainer.innerText = aiResponse;
+                typingTextContainer.innerHTML = marked.parse(aiResponse);
             } else {
                 throw new Error("Invalid API Response");
             }
         } catch (e) {
             console.error("AI Error", e);
-            typingTextContainer.innerText = "Sorry, I'm having trouble connecting to HuntAI right now. Please try again later!";
+            typingTextContainer.innerHTML = "Sorry, I'm having trouble connecting to HuntAI right now. Please try again later!";
         }
     };
 
