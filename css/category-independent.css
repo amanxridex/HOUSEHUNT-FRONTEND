@@ -46,40 +46,124 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* Filter Pills */
-.filter-pills {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding: 10px 20px;
-    scrollbar-width: none;
-}
-
-.filter-pills::-webkit-scrollbar { display: none; }
-
-.pill {
-    padding: 8px 16px;
-    background: #f0f2f5;
-    color: var(--text-muted);
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
+/* Filter Button & Bottom Sheet */
+.filter-btn {
+    width: 48px;
+    height: 48px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(45, 104, 255, 0.2);
 }
 
-.pill.active {
+.bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bottom-sheet {
+    position: fixed;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--white);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 30px 20px calc(30px + env(safe-area-inset-bottom, 20px));
+    z-index: 1001;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-sheet.open {
+    bottom: 0;
+}
+
+.bottom-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.bottom-sheet-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.close-sheet {
+    background: #f5f5f5;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-group {
+    margin-bottom: 25px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.option {
+    padding: 10px 18px;
+    background: #f7f8fa;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option.selected {
     background: var(--primary-light);
-    color: var(--primary);
     border-color: var(--primary);
+    color: var(--primary);
 }
 
-.pill i { width: 14px; }
+.apply-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 800;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(45, 104, 255, 0.3);
+}
 
 .content-wrapper {
     flex: 1;

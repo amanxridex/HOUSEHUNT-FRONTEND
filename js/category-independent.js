@@ -4,14 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsCount = document.getElementById('resultsCount');
     const searchInput = document.getElementById('propertySearch');
     const modeBtns = document.querySelectorAll('.mode-btn');
-    const pills = document.querySelectorAll('.pill');
+    const openFilter = document.getElementById('openFilter');
+    const closeFilter = document.getElementById('closeFilter');
+    const filterSheet = document.getElementById('filterSheet');
+    const sheetOverlay = document.getElementById('sheetOverlay');
+    const applyFilters = document.getElementById('applyFilters');
     
-    let currentMode = 'Buy'; // Capitalized to match data.js
-    let currentFilter = 'all';
+    let currentMode = 'Buy'; 
+    let activeFilters = {
+        bhk: 'all',
+        budget: 'all',
+        verified: 'all'
+    };
 
     const filterAndRender = () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const nearestList = document.getElementById('nearestList');
         
         // Filter logic
         const filtered = PROPERTIES.filter(p => {
@@ -19,23 +26,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const matchesMode = p.intent === currentMode;
             const matchesSearch = p.location.toLowerCase().includes(searchTerm);
             
-            let matchesPill = true;
-            if (currentFilter !== 'all') {
-                if (currentFilter.includes('BHK')) {
-                    if (currentFilter === '4+ BHK') {
-                        const num = parseInt(p.beds);
-                        matchesPill = num >= 4;
-                    } else {
-                        matchesPill = p.beds === currentFilter;
-                    }
-                } else if (currentFilter === 'Under 1Cr') {
-                    matchesPill = p.price.includes('L') || (p.price.includes('Cr') && parseFloat(p.price.split(' ')[1]) < 1);
-                } else if (currentFilter === 'Verified') {
-                    matchesPill = p.tag === 'Verified';
+            let matchesBHK = true;
+            if (activeFilters.bhk !== 'all') {
+                if (activeFilters.bhk === '4+ BHK') {
+                    matchesBHK = parseInt(p.beds) >= 4;
+                } else {
+                    matchesBHK = p.beds === activeFilters.bhk;
                 }
             }
 
-            return isIndependent && matchesMode && matchesSearch && matchesPill;
+            let matchesBudget = true;
+            if (activeFilters.budget !== 'all') {
+                const priceValue = parseFloat(p.price.replace(/[^\d.]/g, ''));
+                const isCr = p.price.includes('Cr');
+                if (activeFilters.budget === 'Under 1Cr') {
+                    matchesBudget = !isCr || priceValue < 1;
+                } else if (activeFilters.budget === '1Cr - 3Cr') {
+                    matchesBudget = isCr && priceValue >= 1 && priceValue <= 3;
+                } else if (activeFilters.budget === '3Cr+') {
+                    matchesBudget = isCr && priceValue > 3;
+                }
+            }
+
+            let matchesVerify = true;
+            if (activeFilters.verified === 'Verified') {
+                matchesVerify = p.tag === 'Verified';
+            }
+
+            return isIndependent && matchesMode && matchesSearch && matchesBHK && matchesBudget && matchesVerify;
         });
 
         // Dynamic Nearest (Top 3 of the current filtered list)
@@ -151,15 +169,37 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // Pill Logic
-    pills.forEach(pill => {
-        pill.onclick = () => {
-            pills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            currentFilter = pill.dataset.filter;
-            filterAndRender();
-        };
-    });
+    // Bottom Sheet Logic
+    const toggleSheet = (show) => {
+        filterSheet.classList.toggle('open', show);
+        sheetOverlay.style.display = show ? 'block' : 'none';
+        setTimeout(() => sheetOverlay.style.opacity = show ? '1' : '0', 10);
+    };
+
+    openFilter.onclick = () => toggleSheet(true);
+    closeFilter.onclick = () => toggleSheet(false);
+    sheetOverlay.onclick = () => toggleSheet(false);
+
+    // Option Selection
+    const setupOptions = (containerId, filterKey) => {
+        const options = document.querySelectorAll(`#${containerId} .option`);
+        options.forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll(`#${containerId} .option`).forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                activeFilters[filterKey] = opt.dataset.value;
+            };
+        });
+    };
+
+    setupOptions('bhkOptions', 'bhk');
+    setupOptions('budgetOptions', 'budget');
+    setupOptions('verifyOptions', 'verified');
+
+    applyFilters.onclick = () => {
+        toggleSheet(false);
+        filterAndRender();
+    };
 
     searchInput.oninput = filterAndRender;
     filterAndRender();
