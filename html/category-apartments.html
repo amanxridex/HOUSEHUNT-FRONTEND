@@ -7,31 +7,84 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/category-apartments.css">
     <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#ffffff">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="../js/transitions.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
     <div class="app-container">
         <header class="category-header">
             <button onclick="history.back()" class="back-btn"><i data-lucide="arrow-left"></i></button>
             <h1>Apartments</h1>
-            <div style="width: 40px;"></div>
+            <button class="back-btn" id="openMoreFilters"><i data-lucide="sliders-horizontal"></i></button>
         </header>
-        <div class="search-section">
-            <div class="search-bar">
-                <i data-lucide="search"></i>
-                <input type="text" id="propertySearch" placeholder="Search Apartments...">
+
+        <div class="mode-toggle">
+            <button class="mode-btn active" data-mode="Buy">Buy</button>
+            <button class="mode-btn" data-mode="Rent">Rent</button>
+        </div>
+
+        <div class="top-filters">
+            <div class="filter-pill" id="budgetPill">
+                <span>Budget</span>
+                <span class="value">Any Price</span>
+            </div>
+            <div class="filter-pill" id="bhkPill">
+                <span>BHK</span>
+                <span class="value">All BHK</span>
+            </div>
+            <div class="filter-pill" id="areaPill">
+                <span>Area</span>
+                <span class="value">Any Size</span>
             </div>
         </div>
-        <div class="content-wrapper">
-            <div class="results-info"><span id="resultsCount">Loading...</span></div>
-            <div id="propertyList" class="property-grid"></div>
+
+        <div class="quick-chips" id="quickChips"></div>
+
+        <div class="content-wrapper" style="overflow-y: auto; flex: 1;">
+            <div class="stack-section">
+                <div class="section-title" style="margin-left: 20px; font-size: 18px; font-weight: 800; margin-bottom: 15px;">Featured Apartments</div>
+                <div class="stack-container" id="stackContainer">
+                    <!-- Dynamic stacked cards injected here -->
+                </div>
+            </div>
+
+            <div class="list-section">
+                <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 15px;">All Apartments</div>
+                <div id="standardList"></div>
+            </div>
         </div>
+
+        <!-- Filter Sheet -->
+        <div class="sheet-overlay" id="sheetOverlay"></div>
+        <div class="bottom-sheet" id="filterSheet">
+            <div class="bottom-sheet-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="font-size: 20px; font-weight: 900;">Filters</h2>
+                <button class="back-btn" id="closeFilter" style="width: 36px; height: 36px;"><i data-lucide="x"></i></button>
+            </div>
+            <div id="filterContent"></div>
+            <button class="apply-btn" id="applyFilters">Apply Filters</button>
+        </div>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="ai.html" class="nav-item">
+                <div class="ai-video-container" style="width: 23px; height: 23px; display: flex; align-items: center; justify-content: center;">
+                    <video src="../assets/huntai.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+                </div>
+                <span>HuntAI</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
     </div>
+
+    <script src="../js/data.js"></script>
     <script type="module" src="../js/category-apartments.js"></script>
     <script>lucide.createIcons();</script>
 </body>

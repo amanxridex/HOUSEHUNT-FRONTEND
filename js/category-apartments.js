@@ -1,50 +1,164 @@
-const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
-const CATEGORY = 'Apartment';
+const PROPERTIES = window.propertyData;
+const filterContent = document.getElementById('filterContent');
+const quickChips = document.getElementById('quickChips');
+const stackContainer = document.getElementById('stackContainer');
+
+const RENT_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-title">💰 Budget</div>
+        <div class="option-grid">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Under 20k">Under 20k</div>
+            <div class="option" data-value="20k-50k">20k-50k</div>
+            <div class="option" data-value="50k+">50k+</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">🏢 Basics & Furnishing</div>
+        <div class="option-grid">
+            <div class="option" data-value="Unfurnished">Unfurnished</div>
+            <div class="option" data-value="Semi">Semi</div>
+            <div class="option" data-value="Fully">Fully</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">👥 Tenant Preferences</div>
+        <div class="option-grid">
+            <div class="option" data-value="Family">Family</div>
+            <div class="option" data-value="Bachelor">Bachelor</div>
+        </div>
+    </div>
+`;
+
+const BUY_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-title">💰 Price Range</div>
+        <div class="option-grid">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Under 50L">Under 50L</div>
+            <div class="option" data-value="50L-1Cr">50L-1Cr</div>
+            <div class="option" data-value="1Cr+">1Cr+</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">📑 Legal & Status</div>
+        <div class="option-grid">
+            <div class="option" data-value="RERA">RERA Approved</div>
+            <div class="option" data-value="Loan">Loan Available</div>
+            <div class="option" data-value="Ready">Ready to Move</div>
+        </div>
+    </div>
+`;
+
+const CHIPS_RENT = ['Fully furnished', 'Near metro', 'Ready to move', 'Gated society'];
+const CHIPS_BUY = ['Best deal 🔥', 'Newly constructed', 'Premium society', 'Park facing'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const propertyList = document.getElementById('propertyList');
-    const resultsCount = document.getElementById('resultsCount');
-    const searchInput = document.getElementById('propertySearch');
-
-    let allProperties = [];
-
-    const renderProperties = (props) => {
-        propertyList.innerHTML = '';
-        resultsCount.innerText = `${props.length} Apartments found`;
-
-        props.forEach(prop => {
-            const card = document.createElement('div');
-            card.className = 'category-card';
-            card.innerHTML = `
-                <img src="${prop.images ? prop.images[0] : '../assets/househuntlogo.png'}" alt="${prop.type}">
-                <div class="card-body">
-                    <div class="card-price">₹${prop.price}</div>
-                    <div class="card-title">${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</div>
-                    <div class="card-loc"><i data-lucide="map-pin" style="width:12px"></i> ${prop.location}</div>
-                </div>
-            `;
-            card.onclick = () => window.location.href = `property-view.html?id=${prop.id}`;
-            propertyList.appendChild(card);
-        });
-        if (window.lucide) window.lucide.createIcons();
+    let currentMode = 'Buy';
+    
+    const renderData = () => {
+        const filtered = PROPERTIES.filter(p => p.type === 'Apartment' && p.intent === currentMode);
+        
+        renderStack(filtered.slice(0, 5));
+        renderList(filtered.slice(5));
     };
 
-    const fetchProperties = async () => {
-        if (window.showSkeletons) window.showSkeletons('propertyList', 4);
-        try {
-            const res = await fetch(`${BACKEND_URL}/api/properties`);
-            const data = await res.json();
-            allProperties = data.filter(p => p.type.toLowerCase().includes('apartment') || p.category?.toLowerCase() === 'apartment');
-            renderProperties(allProperties);
-        } catch (error) {
-            resultsCount.innerText = "Error loading apartments";
+    const renderStack = (props) => {
+        stackContainer.innerHTML = props.map((p, i) => `
+            <div class="stacked-card" style="z-index: ${10 - i}; transform: translateY(${i * 10}px) scale(${1 - i * 0.05}); opacity: ${1 - i * 0.2};" onclick="viewDetails(${p.id})">
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="info">
+                    <div style="font-size: 18px; font-weight: 900;">${p.price}</div>
+                    <div style="font-size: 12px;">${p.location}</div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Auto-switching logic
+        let cards = document.querySelectorAll('.stacked-card');
+        if (cards.length > 1) {
+            setInterval(() => {
+                let first = stackContainer.firstElementChild;
+                gsap.to(first, {
+                    x: 400, opacity: 0, rotation: 20, duration: 0.6,
+                    onComplete: () => {
+                        stackContainer.appendChild(first);
+                        gsap.set(first, { x: 0, rotation: 0 });
+                        updateStackPositions();
+                    }
+                });
+            }, 3000);
         }
     };
 
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        renderProperties(allProperties.filter(p => p.location.toLowerCase().includes(term) || p.type.toLowerCase().includes(term)));
+    const updateStackPositions = () => {
+        let cards = document.querySelectorAll('.stacked-card');
+        cards.forEach((c, i) => {
+            gsap.to(c, {
+                zIndex: 10 - i,
+                y: i * 10,
+                scale: 1 - i * 0.05,
+                opacity: 1 - i * 0.2,
+                duration: 0.4
+            });
+        });
+    };
+
+    const renderList = (props) => {
+        const list = document.getElementById('standardList');
+        list.innerHTML = props.map(p => `
+            <div class="standard-card" onclick="viewDetails(${p.id})">
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="standard-info">
+                    <h3>${p.beds} Apartment</h3>
+                    <div class="price">${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.location}</div>
+                </div>
+                <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>
+            </div>
+        `).join('');
+        if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.viewDetails = (id) => {
+        const p = PROPERTIES.find(prop => prop.id === id);
+        localStorage.setItem('selectedProperty', JSON.stringify(p));
+        window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+    };
+
+    const renderFilters = () => {
+        filterContent.innerHTML = currentMode === 'Buy' ? BUY_FILTERS : RENT_FILTERS;
+        quickChips.innerHTML = (currentMode === 'Buy' ? CHIPS_BUY : CHIPS_RENT).map(c => `<div class="chip">${c}</div>`).join('');
+        
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.onclick = () => {
+                opt.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            };
+        });
+    };
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            renderFilters();
+            renderData();
+        };
     });
 
-    fetchProperties();
+    const toggleSheet = (show) => {
+        document.getElementById('filterSheet').classList.toggle('open', show);
+        document.getElementById('sheetOverlay').style.display = show ? 'block' : 'none';
+        setTimeout(() => document.getElementById('sheetOverlay').style.opacity = show ? '1' : '0', 10);
+    };
+
+    document.getElementById('openMoreFilters').onclick = () => toggleSheet(true);
+    document.getElementById('closeFilter').onclick = () => toggleSheet(false);
+    document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
+    document.getElementById('applyFilters').onclick = () => toggleSheet(false);
+
+    renderFilters();
+    renderData();
 });

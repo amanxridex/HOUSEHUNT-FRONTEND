@@ -1,50 +1,126 @@
-const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
-const CATEGORY = 'Villa';
+const PROPERTIES = window.propertyData;
+const filterContent = document.getElementById('filterContent');
+const quickChips = document.getElementById('quickChips');
+const villaSlider = document.getElementById('villaSlider');
+
+const RENT_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-title">💰 Budget</div>
+        <div class="option-grid">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Under 1L">Under 1L</div>
+            <div class="option" data-value="1L-3L">1L-3L</div>
+            <div class="option" data-value="3L+">3L+</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">🌿 Outdoor & Luxury</div>
+        <div class="option-grid">
+            <div class="option" data-value="Private Garden">Private Garden</div>
+            <div class="option" data-value="Private Pool">Private Pool</div>
+            <div class="option" data-value="Terrace">Terrace</div>
+        </div>
+    </div>
+`;
+
+const BUY_FILTERS = `
+    <div class="filter-group">
+        <div class="filter-title">💰 Price Range</div>
+        <div class="option-grid">
+            <div class="option selected" data-value="all">Any</div>
+            <div class="option" data-value="Under 5Cr">Under 5Cr</div>
+            <div class="option" data-value="5Cr-10Cr">5Cr-10Cr</div>
+            <div class="option" data-value="10Cr+">10Cr+</div>
+        </div>
+    </div>
+    <div class="filter-group">
+        <div class="filter-title">🌿 Premium Features</div>
+        <div class="option-grid">
+            <div class="option" data-value="Pool">Private Pool</div>
+            <div class="option" data-value="Garden">Garden</div>
+            <div class="option" data-value="Smart Home">Smart Home</div>
+        </div>
+    </div>
+`;
+
+const CHIPS_RENT = ['Luxury villa', 'Fully furnished', 'Gated community', 'Premium locality'];
+const CHIPS_BUY = ['Luxury', 'High-end interiors', 'Gated community', 'Investment property'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const propertyList = document.getElementById('propertyList');
-    const resultsCount = document.getElementById('resultsCount');
-    const searchInput = document.getElementById('propertySearch');
+    let currentMode = 'Buy';
 
-    let allProperties = [];
+    const renderData = () => {
+        const filtered = PROPERTIES.filter(p => p.type === 'Villa' && p.intent === currentMode);
+        renderSlider(filtered.slice(0, 5));
+        renderList(filtered.slice(5));
+    };
 
-    const renderProperties = (props) => {
-        propertyList.innerHTML = '';
-        resultsCount.innerText = `${props.length} Villas found`;
-
-        props.forEach(prop => {
-            const card = document.createElement('div');
-            card.className = 'category-card';
-            card.innerHTML = `
-                <img src="${prop.images ? prop.images[0] : '../assets/househuntlogo.png'}" alt="${prop.type}">
-                <div class="card-body">
-                    <div class="card-price">₹${prop.price}</div>
-                    <div class="card-title">${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</div>
-                    <div class="card-loc"><i data-lucide="map-pin" style="width:12px"></i> ${prop.location}</div>
+    const renderSlider = (props) => {
+        villaSlider.innerHTML = props.map(p => `
+            <div class="slider-card" onclick="viewDetails(${p.id})">
+                <span class="luxury-badge">Luxury</span>
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="slider-info">
+                    <div style="font-size: 22px; font-weight: 900;">${p.price}</div>
+                    <div style="font-size: 14px; opacity: 0.9;">${p.location}</div>
                 </div>
-            `;
-            card.onclick = () => window.location.href = `property-view.html?id=${prop.id}`;
-            propertyList.appendChild(card);
+            </div>
+        `).join('');
+    };
+
+    const renderList = (props) => {
+        const list = document.getElementById('standardList');
+        list.innerHTML = props.map(p => `
+            <div class="standard-card" onclick="viewDetails(${p.id})">
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="standard-info">
+                    <h3>Premium Villa in ${p.location.split(',')[0]}</h3>
+                    <div class="price">${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.area} • ${p.beds}</div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.viewDetails = (id) => {
+        const p = PROPERTIES.find(prop => prop.id === id);
+        localStorage.setItem('selectedProperty', JSON.stringify(p));
+        window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+    };
+
+    const renderFilters = () => {
+        filterContent.innerHTML = currentMode === 'Buy' ? BUY_FILTERS : RENT_FILTERS;
+        quickChips.innerHTML = (currentMode === 'Buy' ? CHIPS_BUY : CHIPS_RENT).map(c => `<div class="chip">${c}</div>`).join('');
+        
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.onclick = () => {
+                opt.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            };
         });
-        if (window.lucide) window.lucide.createIcons();
     };
 
-    const fetchProperties = async () => {
-        if (window.showSkeletons) window.showSkeletons('propertyList', 4);
-        try {
-            const res = await fetch(`${BACKEND_URL}/api/properties`);
-            const data = await res.json();
-            allProperties = data.filter(p => p.type.toLowerCase().includes('villa') || p.category?.toLowerCase() === 'villa');
-            renderProperties(allProperties);
-        } catch (error) {
-            resultsCount.innerText = "Error loading villas";
-        }
-    };
-
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        renderProperties(allProperties.filter(p => p.location.toLowerCase().includes(term) || p.type.toLowerCase().includes(term)));
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            renderFilters();
+            renderData();
+        };
     });
 
-    fetchProperties();
+    const toggleSheet = (show) => {
+        document.getElementById('filterSheet').classList.toggle('open', show);
+        document.getElementById('sheetOverlay').style.display = show ? 'block' : 'none';
+        setTimeout(() => document.getElementById('sheetOverlay').style.opacity = show ? '1' : '0', 10);
+    };
+
+    document.getElementById('openMoreFilters').onclick = () => toggleSheet(true);
+    document.getElementById('closeFilter').onclick = () => toggleSheet(false);
+    document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
+    document.getElementById('applyFilters').onclick = () => toggleSheet(false);
+
+    renderFilters();
+    renderData();
 });

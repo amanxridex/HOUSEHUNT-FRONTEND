@@ -1,50 +1,70 @@
-const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
-const CATEGORY = 'Plot';
+const PROPERTIES = window.propertyData;
+const quickChips = document.getElementById('quickChips');
+const featuredPlots = document.getElementById('featuredPlots');
+
+const CHIPS_BUY = ['Investment opportunity 🔥', 'Ready to build', 'High appreciation', 'Near highway'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const propertyList = document.getElementById('propertyList');
-    const resultsCount = document.getElementById('resultsCount');
-    const searchInput = document.getElementById('propertySearch');
+    const renderData = () => {
+        const filtered = PROPERTIES.filter(p => p.type === 'Plot' && p.intent === 'Buy');
+        renderFeatured(filtered.slice(0, 4));
+        renderList(filtered.slice(4));
+    };
 
-    let allProperties = [];
-
-    const renderProperties = (props) => {
-        propertyList.innerHTML = '';
-        resultsCount.innerText = `${props.length} Plots found`;
-
-        props.forEach(prop => {
-            const card = document.createElement('div');
-            card.className = 'category-card';
-            card.innerHTML = `
-                <img src="${prop.images ? prop.images[0] : '../assets/househuntlogo.png'}" alt="${prop.type}">
-                <div class="card-body">
-                    <div class="card-price">₹${prop.price}</div>
-                    <div class="card-title">${prop.type}</div>
-                    <div class="card-loc"><i data-lucide="map-pin" style="width:12px"></i> ${prop.location}</div>
+    const renderFeatured = (props) => {
+        featuredPlots.innerHTML = props.map(p => `
+            <div class="plot-card" onclick="viewDetails(${p.id})">
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="plot-info">
+                    <div class="price">${p.price}</div>
+                    <div class="area">${p.area}</div>
+                    <div style="font-size: 10px; color: #666; margin-top: 4px;">${p.location}</div>
                 </div>
-            `;
-            card.onclick = () => window.location.href = `property-view.html?id=${prop.id}`;
-            propertyList.appendChild(card);
+            </div>
+        `).join('');
+    };
+
+    const renderList = (props) => {
+        const list = document.getElementById('standardList');
+        list.innerHTML = props.map(p => `
+            <div class="standard-card" onclick="viewDetails(${p.id})">
+                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="standard-info">
+                    <h3>Premium Plot - ${p.area}</h3>
+                    <div class="price">${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.location}</div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.viewDetails = (id) => {
+        const p = PROPERTIES.find(prop => prop.id === id);
+        localStorage.setItem('selectedProperty', JSON.stringify(p));
+        window.location.href = 'property-details-sell.html';
+    };
+
+    const renderFilters = () => {
+        quickChips.innerHTML = CHIPS_BUY.map(c => `<div class="chip">${c}</div>`).join('');
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.onclick = () => {
+                opt.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            };
         });
-        if (window.lucide) window.lucide.createIcons();
     };
 
-    const fetchProperties = async () => {
-        if (window.showSkeletons) window.showSkeletons('propertyList', 4);
-        try {
-            const res = await fetch(`${BACKEND_URL}/api/properties`);
-            const data = await res.json();
-            allProperties = data.filter(p => p.type.toLowerCase().includes('plot') || p.category?.toLowerCase() === 'plot');
-            renderProperties(allProperties);
-        } catch (error) {
-            resultsCount.innerText = "Error loading plots";
-        }
+    const toggleSheet = (show) => {
+        document.getElementById('filterSheet').classList.toggle('open', show);
+        document.getElementById('sheetOverlay').style.display = show ? 'block' : 'none';
+        setTimeout(() => document.getElementById('sheetOverlay').style.opacity = show ? '1' : '0', 10);
     };
 
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        renderProperties(allProperties.filter(p => p.location.toLowerCase().includes(term) || p.type.toLowerCase().includes(term)));
-    });
+    document.getElementById('openMoreFilters').onclick = () => toggleSheet(true);
+    document.getElementById('closeFilter').onclick = () => toggleSheet(false);
+    document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
+    document.getElementById('applyFilters').onclick = () => toggleSheet(false);
 
-    fetchProperties();
+    renderFilters();
+    renderData();
 });

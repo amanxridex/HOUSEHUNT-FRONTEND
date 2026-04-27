@@ -3,35 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Investment Plots | HouseHunt</title>
+    <title>Land & Plots | HouseHunt</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/category-plots.css">
     <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#ffffff">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="../js/transitions.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
     <div class="app-container">
         <header class="category-header">
             <button onclick="history.back()" class="back-btn"><i data-lucide="arrow-left"></i></button>
-            <h1>Investment Plots</h1>
-            <div style="width: 40px;"></div>
+            <h1>Land & Plots</h1>
+            <button class="back-btn" id="openMoreFilters"><i data-lucide="sliders-horizontal"></i></button>
         </header>
-        <div class="search-section">
-            <div class="search-bar">
-                <i data-lucide="search"></i>
-                <input type="text" id="propertySearch" placeholder="Search Plots...">
+
+        <div style="padding: 10px 20px; font-size: 12px; color: #666; font-weight: 700;">BUY MODE ONLY</div>
+
+        <div class="quick-chips" id="quickChips" style="display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto; scrollbar-width: none;"></div>
+
+        <div class="content-wrapper" style="overflow-y: auto; flex: 1;">
+            <div class="plots-grid" id="featuredPlots">
+                <!-- Dynamic plot cards -->
+            </div>
+
+            <div class="list-section">
+                <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 15px;">All Opportunities</div>
+                <div id="standardList"></div>
             </div>
         </div>
-        <div class="content-wrapper">
-            <div class="results-info"><span id="resultsCount">Loading...</span></div>
-            <div id="propertyList" class="property-grid"></div>
+
+        <!-- Filter Sheet -->
+        <div class="sheet-overlay" id="sheetOverlay"></div>
+        <div class="bottom-sheet" id="filterSheet">
+            <div class="bottom-sheet-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="font-size: 20px; font-weight: 900;">Filters</h2>
+                <button class="back-btn" id="closeFilter" style="width: 36px; height: 36px;"><i data-lucide="x"></i></button>
+            </div>
+            <div id="filterContent">
+                <div class="filter-group">
+                    <div style="font-size: 15px; font-weight: 800; margin-bottom: 12px;">💰 Price Range</div>
+                    <div class="option-grid">
+                        <div class="option selected" data-value="all">Any</div>
+                        <div class="option" data-value="Under 50L">Under 50L</div>
+                        <div class="option" data-value="50L-1Cr">50L-1Cr</div>
+                        <div class="option" data-value="1Cr+">1Cr+</div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <div style="font-size: 15px; font-weight: 800; margin-bottom: 12px;">📑 Legal & Ownership</div>
+                    <div class="option-grid">
+                        <div class="option" data-value="Freehold">Freehold</div>
+                        <div class="option" data-value="Title Clear">Title Clear</div>
+                        <div class="option" data-value="Approved">Authority Approved</div>
+                    </div>
+                </div>
+            </div>
+            <button class="apply-btn" id="applyFilters">Apply Filters</button>
         </div>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <a href="../index.html" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </a>
+            <a href="ai.html" class="nav-item">
+                <div class="ai-video-container" style="width: 23px; height: 23px; display: flex; align-items: center; justify-content: center;">
+                    <video src="../assets/huntai.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+                </div>
+                <span>HuntAI</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i data-lucide="user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
     </div>
+
+    <script src="../js/data.js"></script>
     <script type="module" src="../js/category-plots.js"></script>
     <script>lucide.createIcons();</script>
 </body>
