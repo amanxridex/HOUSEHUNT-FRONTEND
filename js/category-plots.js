@@ -1,42 +1,34 @@
-const PROPERTIES = window.propertyData;
-const quickChips = document.getElementById('quickChips');
-const featuredPlots = document.getElementById('featuredPlots');
-const filterContent = document.getElementById('filterContent');
-
-const CHIPS_BUY = ['Investment opportunity 🔥', 'Ready to build', 'High appreciation', 'Near highway'];
-
-const PLOT_FILTERS = `
-    <div class="filter-group">
-        <div class="filter-title">💰 Price & Investment</div>
-        <div class="option-grid">
-            <div class="option selected" data-value="all">Any</div>
-            <div class="option" data-value="Under 50L">Under 50L</div>
-            <div class="option" data-value="50L-1Cr">50L-1Cr</div>
-            <div class="option" data-value="1Cr+">1Cr+</div>
-            <div class="option" data-value="High Appreciation">High Growth Zone</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">📑 Legal & Ownership</div>
-        <div class="option-grid">
-            <div class="option" data-value="Freehold">Freehold</div>
-            <div class="option" data-value="Title Clear">Title Clear</div>
-            <div class="option" data-value="Approved">Authority Approved</div>
-            <div class="option" data-value="Loan">Loan Available</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">📍 Location & Value</div>
-        <div class="option-grid">
-            <div class="option" data-value="Corner Plot">Corner Plot</div>
-            <div class="option" data-value="Main Road">Main Road Access</div>
-            <div class="option" data-value="Gated">Gated Layout</div>
-            <div class="option" data-value="Near Highway">Near Highway</div>
-        </div>
-    </div>
-`;
-
 document.addEventListener('DOMContentLoaded', () => {
+    const PROPERTIES = window.propertyData;
+    if (!PROPERTIES) return;
+
+    const quickChips = document.getElementById('quickChips');
+    const featuredPlots = document.getElementById('featuredPlots');
+    const filterContent = document.getElementById('filterContent');
+    const standardList = document.getElementById('standardList');
+
+    const CHIPS_BUY = ['Investment opportunity 🔥', 'Ready to build', 'High appreciation', 'Near highway'];
+
+    const PLOT_FILTERS = `
+        <div class="filter-group">
+            <div class="filter-title">💰 Price & Investment</div>
+            <div class="option-grid">
+                <div class="option selected" data-value="all">Any</div>
+                <div class="option" data-value="Under 50L">Under 50L</div>
+                <div class="option" data-value="50L-1Cr">50L-1Cr</div>
+                <div class="option" data-value="1Cr+">1Cr+</div>
+            </div>
+        </div>
+        <div class="filter-group">
+            <div class="filter-title">📑 Legal & Ownership</div>
+            <div class="option-grid">
+                <div class="option" data-value="Freehold">Freehold</div>
+                <div class="option" data-value="Title Clear">Title Clear</div>
+                <div class="option" data-value="Approved">Authority Approved</div>
+            </div>
+        </div>
+    `;
+
     const renderData = () => {
         const filtered = PROPERTIES.filter(p => p.type === 'Plot' && p.intent === 'Buy');
         renderFeatured(filtered.slice(0, 4));
@@ -44,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderFeatured = (props) => {
+        if (!featuredPlots) return;
         featuredPlots.innerHTML = props.map(p => `
             <div class="plot-card" onclick="viewDetails(${p.id})">
                 <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
@@ -57,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderList = (props) => {
-        const list = document.getElementById('standardList');
-        list.innerHTML = props.map(p => `
+        if (!standardList) return;
+        standardList.innerHTML = props.map(p => `
             <div class="standard-card" onclick="viewDetails(${p.id})">
                 <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
                 <div class="standard-info">
@@ -76,6 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'property-details-sell.html';
     };
 
+    const toggleSheet = (show) => {
+        const sheet = document.getElementById('filterSheet');
+        const overlay = document.getElementById('sheetOverlay');
+        if (!sheet || !overlay) return;
+        sheet.classList.toggle('open', show);
+        overlay.style.display = show ? 'block' : 'none';
+        setTimeout(() => overlay.style.opacity = show ? '1' : '0', 10);
+    };
+
+    document.getElementById('openMoreFilters').onclick = () => toggleSheet(true);
+    document.getElementById('closeFilter').onclick = () => toggleSheet(false);
+    document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
+    document.getElementById('applyFilters').onclick = () => toggleSheet(false);
+
     const renderFilters = () => {
         filterContent.innerHTML = PLOT_FILTERS;
         quickChips.innerHTML = CHIPS_BUY.map(c => `<div class="chip">${c}</div>`).join('');
@@ -87,17 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         });
     };
-
-    const toggleSheet = (show) => {
-        document.getElementById('filterSheet').classList.toggle('open', show);
-        document.getElementById('sheetOverlay').style.display = show ? 'block' : 'none';
-        setTimeout(() => document.getElementById('sheetOverlay').style.opacity = show ? '1' : '0', 10);
-    };
-
-    document.getElementById('openMoreFilters').onclick = () => toggleSheet(true);
-    document.getElementById('closeFilter').onclick = () => toggleSheet(false);
-    document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
-    document.getElementById('applyFilters').onclick = () => toggleSheet(false);
 
     renderFilters();
     renderData();

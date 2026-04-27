@@ -1,71 +1,56 @@
-const PROPERTIES = window.propertyData;
-const filterContent = document.getElementById('filterContent');
-const quickChips = document.getElementById('quickChips');
-const villaSlider = document.getElementById('villaSlider');
-
-const RENT_FILTERS = `
-    <div class="filter-group">
-        <div class="filter-title">💰 Budget</div>
-        <div class="option-grid">
-            <div class="option selected" data-value="all">Any</div>
-            <div class="option" data-value="Under 1L">Under 1L</div>
-            <div class="option" data-value="1L-3L">1L-3L</div>
-            <div class="option" data-value="3L+">3L+</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">🌿 Outdoor & Luxury</div>
-        <div class="option-grid">
-            <div class="option" data-value="Private Garden">Private Garden</div>
-            <div class="option" data-value="Private Pool">Private Pool</div>
-            <div class="option" data-value="Terrace">Terrace</div>
-            <div class="option" data-value="Smart Home">Smart Home</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">🚗 Parking & Layout</div>
-        <div class="option-grid">
-            <div class="option" data-value="2+ Parking">2+ Parking</div>
-            <div class="option" data-value="3+ Floors">3+ Floors</div>
-            <div class="option" data-value="Basement">Basement</div>
-        </div>
-    </div>
-`;
-
-const BUY_FILTERS = `
-    <div class="filter-group">
-        <div class="filter-title">💰 Price Range</div>
-        <div class="option-grid">
-            <div class="option selected" data-value="all">Any</div>
-            <div class="option" data-value="Under 5Cr">Under 5Cr</div>
-            <div class="option" data-value="5Cr-10Cr">5Cr-10Cr</div>
-            <div class="option" data-value="10Cr+">10Cr+</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">📑 Legal & Ownership</div>
-        <div class="option-grid">
-            <div class="option" data-value="Freehold">Freehold</div>
-            <div class="option" data-value="RERA">RERA Approved</div>
-            <div class="option" data-value="Loan">Loan Available</div>
-        </div>
-    </div>
-    <div class="filter-group">
-        <div class="filter-title">🌿 Premium Features</div>
-        <div class="option-grid">
-            <div class="option" data-value="Pool">Private Pool</div>
-            <div class="option" data-value="Garden">Garden</div>
-            <div class="option" data-value="Smart Home">Smart Home</div>
-            <div class="option" data-value="High End">High-End Interior</div>
-        </div>
-    </div>
-`;
-
-const CHIPS_RENT = ['Luxury villa', 'Fully furnished', 'Gated community', 'Premium locality'];
-const CHIPS_BUY = ['Luxury', 'High-end interiors', 'Gated community', 'Investment property'];
-
 document.addEventListener('DOMContentLoaded', () => {
+    const PROPERTIES = window.propertyData;
+    if (!PROPERTIES) return;
+
+    const filterContent = document.getElementById('filterContent');
+    const quickChips = document.getElementById('quickChips');
+    const villaSlider = document.getElementById('villaSlider');
+    const standardList = document.getElementById('standardList');
+
     let currentMode = 'Buy';
+
+    const RENT_FILTERS = `
+        <div class="filter-group">
+            <div class="filter-title">💰 Budget</div>
+            <div class="option-grid">
+                <div class="option selected" data-value="all">Any</div>
+                <div class="option" data-value="Under 1L">Under 1L</div>
+                <div class="option" data-value="1L-3L">1L-3L</div>
+                <div class="option" data-value="3L+">3L+</div>
+            </div>
+        </div>
+        <div class="filter-group">
+            <div class="filter-title">🌿 Outdoor & Luxury</div>
+            <div class="option-grid">
+                <div class="option" data-value="Private Garden">Private Garden</div>
+                <div class="option" data-value="Private Pool">Private Pool</div>
+                <div class="option" data-value="Terrace">Terrace</div>
+            </div>
+        </div>
+    `;
+
+    const BUY_FILTERS = `
+        <div class="filter-group">
+            <div class="filter-title">💰 Price Range</div>
+            <div class="option-grid">
+                <div class="option selected" data-value="all">Any</div>
+                <div class="option" data-value="Under 5Cr">Under 5Cr</div>
+                <div class="option" data-value="5Cr-10Cr">5Cr-10Cr</div>
+                <div class="option" data-value="10Cr+">10Cr+</div>
+            </div>
+        </div>
+        <div class="filter-group">
+            <div class="filter-title">🌿 Premium Features</div>
+            <div class="option-grid">
+                <div class="option" data-value="Pool">Private Pool</div>
+                <div class="option" data-value="Garden">Garden</div>
+                <div class="option" data-value="Smart Home">Smart Home</div>
+            </div>
+        </div>
+    `;
+
+    const CHIPS_RENT = ['Luxury villa', 'Fully furnished', 'Gated community', 'Premium locality'];
+    const CHIPS_BUY = ['Luxury', 'High-end interiors', 'Gated community', 'Investment property'];
 
     const renderData = () => {
         const filtered = PROPERTIES.filter(p => p.type === 'Villa' && p.intent === currentMode);
@@ -74,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderSlider = (props) => {
+        if (!villaSlider) return;
         villaSlider.innerHTML = props.map(p => `
             <div class="slider-card" onclick="viewDetails(${p.id})">
                 <span class="luxury-badge">Luxury</span>
@@ -87,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderList = (props) => {
-        const list = document.getElementById('standardList');
-        list.innerHTML = props.map(p => `
+        if (!standardList) return;
+        standardList.innerHTML = props.map(p => `
             <div class="standard-card" onclick="viewDetails(${p.id})">
                 <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
                 <div class="standard-info">
@@ -118,16 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentMode = btn.dataset.mode;
-            renderFilters();
-            renderData();
-        };
-    });
-
     const toggleSheet = (show) => {
         document.getElementById('filterSheet').classList.toggle('open', show);
         document.getElementById('sheetOverlay').style.display = show ? 'block' : 'none';
@@ -138,6 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('closeFilter').onclick = () => toggleSheet(false);
     document.getElementById('sheetOverlay').onclick = () => toggleSheet(false);
     document.getElementById('applyFilters').onclick = () => toggleSheet(false);
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            renderFilters();
+            renderData();
+        };
+    });
 
     renderFilters();
     renderData();
