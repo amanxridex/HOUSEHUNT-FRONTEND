@@ -1,13 +1,11 @@
-const CACHE_NAME = 'househunt-v2';
+const CACHE_NAME = 'househunt-v3';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/html/login.html',
-  '/css/index.css',
-  '/css/login.css',
-  '/js/index.js',
-  '/js/firebase-auth.js',
-  '/assets/househuntappicon.png'
+  './',
+  './index.html',
+  './css/index.css',
+  './js/index.js',
+  './js/transitions.js',
+  './assets/househuntappicon.png'
 ];
 
 // Install Service Worker

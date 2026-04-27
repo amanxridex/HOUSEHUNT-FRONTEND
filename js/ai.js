@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const typingTextContainer = typingDiv.querySelector('.text');
 
         try {
-            const response = await fetch(GEMINI_URL, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -71,11 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            const aiResponse = data.candidates[0].content.parts[0].text;
-            typingTextContainer.innerText = aiResponse;
+            
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                typingTextContainer.innerText = aiResponse;
+            } else {
+                throw new Error("Invalid API Response");
+            }
         } catch (e) {
             console.error("AI Error", e);
-            typingTextContainer.innerText = "Sorry, I'm having trouble connecting right now. Please try again later!";
+            typingTextContainer.innerText = "Sorry, I'm having trouble connecting to Gemini right now. Please try again later!";
         }
     };
 
