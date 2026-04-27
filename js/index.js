@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // Hide Splash Screen
+    const splash = document.getElementById('appSplashScreen');
+    if (splash) {
+        setTimeout(() => {
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+            setTimeout(() => splash.remove(), 600);
+        }, 800); // Small delay to ensure skeletons are ready
+    }
+
     const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
     const featuredContainer = document.getElementById('featured-listings-container');
     
