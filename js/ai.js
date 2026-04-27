@@ -7,23 +7,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const GEMINI_API_KEY = 'AIzaSyCHK4oM3AmWEyNuZP9xo8JBvwjDFe0GeaE';
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    const addMessage = (text, isUser = false) => {
+    const addMessage = (text, isUser = false, isTyping = false) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
         
+        const innerContent = isTyping ? `
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        ` : text;
+
         msgDiv.innerHTML = `
             <div class="avatar">${isUser ? '👤' : '🤖'}</div>
-            <div class="text">${text}</div>
+            <div class="text">${innerContent}</div>
         `;
         
         chatContainer.appendChild(msgDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         
         gsap.from(msgDiv, {
-            y: 20,
+            y: 30,
             opacity: 0,
-            duration: 0.4,
-            ease: "power2.out"
+            duration: 0.5,
+            ease: "back.out(1.7)"
         });
         return msgDiv;
     };
@@ -36,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.value = '';
 
         // Typing Indicator
-        const typingDiv = addMessage("Typing...", false);
-        const typingText = typingDiv.querySelector('.text');
+        const typingDiv = addMessage("", false, true);
+        const typingTextContainer = typingDiv.querySelector('.text');
 
         try {
             const response = await fetch(GEMINI_URL, {
