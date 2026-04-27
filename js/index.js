@@ -158,25 +158,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    if (!data) return;
+    let allData = [];
+    let currentIntent = 'Rent'; // Default
 
     // Helper to render a section
     const renderSection = (containerId, items) => {
         const container = document.getElementById(containerId);
         if (!container) return;
+        container.innerHTML = '';
         
         items.forEach(prop => {
             const card = document.createElement('a');
-            card.href = 'html/property-view.html';
+            card.href = `html/property-view.html?id=${prop.id}`;
             card.style.textDecoration = 'none';
             
             card.innerHTML = `
                 <div class="property-card">
-                    <img src="${prop.image}" alt="${prop.type}" class="property-img" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
-                    <div class="tag">${prop.tag}</div>
+                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" class="property-img" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
+                    <div class="tag">${prop.tag || prop.intent}</div>
                     <div class="property-details">
-                        <div class="prop-price">${prop.price}</div>
-                        <div class="prop-title">${prop.beds ? prop.beds + ' ' : ''}${prop.type}</div>
+                        <div class="prop-price">₹${prop.price}</div>
+                        <div class="prop-title">${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</div>
                         <div class="prop-loc">${prop.location}</div>
                     </div>
                 </div>
@@ -190,55 +192,72 @@ document.addEventListener('DOMContentLoaded', async () => {
         const container = document.getElementById('featured-listings-container');
         const dotsContainer = document.getElementById('slider-dots');
         if (!container) return;
+        container.innerHTML = '';
+        dotsContainer.innerHTML = '';
 
         items.forEach((prop, index) => {
             const slide = document.createElement('div');
             slide.className = 'hero-slide';
+            slide.onclick = () => window.location.href = `html/property-view.html?id=${prop.id}`;
             slide.innerHTML = `
                 <div class="hero-slide-content">
-                    <img src="${prop.image}" alt="${prop.type}" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
+                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
                     <div class="hero-overlay">
-                        <div class="price">${prop.price}</div>
-                        <h3>${prop.beds ? prop.beds + ' ' : ''}${prop.type}</h3>
+                        <div class="price">₹${prop.price}</div>
+                        <h3>${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</h3>
                     </div>
                 </div>
             `;
             container.appendChild(slide);
 
-            // Add dots
             const dot = document.createElement('div');
             dot.className = `dot ${index === 0 ? 'active' : ''}`;
             dotsContainer.appendChild(dot);
         });
 
-        // Auto slide logic
         let currentSlide = 0;
         const totalSlides = items.length;
         const dots = dotsContainer.querySelectorAll('.dot');
-
-        setInterval(() => {
+        if (window.heroInterval) clearInterval(window.heroInterval);
+        
+        window.heroInterval = setInterval(() => {
+            if (totalSlides === 0) return;
             currentSlide = (currentSlide + 1) % totalSlides;
             container.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
-            // Update dots
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === currentSlide);
-            });
+            dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentSlide));
         }, 3000);
     };
 
-    // Populate Featured
-    renderFeaturedSlider(data.slice(0, 5));
+    const renderAllSections = (filteredData) => {
+        // Populate Featured
+        renderFeaturedSlider(filteredData.slice(0, 5));
 
-    // Populate Near You (Next 5)
-    renderSection('near-you-container', data.slice(5, 10));
+        // Populate Near You (Next 5)
+        renderSection('near-you-container', filteredData.slice(5, 10));
 
-    // Populate Top Listings (Next 5)
-    renderSection('top-listings-container', data.slice(10, 15));
+        // Populate Top Listings (Next 5)
+        renderSection('top-listings-container', filteredData.slice(10, 15));
 
-    // Populate Plots (Only plots)
-    const plots = data.filter(p => p.type.toLowerCase().includes('plot')).slice(0, 5);
-    renderSection('plots-container', plots);
+        // Populate Plots (Only plots)
+        const plots = filteredData.filter(p => p.type.toLowerCase().includes('plot')).slice(0, 5);
+        renderSection('plots-container', plots);
+    };
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/properties`);
+        allData = await response.json();
+        
+        // Initial Render
+        const initialFiltered = allData.filter(p => p.intent === currentIntent);
+        renderAllSections(initialFiltered);
+    } catch (e) {
+        console.error("Fetch error", e);
+        // Fallback to local data if available
+        if (window.propertyData) {
+            allData = window.propertyData;
+            renderAllSections(allData.filter(p => p.intent === currentIntent));
+        }
+    }
 
     // Make categories clickable
     const categoryItems = document.querySelectorAll('.category-item');
@@ -246,23 +265,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         item.addEventListener('click', () => {
             const type = item.querySelector('p').textContent.toLowerCase();
             let page = 'explore.html';
-            
             if (type.includes('independent')) page = 'category-independent.html';
             else if (type.includes('commercial')) page = 'category-commercial.html';
             else if (type.includes('apartment')) page = 'category-apartments.html';
             else if (type.includes('villa')) page = 'category-villas.html';
             else if (type.includes('plot')) page = 'category-plots.html';
-            
             window.location.href = `html/${page}`;
         });
     });
 
-    // Make tabs clickable
+    // --- RENT / SALE TOGGLE LOGIC ---
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const intent = tab.textContent.includes('Rent') ? 'Rent' : 'Buy';
-            window.location.href = `html/explore.html?intent=${intent}`;
+            // Update UI
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Set Intent
+            currentIntent = tab.textContent.includes('Rent') ? 'Rent' : 'Buy';
+            
+            // Re-render
+            const filtered = allData.filter(p => p.intent === currentIntent);
+            renderAllSections(filtered);
         });
     });
 
