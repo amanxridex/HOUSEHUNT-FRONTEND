@@ -150,6 +150,50 @@
     opacity: 0.8;
 }
 
+/* Standard List Section */
+.standard-list-section {
+    margin-top: 30px;
+}
+
+.standard-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 12px;
+    gap: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    align-items: center;
+}
+
+.standard-card img {
+    width: 90px;
+    height: 90px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.standard-info {
+    flex: 1;
+}
+
+.standard-info h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.standard-info .price {
+    font-weight: 900;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.standard-info .loc {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
 .back-btn {
     width: 40px;
     height: 40px;

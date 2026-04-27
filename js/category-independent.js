@@ -23,7 +23,44 @@ document.addEventListener('DOMContentLoaded', () => {
         renderNearest(filtered.slice(0, 3));
 
         resultsCount.innerText = `${filtered.length} Independent Houses Found`;
-        renderBento(filtered.slice(3)); // Remaining go to bento
+        
+        // Bento Grid (Next 6 properties)
+        renderBento(filtered.slice(3, 9));
+
+        // Standard List (Remaining properties)
+        renderStandard(filtered.slice(9));
+    };
+
+    const renderStandard = (properties) => {
+        const standardList = document.getElementById('standardList');
+        const standardSection = document.getElementById('standardSection');
+        standardList.innerHTML = '';
+
+        if (properties.length === 0) {
+            standardSection.style.display = 'none';
+            return;
+        }
+        standardSection.style.display = 'block';
+
+        properties.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'standard-card';
+            card.innerHTML = `
+                <img src="${p.image}" alt="${p.title}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="standard-info">
+                    <h3>${p.beds || ''} Independent House</h3>
+                    <div class="price">${p.price}</div>
+                    <div class="loc">${p.location}</div>
+                </div>
+                <i data-lucide="chevron-right" style="color: #ccc; width: 20px;"></i>
+            `;
+            card.onclick = () => {
+                localStorage.setItem('selectedProperty', JSON.stringify(p));
+                window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+            };
+            standardList.appendChild(card);
+        });
+        if (window.lucide) window.lucide.createIcons();
     };
 
     const renderNearest = (properties) => {
