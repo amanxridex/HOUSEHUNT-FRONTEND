@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const PROPERTIES = window.propertyData;
-    if (!PROPERTIES) return;
+document.addEventListener('DOMContentLoaded', async () => {
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    let PROPERTIES = [];
 
     const filterContent = document.getElementById('filterContent');
     const quickChips = document.getElementById('quickChips');
@@ -9,7 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const standardList = document.getElementById('standardList');
     const resultsCount = document.getElementById('resultsCount');
 
-    let currentMode = 'Buy';
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentMode = urlParams.get('mode') === 'Rent' ? 'Rent' : 'Buy';
+
+    // Sync UI buttons with currentMode
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === currentMode);
+    });
+
+    async function loadProperties() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/properties`);
+            const data = await response.json();
+            PROPERTIES = data.length > 0 ? data : (window.propertyData || []);
+            renderData();
+        } catch (e) {
+            console.warn("Backend unavailable, using mock data.", e);
+            PROPERTIES = window.propertyData || [];
+            renderData();
+        }
+    }
 
     const RENT_FILTERS = `
         <div class="filter-group">
@@ -68,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHIPS_BUY = ['Best deal 🔥', 'Newly constructed', 'Premium society', 'Park facing'];
 
     const renderData = () => {
-        const filtered = PROPERTIES.filter(p => p.type === 'Apartment' && p.intent === currentMode);
+        const filtered = PROPERTIES.filter(p => p.property_type === 'Apartment' && p.intent === currentMode);
         resultsCount.innerText = `Showing ${filtered.length} Apartments in NCR`;
         
         renderCarousel(filtered.slice(0, 5));
@@ -78,15 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderCarousel = (props) => {
         if (!carouselList) return;
-        carouselList.innerHTML = props.map(p => `
-            <div class="carousel-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+        carouselList.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="carousel-card" onclick="viewDetails('${p.id}')">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="carousel-overlay">
-                    <div style="font-size: 18px; font-weight: 900;">${p.price}</div>
-                    <div style="font-size: 12px; opacity: 0.9;">${p.location}</div>
+                    <div style="font-size: 18px; font-weight: 900;">₹${p.price}</div>
+                    <div style="font-size: 12px; opacity: 0.9;">${p.location_text || p.location}</div>
                 </div>
             </div>
-        `).join('');
+        `).join('') : '<p style="padding: 20px; color: #666; font-weight: 600;">No featured apartments found.</p>';
     };
 
     const renderBento = (props) => {
@@ -94,11 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bentoGrid.innerHTML = props.map((p, i) => {
             const size = i % 5 === 0 ? 'large' : (i % 5 === 3 ? 'wide' : '');
             return `
-                <div class="bento-card ${size}" onclick="viewDetails(${p.id})">
-                    <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <div class="bento-card ${size}" onclick="viewDetails('${p.id}')">
+                    <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                     <div class="bento-info">
-                        <div style="font-weight: 800; font-size: 14px;">${p.price}</div>
-                        <div style="font-size: 10px;">${p.location}</div>
+                        <div style="font-weight: 800; font-size: 14px;">₹${p.price}</div>
+                        <div style="font-size: 10px;">${p.location_text || p.location}</div>
                     </div>
                 </div>
             `;
@@ -107,24 +126,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderStandard = (props) => {
         if (!standardList) return;
-        standardList.innerHTML = props.map(p => `
-            <div class="standard-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+        standardList.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="standard-card" onclick="viewDetails('${p.id}')">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
-                    <h3>${p.beds || ''} Apartment in ${p.location.split(',')[0]}</h3>
-                    <div class="price">${p.price}</div>
-                    <div style="font-size: 11px; color: #666;">${p.location}</div>
+                    <h3>${p.details?.beds || ''} Apartment in ${p.location_text || p.location.split(',')[0]}</h3>
+                    <div class="price">₹${p.price}</div>
+                    <div style="font-size: 11px; color: #666;">${p.location_text || p.location}</div>
                 </div>
                 <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>
             </div>
-        `).join('');
+        `).join('') : (PROPERTIES.length > 0 ? '' : '<p style="text-align: center; padding: 40px; color: #666;">No apartments found in this section.</p>');
         if (window.lucide) window.lucide.createIcons();
     };
 
     window.viewDetails = (id) => {
-        const p = PROPERTIES.find(prop => prop.id === id);
-        localStorage.setItem('selectedProperty', JSON.stringify(p));
-        window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+        window.location.href = `property-view.html?id=${id}`;
     };
 
     const toggleSheet = (show) => {
@@ -171,5 +188,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderFilters();
-    renderData();
+    loadProperties();
 });

@@ -237,12 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            let dbPropertyType = propertyType.charAt(0).toUpperCase() + propertyType.slice(1);
+            if (dbPropertyType === 'Independent') dbPropertyType = 'Independent House';
+
             const formData = {
                 owner_id: user.uid,
                 owner_name: user.name || contactDetails.name,
-                title: `${propertyType.charAt(0).toUpperCase() + propertyType.slice(1)} for Rent in ${city}`,
+                title: `${dbPropertyType} for Rent in ${city}`,
                 description: desc,
-                property_type: propertyType.charAt(0).toUpperCase() + propertyType.slice(1),
+                property_type: dbPropertyType,
                 intent: 'Rent',
                 price: document.getElementById('rent')?.value || 0,
                 deposit: document.getElementById('deposit')?.value || 0,

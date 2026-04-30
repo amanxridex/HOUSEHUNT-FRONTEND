@@ -1,11 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const PROPERTIES = window.propertyData;
-    if (!PROPERTIES) return;
+document.addEventListener('DOMContentLoaded', async () => {
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    let PROPERTIES = [];
 
     const quickChips = document.getElementById('quickChips');
     const featuredPlots = document.getElementById('featuredPlots');
     const filterContent = document.getElementById('filterContent');
     const standardList = document.getElementById('standardList');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentMode = urlParams.get('mode') === 'Rent' ? 'Rent' : 'Buy';
+
+    async function loadProperties() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/properties`);
+            const data = await response.json();
+            PROPERTIES = data.length > 0 ? data : (window.propertyData || []);
+            renderData();
+        } catch (e) {
+            console.warn("Backend unavailable, using mock data.", e);
+            PROPERTIES = window.propertyData || [];
+            renderData();
+        }
+    }
 
     const CHIPS_BUY = ['Investment opportunity 🔥', 'Ready to build', 'High appreciation', 'Near highway'];
 
@@ -30,43 +46,41 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     const renderData = () => {
-        const filtered = PROPERTIES.filter(p => p.type === 'Plot' && p.intent === 'Buy');
+        const filtered = PROPERTIES.filter(p => p.property_type === 'Plot' && p.intent === currentMode);
         renderFeatured(filtered.slice(0, 4));
         renderList(filtered.slice(4));
     };
 
     const renderFeatured = (props) => {
         if (!featuredPlots) return;
-        featuredPlots.innerHTML = props.map(p => `
-            <div class="plot-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+        featuredPlots.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="plot-card" onclick="viewDetails('${p.id}')">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="plot-info">
-                    <div class="price">${p.price}</div>
-                    <div class="area">${p.area}</div>
-                    <div style="font-size: 10px; color: #666; margin-top: 4px;">${p.location}</div>
+                    <div class="price">₹${p.price}</div>
+                    <div class="area">${p.details?.area || ''}</div>
+                    <div style="font-size: 10px; color: #666; margin-top: 4px;">${p.location_text || p.location}</div>
                 </div>
             </div>
-        `).join('');
+        `).join('') : '<p style="padding: 20px; color: #666;">No featured plots found.</p>';
     };
 
     const renderList = (props) => {
         if (!standardList) return;
-        standardList.innerHTML = props.map(p => `
-            <div class="standard-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+        standardList.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="standard-card" onclick="viewDetails('${p.id}')">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
-                    <h3>Premium Plot - ${p.area}</h3>
-                    <div class="price">${p.price}</div>
-                    <div style="font-size: 12px; color: #666;">${p.location}</div>
+                    <h3>Premium Plot - ${p.details?.area || ''}</h3>
+                    <div class="price">₹${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.location_text || p.location}</div>
                 </div>
             </div>
-        `).join('');
+        `).join('') : (PROPERTIES.length > 0 ? '' : '<p style="text-align: center; padding: 40px; color: #666;">No plots found.</p>');
     };
 
     window.viewDetails = (id) => {
-        const p = PROPERTIES.find(prop => prop.id === id);
-        localStorage.setItem('selectedProperty', JSON.stringify(p));
-        window.location.href = 'property-details-sell.html';
+        window.location.href = `property-view.html?id=${id}`;
     };
 
     const toggleSheet = (show) => {
@@ -84,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('applyFilters').onclick = () => toggleSheet(false);
 
     const renderFilters = () => {
-        filterContent.innerHTML = PLOT_FILTERS;
-        quickChips.innerHTML = CHIPS_BUY.map(c => `<div class="chip">${c}</div>`).join('');
+        if (filterContent) filterContent.innerHTML = PLOT_FILTERS;
+        if (quickChips) quickChips.innerHTML = CHIPS_BUY.map(c => `<div class="chip">${c}</div>`).join('');
         
         document.querySelectorAll('.option').forEach(opt => {
             opt.onclick = () => {
@@ -96,5 +110,5 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     renderFilters();
-    renderData();
+    loadProperties();
 });

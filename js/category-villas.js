@@ -1,13 +1,32 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const PROPERTIES = window.propertyData;
-    if (!PROPERTIES) return;
+document.addEventListener('DOMContentLoaded', async () => {
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    let PROPERTIES = [];
 
     const filterContent = document.getElementById('filterContent');
     const quickChips = document.getElementById('quickChips');
     const villaSlider = document.getElementById('villaSlider');
     const standardList = document.getElementById('standardList');
 
-    let currentMode = 'Buy';
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentMode = urlParams.get('mode') === 'Rent' ? 'Rent' : 'Buy';
+
+    // Sync UI buttons with currentMode
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === currentMode);
+    });
+
+    async function loadProperties() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/properties`);
+            const data = await response.json();
+            PROPERTIES = data.length > 0 ? data : (window.propertyData || []);
+            renderData();
+        } catch (e) {
+            console.warn("Backend unavailable, using mock data.", e);
+            PROPERTIES = window.propertyData || [];
+            renderData();
+        }
+    }
 
     const RENT_FILTERS = `
         <div class="filter-group">
@@ -53,43 +72,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHIPS_BUY = ['Luxury', 'High-end interiors', 'Gated community', 'Investment property'];
 
     const renderData = () => {
-        const filtered = PROPERTIES.filter(p => p.type === 'Villa' && p.intent === currentMode);
+        const filtered = PROPERTIES.filter(p => p.property_type === 'Villa' && p.intent === currentMode);
         renderSlider(filtered.slice(0, 5));
         renderList(filtered.slice(5));
     };
 
     const renderSlider = (props) => {
         if (!villaSlider) return;
-        villaSlider.innerHTML = props.map(p => `
-            <div class="slider-card" onclick="viewDetails(${p.id})">
+        villaSlider.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="slider-card" onclick="viewDetails('${p.id}')">
                 <span class="luxury-badge">Luxury</span>
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="slider-info">
-                    <div style="font-size: 22px; font-weight: 900;">${p.price}</div>
-                    <div style="font-size: 14px; opacity: 0.9;">${p.location}</div>
+                    <div style="font-size: 22px; font-weight: 900;">₹${p.price}</div>
+                    <div style="font-size: 14px; opacity: 0.9;">${p.location_text || p.location}</div>
                 </div>
             </div>
-        `).join('');
+        `).join('') : '<p style="padding: 20px; color: #666;">No featured villas found.</p>';
     };
 
     const renderList = (props) => {
         if (!standardList) return;
-        standardList.innerHTML = props.map(p => `
-            <div class="standard-card" onclick="viewDetails(${p.id})">
-                <img src="${p.image}" onerror="this.src='../assets/househuntlogo.png'">
+        standardList.innerHTML = props.length > 0 ? props.map(p => `
+            <div class="standard-card" onclick="viewDetails('${p.id}')">
+                <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
-                    <h3>Premium Villa in ${p.location.split(',')[0]}</h3>
-                    <div class="price">${p.price}</div>
-                    <div style="font-size: 12px; color: #666;">${p.area} • ${p.beds}</div>
+                    <h3>Premium Villa in ${p.location_text || p.location.split(',')[0]}</h3>
+                    <div class="price">₹${p.price}</div>
+                    <div style="font-size: 12px; color: #666;">${p.details?.area || ''} • ${p.details?.beds || ''}</div>
                 </div>
             </div>
-        `).join('');
+        `).join('') : (PROPERTIES.length > 0 ? '' : '<p style="text-align: center; padding: 40px; color: #666;">No villas found.</p>');
     };
 
     window.viewDetails = (id) => {
-        const p = PROPERTIES.find(prop => prop.id === id);
-        localStorage.setItem('selectedProperty', JSON.stringify(p));
-        window.location.href = p.intent === 'Rent' ? 'property-details-rent.html' : 'property-details-sell.html';
+        window.location.href = `property-view.html?id=${id}`;
     };
 
     const renderFilters = () => {
@@ -126,5 +143,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderFilters();
-    renderData();
+    loadProperties();
 });

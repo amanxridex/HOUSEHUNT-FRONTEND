@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             else if (type.includes('apartment')) page = 'category-apartments.html';
             else if (type.includes('villa')) page = 'category-villas.html';
             else if (type.includes('plot')) page = 'category-plots.html';
-            window.location.href = `html/${page}`;
+            window.location.href = `html/${page}?mode=${currentIntent}`;
         });
     });
 
