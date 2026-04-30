@@ -365,15 +365,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = {
                 owner_id: user.uid,
-                owner_name: user.name || contactDetails.name,
                 title: `${dbPropertyType} for Sale in ${city}`,
                 description: desc,
                 property_type: dbPropertyType,
                 intent: 'Buy',
-                price: document.getElementById('price')?.value || 0,
+                price: parseFloat(document.getElementById('price')?.value || 0),
                 location_text: city,
                 city: city,
-                images: urls, // Use uploaded URLs
+                images: urls,
                 details: {}
             };
 
