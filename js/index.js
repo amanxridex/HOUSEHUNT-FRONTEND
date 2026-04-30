@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 type: p.type,
                 price: p.price,
                 location: p.location,
-                image: p.images ? p.images[0] : 'assets/househuntlogo.png',
+                image: p.images ? p.images[0] : 'assets/mainappicon.png',
                 beds: p.beds || '',
                 tag: p.status === 'approved' ? 'Verified' : 'New'
             }));
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             card.innerHTML = `
                 <div class="property-card">
-                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" class="property-img" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
+                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" class="property-img" onerror="this.src='assets/mainappicon.png'; this.onerror=null;">
                     <div class="tag">${prop.tag || prop.intent}</div>
                     <div class="property-details">
                         <div class="prop-price">₹${prop.price}</div>
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             slide.onclick = () => window.location.href = `html/property-view.html?id=${prop.id}`;
             slide.innerHTML = `
                 <div class="hero-slide-content">
-                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" onerror="this.src='assets/househuntlogo.png'; this.onerror=null;">
+                    <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" onerror="this.src='assets/mainappicon.png'; this.onerror=null;">
                     <div class="hero-overlay">
                         <div class="price">₹${prop.price}</div>
                         <h3>${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</h3>

@@ -1,11 +1,11 @@
-const CACHE_NAME = 'househunt-v4';
+const CACHE_NAME = 'househunt-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/index.css',
   './js/index.js',
   './js/transitions.js',
-  './assets/househuntappicon.png',
+  './assets/mainappicon.png',
   './assets/huntai.mp4'
 ];
 
