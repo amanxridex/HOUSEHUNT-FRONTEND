@@ -72,6 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const schemas = {
         apartment: [
             {
+                title: 'Property Configuration', icon: 'settings', content: `
+                ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
+                ${createInput('Super Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Carpet Area (Sqft)', 'carpet_area', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createInput('Floor Number', 'floor', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'])}
+                ${createChips('Furnishing', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Fully Furnished'])}
+            `},
+            {
                 title: 'Pricing & Charges', icon: 'banknote', content: `
                 ${createInput('Monthly Rent', 'rent', 'number', 'indian-rupee', 'e.g. 25000')}
                 ${createToggle('Rent Negotiable', 'negotiable')}
@@ -113,6 +123,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         villa: [
             {
+                title: 'Villa Configuration', icon: 'settings', content: `
+                ${createInput('Bedrooms', 'beds', 'number', 'bed')}
+                ${createInput('Bathrooms', 'bath', 'number', 'droplet')}
+                ${createInput('Plot Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Built-up Area (Sqft)', 'built_up', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South'])}
+            `},
+            {
                 title: 'Pricing', icon: 'banknote', content: `
                 ${createInput('Monthly Rent', 'rent', 'number', 'indian-rupee')}
                 ${createInput('Deposit', 'deposit', 'number', 'shield')}
@@ -133,6 +152,27 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 title: 'Description', icon: 'file-text', content: `
                 ${createTextArea('Description', 'desc', 'Describe the luxury features...')}
+            `}
+        ],
+        independent: [
+            {
+                title: 'House Configuration', icon: 'settings', content: `
+                ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
+                ${createInput('Built-up Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Plot Area (Sqft)', 'plot_area', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South'])}
+                ${createChips('Furnishing', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Fully Furnished'])}
+            `},
+            {
+                title: 'Pricing & Terms', icon: 'banknote', content: `
+                ${createInput('Monthly Rent', 'rent', 'number', 'indian-rupee')}
+                ${createInput('Security Deposit', 'deposit', 'number', 'shield')}
+                ${createChips('Maintenance', 'maintenance', ['Included', 'Extra'])}
+            `},
+            {
+                title: 'Description', icon: 'file-text', content: `
+                ${createTextArea('Full Description', 'desc')}
             `}
         ],
         commercial: [

@@ -68,6 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const schemas = {
         apartment: [
             {
+                title: 'Property Configuration', icon: 'settings', content: `
+                ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
+                ${createInput('Super Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Carpet Area (Sqft)', 'carpet_area', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createInput('Floor Number', 'floor', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'])}
+                ${createChips('Furnishing Status', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Ready to Move'])}
+            `},
+            {
                 title: 'Pricing & Brokerage', icon: 'banknote', content: `
                 ${createInput('Total Price', 'price', 'number', 'indian-rupee', 'e.g. 75,00,000')}
                 ${createToggle('Price Negotiable', 'negotiable')}
@@ -146,16 +156,48 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         villa: [
             {
+                title: 'Villa Configuration', icon: 'settings', content: `
+                ${createInput('Bedrooms', 'beds', 'number', 'bed')}
+                ${createInput('Bathrooms', 'bath', 'number', 'droplet')}
+                ${createInput('Plot Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Built-up Area (Sqft)', 'built_up', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South'])}
+            `},
+            {
                 title: 'Premium Pricing', icon: 'banknote', content: `
                 ${createInput('Total Price', 'price', 'number', 'indian-rupee')}
-                ${createInput('Built-up Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Monthly Maintenance', 'maint', 'number', 'settings')}
+                ${createToggle('Price Negotiable', 'negotiable')}
             `},
             {
                 title: 'Luxury Amenities', icon: 'crown', content: `
                 ${createToggle('Private Pool', 'pool')}
                 ${createToggle('Private Garden', 'garden')}
-                ${createToggle('Smart Home', 'smart')}
-                ${createToggle('Servant Room', 'servant')}
+                ${createToggle('Home Gym', 'gym')}
+                ${createToggle('Home Theatre', 'theatre')}
+                ${createChips('Furnishing', 'furnishing', ['Bare Shell', 'Semi', 'Lux-Furnished'])}
+            `},
+            {
+                title: 'Description', icon: 'edit-2', content: `
+                ${createTextArea('Description', 'desc')}
+            `}
+        ],
+        independent: [
+            {
+                title: 'House Configuration', icon: 'settings', content: `
+                ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
+                ${createInput('Built-up Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createInput('Plot Area (Sqft)', 'plot_area', 'number', 'maximize')}
+                ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
+                ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South'])}
+                ${createChips('Furnishing Status', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Ready to Move'])}
+            `},
+            {
+                title: 'Pricing & Brokerage', icon: 'banknote', content: `
+                ${createInput('Total Price', 'price', 'number', 'indian-rupee')}
+                ${createToggle('Price Negotiable', 'negotiable')}
+                ${createChips('Brokerage', 'brokerage', ['None', 'Fee Charged'])}
             `},
             {
                 title: 'Description', icon: 'edit-2', content: `
