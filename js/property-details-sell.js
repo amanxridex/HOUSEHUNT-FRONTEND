@@ -190,26 +190,92 @@ document.addEventListener('DOMContentLoaded', () => {
     const first = formContainer.querySelector('.section');
     if (first) first.classList.add('active');
 
-    // Submit
-    document.getElementById('submitBtn').addEventListener('click', () => {
+    // --- SUBMIT LOGIC ---
+    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+
+    document.getElementById('submitBtn').addEventListener('click', async () => {
         const desc = document.getElementById('desc')?.value || '';
         if (desc.length < 50) {
-            alert('Description must be at least 50 characters.');
+            alert('Description must be at least 50 characters long.');
             return;
         }
 
-        // Show Modal
+        // 1. Show Modal (Loading State)
         const modal = document.getElementById('submitModal');
         const loading = document.getElementById('modal-loading');
         const success = document.getElementById('modal-success');
+        const errorView = document.createElement('div');
+        errorView.id = 'modal-error';
+        errorView.style.display = 'none';
+        errorView.style.textAlign = 'center';
+        errorView.innerHTML = `<i data-lucide="x-circle" style="color: #ef4444; width: 64px; height: 64px;"></i><h2 style="margin-top: 15px;">Submission Failed</h2><p>Something went wrong. Please try again.</p><button onclick="location.reload()" style="margin-top: 20px; padding: 12px 24px; border-radius: 12px; border: none; background: #111; color: white; font-weight: 700;">Try Again</button>`;
+        loading.parentElement.appendChild(errorView);
         
         modal.classList.add('active');
-        
-        // Wait 5 seconds (simulating high-fidelity processing)
-        setTimeout(() => {
+        loading.style.display = 'block';
+        success.style.display = 'none';
+
+        try {
+            // 2. Gather All Data
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const contactDetails = JSON.parse(sessionStorage.getItem('househunt_contact_details') || '{}');
+            const city = localStorage.getItem('userCity') || 'Unknown';
+
+            if (!user.uid) {
+                alert("Please log in to post a property.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const formData = {
+                owner_id: user.uid,
+                owner_name: user.name || contactDetails.name,
+                title: `${propertyType.charAt(0).toUpperCase() + propertyType.slice(1)} for Sale in ${city}`,
+                description: desc,
+                property_type: propertyType.charAt(0).toUpperCase() + propertyType.slice(1),
+                intent: 'Buy',
+                price: document.getElementById('price')?.value || 0,
+                location_text: city,
+                city: city,
+                details: {}
+            };
+
+            // Collect all inputs
+            document.querySelectorAll('input[id], textarea[id]').forEach(input => {
+                if (['price', 'desc'].includes(input.id)) return;
+                if (input.type === 'checkbox') {
+                    formData.details[input.id] = input.checked;
+                } else {
+                    formData.details[input.id] = input.value;
+                }
+            });
+
+            // Collect all chips
+            document.querySelectorAll('.choice-grid').forEach(grid => {
+                const id = grid.dataset.id;
+                const active = Array.from(grid.querySelectorAll('.chip.active')).map(c => c.textContent);
+                formData.details[id] = grid.dataset.multi === 'true' ? active : active[0];
+            });
+
+            // 3. Send to Backend
+            const response = await fetch(`${BACKEND_URL}/api/properties`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) throw new Error('Failed to post property');
+
+            // 4. Show Success
             loading.style.display = 'none';
             success.style.display = 'block';
-            lucide.createIcons({ nodes: [success] });
-        }, 5000);
+            if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [success] });
+
+        } catch (err) {
+            console.error("Submission error:", err);
+            loading.style.display = 'none';
+            errorView.style.display = 'block';
+            if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [errorView] });
+        }
     });
 });
