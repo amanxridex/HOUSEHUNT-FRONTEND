@@ -68,9 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
 
+    const createImageUpload = () => `
+        <div class="form-group">
+            <label>Add Property Images (Max 6, Min 2 Required)</label>
+            <div class="image-upload-grid" id="imageGrid">
+                <div class="upload-box add-box" onclick="document.getElementById('fileInput').click()">
+                    <i data-lucide="plus"></i>
+                </div>
+                <!-- Previews will appear here -->
+            </div>
+            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+        </div>
+    `;
+
     // --- PROPERTY SCHEMAS ---
     const schemas = {
         apartment: [
+            {
+                title: 'Media & Photos', icon: 'image', content: `
+                ${createImageUpload()}
+            `},
             {
                 title: 'Property Configuration', icon: 'settings', content: `
                 ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
@@ -123,6 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         villa: [
             {
+                title: 'Media & Photos', icon: 'image', content: `
+                ${createImageUpload()}
+            `},
+            {
                 title: 'Villa Configuration', icon: 'settings', content: `
                 ${createInput('Bedrooms', 'beds', 'number', 'bed')}
                 ${createInput('Bathrooms', 'bath', 'number', 'droplet')}
@@ -156,6 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         independent: [
             {
+                title: 'Media & Photos', icon: 'image', content: `
+                ${createImageUpload()}
+            `},
+            {
                 title: 'House Configuration', icon: 'settings', content: `
                 ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
                 ${createInput('Built-up Area (Sqft)', 'area', 'number', 'maximize')}
@@ -176,6 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
             `}
         ],
         commercial: [
+            {
+                title: 'Media & Photos', icon: 'image', content: `
+                ${createImageUpload()}
+            `},
             {
                 title: 'Pricing & Terms', icon: 'banknote', content: `
                 ${createInput('Monthly Rent', 'rent', 'number', 'indian-rupee')}
@@ -207,6 +236,47 @@ document.addEventListener('DOMContentLoaded', () => {
     formContainer.innerHTML = activeSchema.map(s => renderSection(s.title, s.icon, s.content)).join('');
     lucide.createIcons();
 
+    // --- IMAGE HANDLING ---
+    let selectedFiles = [];
+    const fileInput = document.getElementById('fileInput');
+    const imageGrid = document.getElementById('imageGrid');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (selectedFiles.length + files.length > 6) {
+                alert('Max 6 images allowed');
+                return;
+            }
+
+            files.forEach(file => {
+                selectedFiles.push(file);
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const box = document.createElement('div');
+                    box.className = 'upload-box';
+                    box.innerHTML = `
+                        <img src="${event.target.result}" alt="preview">
+                        <button class="remove-btn" data-name="${file.name}">&times;</button>
+                    `;
+                    imageGrid.insertBefore(box, imageGrid.firstChild);
+                };
+                reader.readAsDataURL(file);
+            });
+            fileInput.value = ''; // Reset for next selection
+        });
+    }
+
+    if (imageGrid) {
+        imageGrid.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-btn')) {
+                const name = e.target.dataset.name;
+                selectedFiles = selectedFiles.filter(f => f.name !== name);
+                e.target.parentElement.remove();
+            }
+        });
+    }
+
     // --- INTERACTIVITY ---
     
     // Accordion Logic
@@ -215,10 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (header) {
             const section = header.parentElement;
             const wasActive = section.classList.contains('active');
-            
-            // Close others (optional - keeps it clean)
-            // document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            
             section.classList.toggle('active', !wasActive);
         }
 
@@ -244,6 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
 
     document.getElementById('submitBtn').addEventListener('click', async () => {
+        if (selectedFiles.length < 2) {
+            alert('Please upload at least 2 images of the property.');
+            return;
+        }
+
         const desc = document.getElementById('desc')?.value || '';
         if (desc.length < 50) {
             alert('Description must be at least 50 characters long.');
@@ -266,7 +337,19 @@ document.addEventListener('DOMContentLoaded', () => {
         success.style.display = 'none';
 
         try {
-            // 2. Gather All Data
+            // 2. Upload Images First
+            const imageFormData = new FormData();
+            selectedFiles.forEach(file => imageFormData.append('images', file));
+            
+            const uploadRes = await fetch(`${BACKEND_URL}/api/upload`, {
+                method: 'POST',
+                body: imageFormData
+            });
+            
+            if (!uploadRes.ok) throw new Error('Image upload failed');
+            const { urls } = await uploadRes.json();
+
+            // 3. Gather All Data
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const contactDetails = JSON.parse(sessionStorage.getItem('househunt_contact_details') || '{}');
             const city = localStorage.getItem('userCity') || 'Unknown';
@@ -291,12 +374,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 deposit: document.getElementById('deposit')?.value || 0,
                 location_text: city,
                 city: city,
+                images: urls, // Use uploaded URLs
                 details: {}
             };
 
             // Collect all inputs
             document.querySelectorAll('input[id], textarea[id]').forEach(input => {
-                if (['rent', 'deposit', 'desc'].includes(input.id)) return;
+                if (['rent', 'deposit', 'desc', 'fileInput'].includes(input.id)) return;
                 if (input.type === 'checkbox') {
                     formData.details[input.id] = input.checked;
                 } else {
