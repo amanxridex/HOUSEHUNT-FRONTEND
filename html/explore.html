@@ -61,6 +61,44 @@
                 <span>More</span>
             </a>
         </nav>
+
+        <!-- Filter Modal -->
+        <div class="filter-overlay" id="filterModal">
+            <div class="filter-bottom-sheet">
+                <div class="filter-header">
+                    <h3>Filters</h3>
+                    <button class="close-filter-btn" id="closeFilterBtn"><i data-lucide="x"></i></button>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-section">
+                        <h4>Sort By Price</h4>
+                        <div class="filter-options sort-options">
+                            <label class="radio-label">
+                                <input type="radio" name="sortPrice" value="highToLow"> High to Low
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="sortPrice" value="lowToHigh"> Low to High
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <h4>Location</h4>
+                        <select id="locationFilter" class="filter-select">
+                            <option value="all">All Locations</option>
+                            <option value="Noida">Noida</option>
+                            <option value="Gurgaon">Gurgaon</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Ghaziabad">Ghaziabad</option>
+                            <option value="Greater Noida">Greater Noida</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-footer">
+                    <button class="btn-reset" id="resetFiltersBtn">Reset</button>
+                    <button class="btn-apply" id="applyFiltersBtn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="../js/data.js"></script>

@@ -14,9 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterChips = document.querySelectorAll('.f-chip');
     const filterBtn = document.querySelector('.filter-btn');
     
+    // Filter Modal DOM Elements
+    const filterModal = document.getElementById('filterModal');
+    const closeFilterBtn = document.getElementById('closeFilterBtn');
+    const sortRadios = document.querySelectorAll('input[name="sortPrice"]');
+    const locationSelect = document.getElementById('locationFilter');
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    
     // State
     let searchTerm = '';
     let activeChip = 'All'; // 'All', 'Rent', 'Sale', 'Commercial'
+    let activeSort = null;
+    let activeLocation = 'all';
     
     // Initial State from URL
     if (urlTypeFilter) {
@@ -37,10 +47,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Filter button click
-    if (filterBtn) {
+    // Filter Modal Interactions
+    if (filterBtn && filterModal) {
         filterBtn.addEventListener('click', () => {
-            alert('Advanced filters coming soon!');
+            filterModal.classList.add('active');
+        });
+    }
+
+    if (closeFilterBtn && filterModal) {
+        closeFilterBtn.addEventListener('click', () => {
+            filterModal.classList.remove('active');
+        });
+    }
+
+    if (filterModal) {
+        filterModal.addEventListener('click', (e) => {
+            if (e.target === filterModal) {
+                filterModal.classList.remove('active');
+            }
+        });
+    }
+
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', () => {
+            const selectedSort = document.querySelector('input[name="sortPrice"]:checked');
+            activeSort = selectedSort ? selectedSort.value : null;
+            activeLocation = locationSelect ? locationSelect.value : 'all';
+            
+            filterModal.classList.remove('active');
+            renderProperties();
+        });
+    }
+
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', () => {
+            if (sortRadios) sortRadios.forEach(r => r.checked = false);
+            if (locationSelect) locationSelect.value = 'all';
+            activeSort = null;
+            activeLocation = 'all';
+            
+            filterModal.classList.remove('active');
+            renderProperties();
         });
     }
 
@@ -62,8 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Utility to parse price for sorting
+    function parsePrice(priceStr) {
+        if (!priceStr) return 0;
+        let str = priceStr.toString().replace(/,/g, '');
+        let num = parseFloat(str.replace(/[^0-9.]/g, ''));
+        if (isNaN(num)) return 0;
+        
+        if (str.includes('Cr')) return num * 10000000;
+        if (str.includes('L')) return num * 100000;
+        return num;
+    }
+
     function renderProperties() {
-        let filteredData = data;
+        let filteredData = [...data];
         let filterTitle = 'Properties';
 
         // 1. Apply Chip Filter
@@ -92,6 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
                        (p.type && p.type.toLowerCase().includes(searchTerm)) ||
                        (p.intent && p.intent.toLowerCase().includes(searchTerm));
             });
+        }
+
+        // 4. Apply Modal Location Filter
+        if (activeLocation && activeLocation !== 'all') {
+            filteredData = filteredData.filter(p => p.location && p.location.toLowerCase().includes(activeLocation.toLowerCase()));
+        }
+
+        // 5. Apply Modal Sorting
+        if (activeSort === 'lowToHigh') {
+            filteredData.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+        } else if (activeSort === 'highToLow') {
+            filteredData.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
         }
 
         // Clear container
