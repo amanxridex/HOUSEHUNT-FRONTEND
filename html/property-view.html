@@ -1,29 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Property Details | HouseHunt</title>
     <link rel="stylesheet" href="../css/property-view.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
     
-    <div id="propertyLoadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
-        <div class="loader" style="width: 48px; height: 48px; border: 5px solid #eee; border-bottom-color: var(--primary-color); border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite;"></div>
-        <h2 style="margin-top: 20px; color: var(--text-color); font-size: 1.2rem;">Fetching property details...</h2>
-        <p id="loadingQuote" style="margin-top: 10px; color: #64748b; font-style: italic; font-size: 0.9rem; max-width: 300px;"></p>
+    <div id="propertyLoadingScreen" class="premium-loader-wrapper">
+        <div class="premium-loader">
+            <div class="house-icon-wrapper">
+                <i data-lucide="home" class="house-icon"></i>
+            </div>
+            <div class="loader-pulse"></div>
+        </div>
+        <h2 class="loading-title">Discovering your dream home</h2>
+        <p id="loadingQuote" class="loading-quote"></p>
+        
         <style>
-            @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            .premium-loader-wrapper {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                z-index: 9999; display: flex; flex-direction: column; 
+                align-items: center; justify-content: center; text-align: center; padding: 20px;
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            }
+            .premium-loader {
+                position: relative; width: 80px; height: 80px; margin-bottom: 25px;
+                display: flex; align-items: center; justify-content: center;
+            }
+            .house-icon-wrapper {
+                position: relative; z-index: 2; width: 60px; height: 60px;
+                background: white; border-radius: 50%; display: flex;
+                align-items: center; justify-content: center;
+                box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.3);
+                animation: float 3s ease-in-out infinite;
+            }
+            .house-icon { width: 30px; height: 30px; color: #0066ff; }
+            .loader-pulse {
+                position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                width: 60px; height: 60px; background: rgba(0, 102, 255, 0.2);
+                border-radius: 50%; z-index: 1;
+                animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            }
+            .loading-title {
+                color: #0f172a; font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;
+                background: linear-gradient(90deg, #0f172a, #0066ff);
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            }
+            .loading-quote {
+                color: #64748b; font-style: italic; font-size: 0.95rem; max-width: 280px;
+                line-height: 1.5; opacity: 0.9;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            @keyframes pulse-ring {
+                0% { width: 60px; height: 60px; opacity: 1; }
+                100% { width: 140px; height: 140px; opacity: 0; }
+            }
         </style>
     </div>
     <div class="app-container" style="display: none;" id="mainContent">
-
-        <!-- Scrollable Content -->
-        <div class="content-wrapper">
             <!-- Image Gallery -->
             <div class="gallery-container">
                 <button class="floating-back" onclick="window.history.back()">
