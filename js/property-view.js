@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const loadingScreen = document.getElementById('propertyLoadingScreen');
         const mainContent = document.getElementById('mainContent');
         if (loadingScreen) loadingScreen.style.display = 'none';
-        if (mainContent) mainContent.style.display = 'block';
+        if (mainContent) mainContent.style.display = 'flex';
 
         // --- Basic Info ---
         document.querySelector('.price').textContent = `₹ ${p.price}`;
