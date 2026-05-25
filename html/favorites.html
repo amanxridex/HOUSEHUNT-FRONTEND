@@ -43,72 +43,7 @@
         </div>
 
         <!-- Bottom Navigation -->
-                <nav class="bottom-nav">
-            <a href="../index.html" class="nav-item">
-                <i data-lucide="home"></i>
-                <span>Home</span>
-            </a>
-            <a href="my-properties.html" class="nav-item">
-                <i data-lucide="layout-list"></i>
-                <span>My Properties</span>
-            </a>
-            <a href="ai.html" class="nav-item">
-                <div class="ai-video-container" style="width: 23px; height: 23px; display: flex; align-items: center; justify-content: center;">
-                    <video src="../assets/huntai.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
-                </div>
-                <span>HuntAI</span>
-            </a>
-            <a href="messages.html" class="nav-item">
-                <i data-lucide="message-square"></i>
-                <span>Messages</span>
-            </a>
-            <a href="profile.html" class="nav-item">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>My Favorites | HouseHunt</title>
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/profile.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        .favorites-container {
-            padding: 20px;
-            padding-bottom: 100px;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-        .empty-state i {
-            color: #ddd;
-            margin-bottom: 15px;
-        }
-    </style>
-    <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-</head>
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="page-header" style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee;">
-            <button onclick="history.back()" style="background: none; border: none; font-size: 20px; color: #333;"><i data-lucide="arrow-left"></i></button>
-            <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">My Favorites</h1>
-        </header>
-
-        <div class="favorites-container" id="favoritesGrid">
-            <!-- Loading -->
-            <div class="empty-state">
-                <i data-lucide="loader" class="spin"></i>
-                <p>Loading your favorites...</p>
-            </div>
-        </div>
-
-        <!-- Bottom Navigation -->
-                <nav class="bottom-nav">
+        <nav class="bottom-nav">
             <a href="../index.html" class="nav-item">
                 <i data-lucide="home"></i>
                 <span>Home</span>
@@ -158,7 +93,7 @@
             lucide.createIcons();
 
             try {
-                // Fetch all properties to filter locally (since no RPC for IN queries is easily exposed via REST GET here without PostgREST syntax)
+                // Fetch all properties to filter locally
                 const response = await fetch('https://backend.househunt.live/api/properties');
                 if (!response.ok) throw new Error('Failed to fetch properties');
                 const allProps = await response.json();
