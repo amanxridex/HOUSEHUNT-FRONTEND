@@ -129,8 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        const details = p.details || {};
-        
         // Define mappings for important fields
         const statMappings = [
             { key: 'area', label: 'Sqft', icon: 'maximize' },
