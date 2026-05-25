@@ -51,10 +51,23 @@
 
                 <form id="chat-form">
                     <div class="form-group">
-                        <label for="issue-text" style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;">Describe your issue</label>
-                        <textarea id="issue-text" rows="5" placeholder="I am facing an issue with..." required></textarea>
+                        <label for="issue-select" style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;">What do you need help with?</label>
+                        <select id="issue-select" required style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; font-size: 1rem; outline: none; background: white; appearance: none;">
+                            <option value="" disabled selected>Select an issue...</option>
+                            <option value="Payment or Subscription Issue">Payment or Subscription Issue</option>
+                            <option value="Property not getting listed">Property not getting listed</option>
+                            <option value="Report a scam or fake property">Report a scam or fake property</option>
+                            <option value="Unable to contact a seller/buyer">Unable to contact a seller/buyer</option>
+                            <option value="Account or Profile issue">Account or Profile issue</option>
+                            <option value="Bug or Technical Issue">Bug or Technical Issue</option>
+                            <option value="Other Inquiry">Other Inquiry</option>
+                        </select>
+                        <!-- Custom dropdown arrow -->
+                        <div style="position: relative; margin-top: -38px; margin-right: 15px; text-align: right; pointer-events: none;">
+                            <i data-lucide="chevron-down" style="color: #666; width: 20px; height: 20px;"></i>
+                        </div>
                     </div>
-                    <button type="submit" class="primary-btn" style="width: 100%; margin-top: 15px;">
+                    <button type="submit" class="primary-btn" style="width: 100%; margin-top: 30px;">
                         <i data-lucide="send" style="width: 18px; height: 18px;"></i> Open Ticket & Start Chat
                     </button>
                 </form>

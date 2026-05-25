@@ -42,9 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatForm) {
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const issueText = document.getElementById('issue-text').value;
+            const issueSelect = document.getElementById('issue-select');
+            const issueText = issueSelect.value;
             
-            if (!issueText.trim()) return;
+            if (!issueText) return;
 
             const submitBtn = chatForm.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
