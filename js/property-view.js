@@ -129,26 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        // Define mappings for important fields
-        const statMappings = [
-            { key: 'area', label: 'Sqft', icon: 'maximize' },
-            { key: 'bhk', label: '', icon: 'bed' },
-            { key: 'beds', label: 'Beds', icon: 'bed' },
-            { key: 'bath', label: 'Bath', icon: 'bath' },
-            { key: 'floor', label: 'Floor', icon: 'layers', prefix: 'Floor ' },
-            { key: 'facing', label: 'Facing', icon: 'navigation' },
-            { key: 'furnishing', label: '', icon: 'armchair' },
-            { key: 'plot_area', label: 'Plot Area', icon: 'map' }
-        ];
-
-        statMappings.forEach(m => {
-            if (details[m.key]) {
-                let value = details[m.key];
-                if (m.prefix) value = m.prefix + value;
-                if (m.label) value = value + ' ' + m.label;
-                addStat(statsGrid, m.icon, value);
-            }
-        });
 
         // --- Dynamic Amenities ---
         const amenityGrid = document.querySelector('.amenity-grid');
