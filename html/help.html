@@ -35,9 +35,12 @@
             <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Help Center</h1>
         </header>
 
-        <div id="ticket-banner" style="display: none; background: #e0f2fe; color: #0284c7; padding: 12px 20px; margin: 15px 20px 0; border-radius: 8px; font-weight: 600; font-size: 0.9rem; align-items: center; gap: 10px;">
-            <i data-lucide="ticket" style="width: 18px; height: 18px;"></i>
-            <span id="ticket-text"></span>
+        <div id="ticket-banner" style="display: none; background: #e0f2fe; color: #0284c7; padding: 12px 20px; margin: 15px 20px 0; border-radius: 8px; font-weight: 600; font-size: 0.9rem; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i data-lucide="ticket" style="width: 18px; height: 18px;"></i>
+                <span id="ticket-text"></span>
+            </div>
+            <button onclick="window.location.href='ticket-chat.html'" style="background:#0284c7; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:600; cursor:pointer;">Open Chat</button>
         </div>
 
         <div class="help-content">
@@ -78,7 +81,7 @@
                     const banner = document.getElementById('ticket-banner');
                     const text = document.getElementById('ticket-text');
                     if (ticket && ticket.id) {
-                        text.textContent = `Ticket Opened: #${ticket.id} - An agent will contact you soon.`;
+                        text.textContent = `Active Ticket: ${ticket.id}`;
                         banner.style.display = 'flex';
                     }
                 } catch(e) {}
