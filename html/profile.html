@@ -13,6 +13,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="../js/transitions.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Edit Profile Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .edit-modal {
+            background: #fff; width: 90%; max-width: 400px; border-radius: 20px;
+            padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .edit-modal { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; font-size: 1.2rem; color: #111; }
+        .close-modal { background: none; border: none; font-size: 24px; color: #666; cursor: pointer; padding: 0; line-height: 1; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 5px; font-weight: 500; }
+        .form-group input { 
+            width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 12px;
+            font-size: 0.95rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus { border-color: #0066ff; }
+        .form-group input:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+        
+        .save-btn {
+            background: #0066ff; color: #fff; width: 100%; padding: 14px;
+            border: none; border-radius: 12px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; margin-top: 10px; transition: background 0.2s;
+        }
+        .save-btn:active { background: #0052cc; }
+        .save-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    </style>
     <script type="module" src="../js/firebase-auth.js"></script>
 </head>
 <body>
@@ -28,7 +65,7 @@
             </div>
             <h1 class="user-name" id="profileName">Aman Mishra</h1>
             <p class="user-handle" id="userHandle">Premium Member</p>
-            <button class="edit-profile-btn" onclick="window.location.href='settings.html'">Edit Profile</button>
+            <button class="edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
         </div>
 
         <!-- Menu Section -->
@@ -124,6 +161,92 @@
                 window.location.href = 'login.html';
             }
         };
+    </script>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="edit-modal">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-modal" onclick="closeEditProfileModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Photo URL (Optional)</label>
+                <input type="text" id="editPhoto" placeholder="https://example.com/photo.jpg">
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editName" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="editEmail" disabled>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="editPhone" placeholder="+91 9876543210">
+            </div>
+            <button class="save-btn" id="saveProfileBtn" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://backend.househunt.live';
+        
+        function openEditProfileModal() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhoto').value = user.photo || '';
+            document.getElementById('editPhone').value = user.phone || ''; // Fetch if we have it locally
+            document.getElementById('editProfileModal').classList.add('active');
+        }
+        
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        }
+
+        async function saveProfile() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.uid) return alert('You must be logged in.');
+
+            const newName = document.getElementById('editName').value.trim();
+            const newPhone = document.getElementById('editPhone').value.trim();
+            const newPhoto = document.getElementById('editPhoto').value.trim();
+            const btn = document.getElementById('saveProfileBtn');
+            
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                // Update Backend
+                const res = await fetch(`${BACKEND_URL}/api/user/profile/${user.uid}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: newName, phone: newPhone, email: user.email, photo: newPhoto })
+                });
+                
+                if (!res.ok) throw new Error('Failed to update profile');
+                
+                // Update LocalStorage
+                user.name = newName;
+                if (newPhoto) user.photo = newPhoto;
+                user.phone = newPhone;
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                // Update UI immediately
+                if (newName) document.getElementById('profileName').innerText = newName;
+                if (newPhoto) document.getElementById('profileAvatar').src = newPhoto;
+                
+                closeEditProfileModal();
+            } catch (err) {
+                console.error(err);
+                alert('Error updating profile');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Changes';
+            }
+        }
     </script>
     <script src="../js/tracker.js"></script>
 </body>
