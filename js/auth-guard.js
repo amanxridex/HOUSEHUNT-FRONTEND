@@ -26,9 +26,9 @@ onAuthStateChanged(auth, (user) => {
     if (!user && !isLoginPage) {
         // Not logged in -> Redirect to login
         localStorage.removeItem('user');
-        window.location.href = 'html/login.html';
+        window.location.href = '/html/login.html';
     } else if (user && isLoginPage) {
         // Logged in but on login page -> Redirect to home
-        window.location.href = '../index.html';
+        window.location.href = '/';
     }
 });

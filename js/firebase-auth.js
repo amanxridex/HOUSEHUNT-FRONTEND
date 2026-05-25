@@ -26,7 +26,7 @@ window.signInWithGoogle = async () => {
             email: user.email,
             photo: user.photoURL
         }));
-        window.location.href = '../index.html';
+        window.location.href = '/';
     } catch (error) {
         console.error("Auth Error:", error.code, error.message);
         alert("Authentication failed: " + error.message);
