@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 800); // Small delay to ensure skeletons are ready
     }
 
-    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    const BACKEND_URL = 'https://backend.househunt.live';
     const featuredContainer = document.getElementById('featured-listings-container');
     
     let data = window.propertyData; // Fallback to mock data

@@ -23,71 +23,25 @@
         </header>
 
         <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab active">Active (2)</div>
-            <div class="tab">Pending</div>
-            <div class="tab">Archived</div>
+        <div class="tabs" id="property-tabs">
+            <div class="tab active" data-tab="active">Active</div>
+            <div class="tab" data-tab="pending">Pending</div>
+            <div class="tab" data-tab="drafts">Drafts</div>
         </div>
 
         <!-- Property List -->
-        <div class="content-wrapper">
-            <!-- Property Card 1 -->
-            <div class="property-card">
-                <div class="card-img-container">
-                    <img src="../assets/house.png" alt="Property" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
-                    <div class="status-badge active">Live</div>
-                </div>
-                <div class="card-info">
-                    <div class="price">₹ 85.50 L</div>
-                    <h3>Modern 3BHK Apartment</h3>
-                    <p class="loc"><i data-lucide="map-pin"></i> Sector 62, Noida</p>
-                    <div class="stats">
-                        <span><i data-lucide="eye"></i> 124 Views</span>
-                        <span><i data-lucide="message-circle"></i> 8 Leads</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="edit-btn">Edit</button>
-                    <button class="more-btn"><i data-lucide="more-vertical"></i></button>
-                </div>
+        <div class="content-wrapper" id="properties-container">
+            <!-- Properties will be dynamically rendered here -->
+            <div class="loading-state" id="loading-spinner" style="text-align: center; padding: 40px; color: #666;">
+                <i data-lucide="loader-2" class="spin" style="animation: spin 1s linear infinite;"></i>
+                <p style="margin-top: 10px;">Loading properties...</p>
             </div>
-
-            <!-- Property Card 2 -->
-            <div class="property-card">
-                <div class="card-img-container">
-                    <img src="../assets/office.png" alt="Property">
-                    <div class="status-badge active">Live</div>
-                </div>
-                <div class="card-info">
-                    <div class="price">₹ 1.25 Cr</div>
-                    <h3>Corporate Office Space</h3>
-                    <p class="loc"><i data-lucide="map-pin"></i> Knowledge Park, G. Noida</p>
-                    <div class="stats">
-                        <span><i data-lucide="eye"></i> 45 Views</span>
-                        <span><i data-lucide="message-circle"></i> 2 Leads</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="edit-btn">Edit</button>
-                    <button class="more-btn"><i data-lucide="more-vertical"></i></button>
-                </div>
-            </div>
-
-            <!-- Property Card 3 (Pending) -->
-            <div class="property-card pending">
-                <div class="card-img-container">
-                    <img src="../assets/villa.png" alt="Property" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
-                    <div class="status-badge warn">Pending Review</div>
-                </div>
-                <div class="card-info">
-                    <div class="price">₹ 2.40 Cr</div>
-                    <h3>Luxury 4BHK Villa</h3>
-                    <p class="loc"><i data-lucide="map-pin"></i> Jaypee Greens, Noida</p>
-                </div>
-                <div class="card-actions">
-                    <button class="edit-btn">Check Status</button>
-                </div>
-            </div>
+            
+            <style>
+                @keyframes spin { 100% { transform: rotate(360deg); } }
+                .empty-state { text-align: center; padding: 40px 20px; color: #666; }
+                .empty-state h3 { color: #111; margin: 15px 0 5px; }
+            </style>
         </div>
 
         <!-- Floating Post Button -->
@@ -125,5 +79,6 @@
     <script>
         lucide.createIcons();
     </script>
+    <script src="../js/my-properties.js"></script>
 </body>
 </html>

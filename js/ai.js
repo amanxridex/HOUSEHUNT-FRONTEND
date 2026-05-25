@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const suggestions = document.querySelectorAll('.suggestion');
 
-    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    const BACKEND_URL = 'https://backend.househunt.live';
 
     const addMessage = (text, isUser = false, isTyping = false) => {
         const msgDiv = document.createElement('div');

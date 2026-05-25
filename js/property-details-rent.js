@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firstSection) firstSection.classList.add('active');
 
     // --- SUBMIT LOGIC ---
-    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    const BACKEND_URL = 'https://backend.househunt.live';
 
     document.getElementById('submitBtn').addEventListener('click', async () => {
         if (selectedFiles.length < 2) {
@@ -363,19 +363,22 @@ document.addEventListener('DOMContentLoaded', () => {
             let dbPropertyType = propertyType.charAt(0).toUpperCase() + propertyType.slice(1);
             if (dbPropertyType === 'Independent') dbPropertyType = 'Independent House';
 
+            let draftId = sessionStorage.getItem('househunt_draft_id');
+
             const formData = {
                 owner_id: user.uid,
                 title: `${dbPropertyType} for Rent in ${city}`,
                 description: desc,
                 property_type: dbPropertyType,
                 intent: 'Rent',
-                price: parseFloat(document.getElementById('rent')?.value || 0),
-                deposit: parseFloat(document.getElementById('deposit')?.value || 0),
+                price: parseFloat(document.getElementById('rent')?.value || document.getElementById('price')?.value || 0),
                 location_text: city,
                 city: city,
                 images: urls,
                 details: {}
             };
+
+            if (draftId) formData.id = draftId;
 
             // Collect all inputs
             document.querySelectorAll('input[id], textarea[id]').forEach(input => {
@@ -407,6 +410,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loading.style.display = 'none';
             success.style.display = 'block';
             if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [success] });
+
+            // 5. Clear draft
+            sessionStorage.removeItem('househunt_draft_id');
+            sessionStorage.removeItem('househunt_basic_details');
+            sessionStorage.removeItem('househunt_contact_details');
 
         } catch (err) {
             console.error("Submission error:", err);

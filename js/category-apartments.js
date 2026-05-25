@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    const BACKEND_URL = 'https://backend.househunt.live';
     let PROPERTIES = [];
 
     const filterContent = document.getElementById('filterContent');

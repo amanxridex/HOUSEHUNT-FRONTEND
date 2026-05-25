@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const BACKEND_URL = 'https://househunt-backend-h19r.onrender.com';
+    const BACKEND_URL = 'https://backend.househunt.live';
     const urlParams = new URLSearchParams(window.location.search);
     const propertyId = urlParams.get('id');
 

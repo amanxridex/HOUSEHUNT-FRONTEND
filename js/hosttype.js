@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Continue button handler
-    continueBtn.addEventListener('click', (e) => {
+    continueBtn.addEventListener('click', async (e) => {
         // Create ripple on button
         createRipple(e, continueBtn);
 
@@ -121,11 +121,41 @@ document.addEventListener('DOMContentLoaded', () => {
         // Store in sessionStorage for next step
         sessionStorage.setItem('househunt_basic_details', JSON.stringify(formData));
 
-        // Navigate to next step (uncomment when ready)
-        window.location.href = 'contact.html';
+        // Draft handling via Backend
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.uid) {
+            alert('Please login first to save your draft.');
+            window.location.href = 'login.html';
+            return;
+        }
 
-        // For demo: show toast
-        showToast('Saved! Proceeding to Step 2...');
+        let draftId = sessionStorage.getItem('househunt_draft_id');
+        const BACKEND_URL = 'https://backend.househunt.live';
+        
+        const draftPayload = {
+            owner_id: user.uid,
+            property_type: state.type,
+            intent: state.intent,
+            details: { basic_details: formData }
+        };
+        if (draftId) draftPayload.id = draftId;
+
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/properties/draft`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(draftPayload)
+            });
+            if (!res.ok) throw new Error('Failed to save draft');
+            const data = await res.json();
+            
+            sessionStorage.setItem('househunt_draft_id', data.id);
+            window.location.href = 'contact.html';
+        } catch (error) {
+            console.error('Error saving draft:', error);
+            // Fallback to next step anyway if backend fails
+            window.location.href = 'contact.html';
+        }
     });
 
     // Toast notification

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('input');
 
     // Handle button click
-    continueBtn.addEventListener('click', () => {
+    continueBtn.addEventListener('click', async () => {
         let isValid = true;
         const formData = {};
 
@@ -25,6 +25,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isValid) {
             console.log('Contact info saved:', formData);
             sessionStorage.setItem('househunt_contact_details', JSON.stringify(formData));
+            
+            let draftId = sessionStorage.getItem('househunt_draft_id');
+            if (draftId) {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const BACKEND_URL = 'https://backend.househunt.live';
+                
+                // Fetch the existing draft details first (we'll just send an update for details)
+                // In a perfect world we'd merge, but backend just updates.
+                // Wait, if we just send `details` we might overwrite basic_details.
+                // Let's send the merged details.
+                const basicDetails = JSON.parse(sessionStorage.getItem('househunt_basic_details') || '{}');
+                
+                try {
+                    await fetch(`${BACKEND_URL}/api/properties/draft`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: draftId,
+                            owner_id: user.uid,
+                            details: {
+                                basic_details: basicDetails,
+                                contact_details: formData
+                            }
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error updating draft:', error);
+                }
+            }
             
             // For now, let's just go back home or show success
             showToast('Contact info saved successfully!');
