@@ -37,13 +37,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (myTicket.status === 'resolved') {
                     ticketStatus.textContent = '● Ticket Resolved';
                     ticketStatus.style.color = '#94a3b8';
-                    chatInput.placeholder = 'Ticket resolved...';
-                    chatInput.disabled = true;
-                    sendBtn.disabled = true;
+                    
+                    const chatInputArea = document.getElementById('chatInputArea');
+                    const feedbackArea = document.getElementById('feedbackArea');
+                    if (chatInputArea) chatInputArea.style.display = 'none';
+                    if (feedbackArea) {
+                        if (myTicket.rating) {
+                            feedbackArea.innerHTML = `
+                                <div style="text-align: center;">
+                                    <i data-lucide="check-circle" style="color: #10b981; width: 32px; height: 32px; margin-bottom: 10px;"></i>
+                                    <p style="margin:0; font-weight: 600; color: #10b981;">Thank you for your feedback!</p>
+                                </div>
+                            `;
+                        }
+                        feedbackArea.style.display = 'flex';
+                        lucide.createIcons();
+                    }
                 } else {
                     ticketStatus.textContent = '● Agent Online';
-                    chatInput.disabled = false;
-                    sendBtn.disabled = false;
+                    const chatInputArea = document.getElementById('chatInputArea');
+                    if (chatInputArea) chatInputArea.style.display = 'flex';
                 }
                 
                 fetchMessages();
@@ -70,7 +83,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const chatInputArea = document.getElementById('chatInputArea');
                 const feedbackArea = document.getElementById('feedbackArea');
                 if (chatInputArea) chatInputArea.style.display = 'none';
-                if (feedbackArea) feedbackArea.style.display = 'flex';
+                
+                if (feedbackArea) {
+                    if (statusData.rating) {
+                        feedbackArea.innerHTML = `
+                            <div style="text-align: center;">
+                                <i data-lucide="check-circle" style="color: #10b981; width: 32px; height: 32px; margin-bottom: 10px;"></i>
+                                <p style="margin:0; font-weight: 600; color: #10b981;">Thank you for your feedback!</p>
+                            </div>
+                        `;
+                    }
+                    feedbackArea.style.display = 'flex';
+                    lucide.createIcons();
+                }
             }
 
             const res = await fetch(`${BACKEND_URL}/api/tickets/${dbTicketId}/messages`);
