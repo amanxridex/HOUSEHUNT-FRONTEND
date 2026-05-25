@@ -40,15 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('plots-container').innerHTML = '';
 
         if (liveData && liveData.length > 0) {
-            data = liveData.map(p => ({
-                id: p.id,
-                type: p.type,
-                price: p.price,
-                location: p.location,
-                image: p.images ? p.images[0] : 'assets/mainappicon.png',
-                beds: p.beds || '',
-                tag: p.status === 'approved' ? 'Verified' : 'New'
-            }));
+            // Data is now mapped later before rendering
         }
     } catch (e) {
         console.warn("Backend unavailable, using mock data.", e);
@@ -255,7 +247,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         const liveData = await response.json();
         
         if (liveData && liveData.length > 0) {
-            allData = liveData;
+            // Map Supabase columns to UI fields
+            allData = liveData.map(p => {
+                // Ensure formatting for price
+                let displayPrice = p.price;
+                if (typeof p.price === 'number') {
+                    if (p.intent === 'Rent') {
+                        displayPrice = `₹ ${p.price.toLocaleString()}/mo`;
+                    } else {
+                        const inCr = p.price / 10000000;
+                        if (inCr >= 1) displayPrice = `₹ ${inCr.toFixed(2)} Cr`;
+                        else displayPrice = `₹ ${(p.price / 100000).toFixed(2)} L`;
+                    }
+                } else if (!displayPrice || displayPrice.toString().trim() === '') {
+                    displayPrice = 'Price on Request';
+                }
+
+                return {
+                    id: p.id,
+                    type: p.property_type || p.type || 'Property',
+                    intent: p.intent || 'Buy',
+                    price: displayPrice,
+                    location: p.location_text || p.city || p.location || 'Location Not Specified',
+                    image: (p.images && p.images.length > 0) ? p.images[0] : 'assets/mainappicon.png',
+                    beds: (p.details && (p.details.bedrooms || p.details.beds)) ? `${p.details.bedrooms || p.details.beds}` : '',
+                    tag: p.status === 'approved' ? 'Verified' : 'New'
+                };
+            });
         } else {
             allData = window.propertyData;
         }
