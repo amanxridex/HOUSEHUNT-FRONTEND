@@ -86,39 +86,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (fullDetailsGrid) {
             fullDetailsGrid.innerHTML = '';
             
-            // Define all possible fields we want to show, if missing we show N/A
-            const allPossibleFields = [
-                { id: 'property_type', label: 'Property Type', val: p.property_type },
-                { id: 'intent', label: 'Intent', val: p.intent },
-                { id: 'furnishing', label: 'Furnishing', val: details.furnishing },
-                { id: 'bedrooms', label: 'Bedrooms', val: details.bedrooms || details.beds },
-                { id: 'bathrooms', label: 'Bathrooms', val: details.bathrooms || details.bath },
-                { id: 'balconies', label: 'Balconies', val: details.balconies },
-                { id: 'floorNumber', label: 'Floor Number', val: details.floorNumber || details.floor },
-                { id: 'totalFloors', label: 'Total Floors', val: details.totalFloors },
-                { id: 'carpetArea', label: 'Carpet Area (sq.ft)', val: details.carpetArea || details.area },
-                { id: 'builtUpArea', label: 'Built Up Area (sq.ft)', val: details.builtUpArea },
-                { id: 'plotArea', label: 'Plot Area (sq.yd)', val: details.plotArea || details.plot_area },
-                { id: 'length', label: 'Length (ft)', val: details.length },
-                { id: 'width', label: 'Width (ft)', val: details.width },
-                { id: 'boundaryWall', label: 'Boundary Wall', val: details.boundaryWall },
-                { id: 'facing', label: 'Facing', val: details.facing },
-                { id: 'possessionStatus', label: 'Possession Status', val: details.possessionStatus },
-                { id: 'washrooms', label: 'Washrooms', val: details.washrooms },
-                { id: 'pantry', label: 'Pantry', val: details.pantry }
+            const labelMap = {
+                bhk: 'BHK Type', area: 'Area (Sqft)', carpet_area: 'Carpet Area (Sqft)', built_up: 'Built-up Area (Sqft)',
+                plot_area: 'Plot Area', total_floors: 'Total Floors', floor: 'Floor Number', facing: 'Facing',
+                furnishing: 'Furnishing', rent: 'Monthly Rent', negotiable: 'Negotiable', deposit: 'Security Deposit',
+                maintenance: 'Maintenance', maint: 'Maintenance', brokerage: 'Brokerage', parking_fee: 'Parking Charges',
+                electricity: 'Electricity', water: 'Water', avail_date: 'Available From', lease_duration: 'Lease (Months)',
+                lease: 'Lease (Years)', notice_period: 'Notice Period (Days)', status: 'Status', tenant_pref: 'Preferred Tenant',
+                gender: 'Gender Pref', occupancy: 'Occupancy Limit', food: 'Food Preference', pets: 'Pets Allowed',
+                gated: 'Gated Society', beds: 'Bedrooms', bath: 'Bathrooms', pool: 'Private Pool', garden: 'Private Garden',
+                servant: 'Servant Room', clubhouse: 'Clubhouse Access', gym: 'Home Gym', theatre: 'Home Theatre',
+                gst: 'GST Applicable', escalation: 'Rent Escalation %', power: 'Power Load (kW)', washrooms: 'Washrooms',
+                fire: 'Fire Safety Compliant', suitable: 'Suitable For', occupancy_status: 'Occupancy Status', roi: 'Expected ROI %',
+                price_unit: 'Price per Sq.Ft/Yd', plot_type: 'Plot Type', title_clear: 'Title Clear', registry: 'Registry Available',
+                authority: 'Approved By', road: 'Road Width (Ft)', boundary: 'Boundary Wall', sqft_price: 'Price per Sq. Ft.',
+                ownership: 'Ownership Type', age: 'Property Age', possession: 'Possession', rera: 'RERA Registered',
+                loan_approved: 'Bank Loan Approved', under_loan: 'Currently Under Loan', society: 'Society Name'
+            };
+
+            const dynamicFields = [
+                { label: 'Property Type', val: p.property_type },
+                { label: 'Intent', val: p.intent }
             ];
 
-            allPossibleFields.forEach(field => {
-                // If it's a plot, skip apartment stuff. But user said "show all of them with details if not avaulble then show N/A"
-                // To avoid showing 20 fields of N/A that don't apply to this property type, we should ideally filter, 
-                // but user explicitly said: "jitni fields hai show all of them with details if not avaulble then show N/A"
+            Object.entries(details).forEach(([key, val]) => {
+                if (key === 'desc' || Array.isArray(val)) return;
                 
-                let displayVal = field.val;
-                if (displayVal === undefined || displayVal === null || displayVal === '') {
-                    displayVal = 'N/A';
+                if (labelMap[key]) {
+                     dynamicFields.push({ label: labelMap[key], val: val });
+                } else if (typeof val !== 'object' && typeof val !== 'boolean') {
+                     dynamicFields.push({ label: key.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '), val: val });
                 }
+            });
+
+            dynamicFields.forEach(field => {
+                let displayVal = field.val;
+                if (displayVal === undefined || displayVal === null || displayVal === '') return;
                 
-                // Format boolean values
                 if (displayVal === true || displayVal === 'true') displayVal = 'Yes';
                 if (displayVal === false || displayVal === 'false') displayVal = 'No';
 
@@ -128,7 +132,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fullDetailsGrid.appendChild(row);
             });
         }
-
 
         // --- Dynamic Amenities ---
         const amenityGrid = document.querySelector('.amenity-grid');
