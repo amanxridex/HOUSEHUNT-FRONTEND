@@ -1,8 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const resultsContainer = document.getElementById('explore-results');
-    const data = window.propertyData;
+    
+    if (!resultsContainer) return;
 
-    if (!resultsContainer || !data) return;
+    let data = [];
+    try {
+        const response = await fetch('https://backend.househunt.live/api/properties');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const dbProps = await response.json();
+        
+        // Map database properties to the expected format
+        data = dbProps.map(p => ({
+            id: p.id,
+            type: p.property_type,
+            intent: p.intent,
+            price: '₹ ' + p.price.toLocaleString('en-IN'),
+            location: p.location_text || p.city || 'Unknown Location',
+            area: p.details?.area ? `${p.details.area} Sqft` : (p.details?.plot_area ? `${p.details.plot_area} Sqft` : ''),
+            beds: p.details?.bhk || (p.details?.beds ? `${p.details.beds} Beds` : ''),
+            image: p.images && p.images.length > 0 ? p.images[0] : '../assets/househuntlogo.png',
+            rawPrice: p.price
+        }));
+    } catch (e) {
+        console.error("Failed to load real properties, falling back to mock", e);
+        data = window.propertyData || [];
+        data = data.map(p => ({...p, rawPrice: parsePrice(p.price)}));
+    }
 
     // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,12 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial State from URL
     if (urlTypeFilter) {
-        if (['Commercial Office', 'Shop', 'Showroom', 'Warehouse', 'Co-working'].some(t => t.toLowerCase().includes(urlTypeFilter.toLowerCase()))) {
+        if (['Commercial', 'Shop', 'Showroom', 'Warehouse', 'Co-working'].some(t => t.toLowerCase().includes(urlTypeFilter.toLowerCase()))) {
             activeChip = 'Commercial';
         }
     } else if (urlIntentFilter) {
         if (urlIntentFilter.toLowerCase() === 'rent') activeChip = 'Rent';
-        if (urlIntentFilter.toLowerCase() === 'buy' || urlIntentFilter.toLowerCase() === 'sale') activeChip = 'Sale';
+        if (urlIntentFilter.toLowerCase() === 'buy' || urlIntentFilter.toLowerCase() === 'sale' || urlIntentFilter.toLowerCase() === 'sell') activeChip = 'Sale';
     }
 
     // Update chips UI based on initial state
@@ -109,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Utility to parse price for sorting
+    // Utility to parse price for sorting (legacy fallback)
     function parsePrice(priceStr) {
         if (!priceStr) return 0;
         let str = priceStr.toString().replace(/,/g, '');
@@ -160,9 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Apply Modal Sorting
         if (activeSort === 'lowToHigh') {
-            filteredData.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+            filteredData.sort((a, b) => a.rawPrice - b.rawPrice);
         } else if (activeSort === 'highToLow') {
-            filteredData.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+            filteredData.sort((a, b) => b.rawPrice - a.rawPrice);
         }
 
         // Clear container
@@ -177,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render cards
         filteredData.forEach(prop => {
             const item = document.createElement('a');
-            item.href = 'property-view.html';
+            item.href = \`property-view.html?id=\${prop.id}\`;
             item.className = 'list-item';
             
             item.innerHTML = `
