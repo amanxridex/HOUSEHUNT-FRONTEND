@@ -35,6 +35,11 @@
             <h1 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Help Center</h1>
         </header>
 
+        <div id="ticket-banner" style="display: none; background: #e0f2fe; color: #0284c7; padding: 12px 20px; margin: 15px 20px 0; border-radius: 8px; font-weight: 600; font-size: 0.9rem; align-items: center; gap: 10px;">
+            <i data-lucide="ticket" style="width: 18px; height: 18px;"></i>
+            <span id="ticket-text"></span>
+        </div>
+
         <div class="help-content">
             <div class="faq-item">
                 <h3>How to post a property?</h3>
@@ -55,7 +60,7 @@
                     <a href="mailto:support@househunt.live" style="flex: 1; background: #fff; padding: 12px; border-radius: 10px; color: #0066ff; text-decoration: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #0066ff20; font-size: 0.9rem; cursor: pointer;">
                         <i data-lucide="mail" style="width: 18px; height: 18px;"></i> Email Us
                     </a>
-                    <button onclick="alert('Connecting you to a Live Agent...')" style="flex: 1; background: #0066ff; padding: 12px; border-radius: 10px; color: #fff; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                    <button onclick="window.location.href='livechat.html'" style="flex: 1; background: #0066ff; padding: 12px; border-radius: 10px; color: #fff; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
                         <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i> Live Chat
                     </button>
                 </div>
@@ -63,6 +68,22 @@
             </div>
         </div>
     </div>
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            const ticketData = localStorage.getItem('househunt_active_ticket');
+            if (ticketData) {
+                try {
+                    const ticket = JSON.parse(ticketData);
+                    const banner = document.getElementById('ticket-banner');
+                    const text = document.getElementById('ticket-text');
+                    if (ticket && ticket.id) {
+                        text.textContent = `Ticket Opened: #${ticket.id} - An agent will contact you soon.`;
+                        banner.style.display = 'flex';
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
 </body>
 </html>
