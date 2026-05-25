@@ -163,6 +163,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.querySelector('.seller-info h4').textContent = p.owner_name;
         }
 
+        // --- Wishlist Button Logic ---
+        const wishlistBtn = document.querySelector('.wishlist-btn');
+        if (wishlistBtn) {
+            const favorites = JSON.parse(localStorage.getItem('househunt_favorites') || '[]');
+            if (favorites.includes(propertyId)) {
+                wishlistBtn.classList.add('active');
+            }
+
+            wishlistBtn.addEventListener('click', () => {
+                const currentFavs = JSON.parse(localStorage.getItem('househunt_favorites') || '[]');
+                if (currentFavs.includes(propertyId)) {
+                    // Remove
+                    const newFavs = currentFavs.filter(id => id !== propertyId);
+                    localStorage.setItem('househunt_favorites', JSON.stringify(newFavs));
+                    wishlistBtn.classList.remove('active');
+                } else {
+                    // Add
+                    currentFavs.push(propertyId);
+                    localStorage.setItem('househunt_favorites', JSON.stringify(currentFavs));
+                    wishlistBtn.classList.add('active');
+                }
+            });
+        }
+
         if (window.lucide) window.lucide.createIcons();
 
     } catch (err) {

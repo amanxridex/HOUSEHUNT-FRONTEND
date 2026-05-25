@@ -197,8 +197,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         countHeader.textContent = `Showing ${filteredData.length} ${filterTitle} in NCR`;
         resultsContainer.appendChild(countHeader);
 
+        // Load favorites from local storage
+        const savedFavorites = JSON.parse(localStorage.getItem('househunt_favorites') || '[]');
+
         // Render cards
         filteredData.forEach(prop => {
+            const isFav = savedFavorites.includes(prop.id);
             const item = document.createElement('a');
             item.href = `property-view.html?id=${prop.id}`;
             item.className = 'list-item';
@@ -213,10 +217,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span>${prop.intent}</span> • <span>${prop.area}</span>
                     </div>
                 </div>
-                <button class="fav-btn"><i data-lucide="heart"></i></button>
+                <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${prop.id}"><i data-lucide="heart"></i></button>
             `;
             
             resultsContainer.appendChild(item);
+        });
+
+        // Add event listeners to fav buttons
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent navigating to property view
+                const propId = btn.getAttribute('data-id');
+                const favorites = JSON.parse(localStorage.getItem('househunt_favorites') || '[]');
+                
+                if (favorites.includes(propId)) {
+                    // Remove
+                    const newFavs = favorites.filter(id => id !== propId);
+                    localStorage.setItem('househunt_favorites', JSON.stringify(newFavs));
+                    btn.classList.remove('active');
+                } else {
+                    // Add
+                    favorites.push(propId);
+                    localStorage.setItem('househunt_favorites', JSON.stringify(favorites));
+                    btn.classList.add('active');
+                }
+            });
         });
 
         // Re-initialize icons
