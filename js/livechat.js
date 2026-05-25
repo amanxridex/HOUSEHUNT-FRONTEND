@@ -40,14 +40,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle Form Submission
     if (chatForm) {
-        chatForm.addEventListener('submit', (e) => {
+        chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const issueText = document.getElementById('issue-text').value;
             
             if (!issueText.trim()) return;
 
+            const submitBtn = chatForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i data-lucide="loader" class="spin"></i> Creating...';
+            lucide.createIcons();
+
             // Generate Ticket ID
             const ticketId = 'TKT-' + Math.floor(1000 + Math.random() * 9000);
+            
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id || null;
+            const BACKEND_URL = 'https://backend.househunt.live';
+            
+            try {
+                await fetch(`${BACKEND_URL}/api/tickets`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticket_id: ticketId, user_id: userId, issue_text: issueText })
+                });
+            } catch (err) {
+                console.error("Failed to save ticket to backend", err);
+            }
             
             // Save to localStorage
             localStorage.setItem('househunt_active_ticket', JSON.stringify({
