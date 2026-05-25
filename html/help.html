@@ -49,10 +49,17 @@
                 <p>You can use the 'Message' button on any property listing to start a chat.</p>
             </div>
 
-            <div class="contact-box">
-                <i data-lucide="mail" style="color: #0066ff; margin-bottom: 10px;"></i>
-                <p>Still need help?</p>
-                <a href="mailto:support@househunt.com" style="color: #0066ff; text-decoration: none; font-weight: 600;">support@househunt.com</a>
+            <div class="contact-box" style="display: flex; flex-direction: column; gap: 15px;">
+                <p style="margin: 0; font-weight: 600; color: #333;">Still need help?</p>
+                <div style="display: flex; gap: 10px;">
+                    <a href="mailto:support@househunt.live" style="flex: 1; background: #fff; padding: 12px; border-radius: 10px; color: #0066ff; text-decoration: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #0066ff20; font-size: 0.9rem; cursor: pointer;">
+                        <i data-lucide="mail" style="width: 18px; height: 18px;"></i> Email Us
+                    </a>
+                    <button onclick="alert('Connecting you to a Live Agent...')" style="flex: 1; background: #0066ff; padding: 12px; border-radius: 10px; color: #fff; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                        <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i> Live Chat
+                    </button>
+                </div>
+                <p style="margin: 0; font-size: 0.8rem; color: #666;">Or reach us at <br/><b>support@househunt.live</b></p>
             </div>
         </div>
     </div>
