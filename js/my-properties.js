@@ -55,11 +55,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (displayList.length === 0) {
+            let addText = currentTab === 'drafts' ? 'Start a New Property' : 'Post Your First Property';
             container.innerHTML = `
-                <div class="empty-state">
-                    <i data-lucide="home" style="width: 48px; height: 48px; color: #ccc;"></i>
-                    <h3>No ${currentTab} properties</h3>
-                    <p>You don't have any properties in this category.</p>
+                <div class="empty-state" style="padding: 60px 20px; text-align: center; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); margin: 20px 0; border: 1px solid #f1f5f9;">
+                    <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.5);">
+                        <i data-lucide="home" style="width: 36px; height: 36px; color: #3b82f6;"></i>
+                    </div>
+                    <h3 style="color: #0f172a; font-size: 20px; font-weight: 700; margin-bottom: 10px; font-family: 'Inter', sans-serif;">No ${currentTab} properties</h3>
+                    <p style="color: #64748b; font-size: 15px; line-height: 1.5; margin-bottom: 28px; max-width: 260px; margin-left: auto; margin-right: auto;">
+                        ${currentTab === 'drafts' ? "You don't have any saved drafts yet." : "You haven't added any properties to this list. Ready to find a buyer or tenant?"}
+                    </p>
+                    <button onclick="window.location.href='hosttype.html'" style="background: #3b82f6; color: #fff; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);" onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59, 130, 246, 0.4)';" onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)';">
+                        ${addText}
+                    </button>
                 </div>
             `;
             if (typeof lucide !== 'undefined') { lucide.createIcons(); }
@@ -90,13 +98,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 `;
             } else {
-                card.className = \`property-card \${prop.status === 'pending' ? 'pending' : ''}\`;
+                card.className = `property-card ${prop.status === 'pending' ? 'pending' : ''}`;
                 const isPending = prop.status === 'pending';
                 const isRejected = prop.status === 'rejected';
                 
-                let badgeHtml = \`<div class="status-badge active">Live</div>\`;
-                if (isPending) badgeHtml = \`<div class="status-badge warn">Pending Review</div>\`;
-                if (isRejected) badgeHtml = \`<div class="status-badge" style="background: #fee2e2; color: #ef4444;">Rejected</div>\`;
+                let badgeHtml = `<div class="status-badge active">Live</div>`;
+                if (isPending) badgeHtml = `<div class="status-badge warn">Pending Review</div>`;
+                if (isRejected) badgeHtml = `<div class="status-badge" style="background: #fee2e2; color: #ef4444;">Rejected</div>`;
 
                 const imageUrl = prop.images && prop.images.length > 0 ? prop.images[0] : '../assets/househuntlogo.png';
                 const formattedPrice = prop.price ? '₹ ' + (prop.price >= 10000000 ? (prop.price/10000000).toFixed(2) + ' Cr' : (prop.price/100000).toFixed(2) + ' L') : 'Price on request';
@@ -151,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             allProperties = allProperties.filter(p => p.id !== draftId);
             loadDrafts();
             renderProperties();
-            document.querySelector('[data-tab="drafts"]').textContent = \`Drafts (\${drafts.length})\`;
+            document.querySelector('[data-tab="drafts"]').textContent = `Drafts (${drafts.length})`;
         } catch(e) { console.error('Failed to delete', e); }
     };
 
@@ -166,18 +174,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Initialize
+    const loadingText = document.querySelector('#loading-spinner p');
+    let loadingTimeout;
+    if (loadingText) {
+        loadingTimeout = setTimeout(() => {
+            loadingText.textContent = "Waking up backend, this might take a few seconds...";
+        }, 3000);
+    }
+    
     await fetchProperties();
+    
+    if (loadingTimeout) clearTimeout(loadingTimeout);
     loadDrafts();
     
     // Update active tab count if possible
     const activeCount = allProperties.filter(p => p.status === 'approved' || p.status === 'active').length;
-    document.querySelector('[data-tab="active"]').textContent = \`Active (\${activeCount})\`;
+    document.querySelector('[data-tab="active"]').textContent = `Active (${activeCount})`;
     
     const pendingCount = allProperties.filter(p => p.status === 'pending').length;
-    document.querySelector('[data-tab="pending"]').textContent = \`Pending (\${pendingCount})\`;
+    document.querySelector('[data-tab="pending"]').textContent = `Pending (${pendingCount})`;
     
     const draftCount = drafts.length;
-    document.querySelector('[data-tab="drafts"]').textContent = \`Drafts (\${draftCount})\`;
+    document.querySelector('[data-tab="drafts"]').textContent = `Drafts (${draftCount})`;
 
     renderProperties();
 });
