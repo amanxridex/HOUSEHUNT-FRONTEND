@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ticketId = 'TKT-' + Math.floor(1000 + Math.random() * 9000);
             
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const userId = user.id || null;
+            const userId = user.uid || null;
             const BACKEND_URL = 'https://backend.househunt.live';
             
             try {
