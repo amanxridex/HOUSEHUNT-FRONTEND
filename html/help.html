@@ -81,8 +81,19 @@
                     const banner = document.getElementById('ticket-banner');
                     const text = document.getElementById('ticket-text');
                     if (ticket && ticket.id) {
-                        text.textContent = `Active Ticket: ${ticket.id}`;
-                        banner.style.display = 'flex';
+                        fetch(`https://backend.househunt.live/api/tickets/status/${ticket.id}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data && data.status === 'resolved') {
+                                    text.textContent = `Resolved Ticket: ${ticket.id}`;
+                                } else {
+                                    text.textContent = `Active Ticket: ${ticket.id}`;
+                                }
+                                banner.style.display = 'flex';
+                            }).catch(e => {
+                                text.textContent = `Active Ticket: ${ticket.id}`;
+                                banner.style.display = 'flex';
+                            });
                     }
                 } catch(e) {}
             }

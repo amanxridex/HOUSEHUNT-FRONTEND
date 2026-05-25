@@ -117,9 +117,21 @@
             <div class="sys-msg">Loading chat history...</div>
         </div>
 
-        <div class="chat-input-area">
+        <div class="chat-input-area" id="chatInputArea">
             <input type="text" id="chatInput" placeholder="Type a message..." disabled>
             <button id="sendBtn" disabled><i data-lucide="send" style="width: 18px;"></i></button>
+        </div>
+
+        <div id="feedbackArea" style="display: none; background: #fff; padding: 20px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid #eee; flex-direction: column; align-items: center; gap: 15px;">
+            <p style="margin:0; font-weight: 600; color: #333;">How was your chat experience?</p>
+            <div id="starContainer" style="display: flex; gap: 10px;">
+                <i data-lucide="star" class="star-icon" data-rating="1" style="cursor:pointer; color:#ccc; width: 28px; height: 28px;"></i>
+                <i data-lucide="star" class="star-icon" data-rating="2" style="cursor:pointer; color:#ccc; width: 28px; height: 28px;"></i>
+                <i data-lucide="star" class="star-icon" data-rating="3" style="cursor:pointer; color:#ccc; width: 28px; height: 28px;"></i>
+                <i data-lucide="star" class="star-icon" data-rating="4" style="cursor:pointer; color:#ccc; width: 28px; height: 28px;"></i>
+                <i data-lucide="star" class="star-icon" data-rating="5" style="cursor:pointer; color:#ccc; width: 28px; height: 28px;"></i>
+            </div>
+            <button id="submitFeedbackBtn" style="background:#0066ff; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer;" disabled>Submit Feedback</button>
         </div>
     </div>
 

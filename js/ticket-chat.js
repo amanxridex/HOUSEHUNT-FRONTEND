@@ -60,6 +60,19 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchMessages() {
         if (!dbTicketId) return;
         try {
+            const statusRes = await fetch(`${BACKEND_URL}/api/tickets/status/${ticketId}`);
+            const statusData = await statusRes.json();
+            
+            if (statusData && statusData.status === 'resolved' && ticketStatus.textContent !== '● Ticket Resolved') {
+                ticketStatus.textContent = '● Ticket Resolved';
+                ticketStatus.style.color = '#94a3b8';
+                
+                const chatInputArea = document.getElementById('chatInputArea');
+                const feedbackArea = document.getElementById('feedbackArea');
+                if (chatInputArea) chatInputArea.style.display = 'none';
+                if (feedbackArea) feedbackArea.style.display = 'flex';
+            }
+
             const res = await fetch(`${BACKEND_URL}/api/tickets/${dbTicketId}/messages`);
             const msgs = await res.json();
             
@@ -113,4 +126,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     initChat();
+
+    // --- Feedback Logic ---
+    let selectedRating = 0;
+    const stars = document.querySelectorAll('.star-icon');
+    const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
+    const feedbackArea = document.getElementById('feedbackArea');
+
+    if (stars && submitFeedbackBtn && feedbackArea) {
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-rating'));
+                
+                // Highlight stars
+                stars.forEach(s => {
+                    if (parseInt(s.getAttribute('data-rating')) <= selectedRating) {
+                        s.style.color = '#eab308'; // Yellow
+                        s.style.fill = '#eab308';
+                    } else {
+                        s.style.color = '#ccc';
+                        s.style.fill = 'transparent';
+                    }
+                });
+                
+                submitFeedbackBtn.disabled = false;
+            });
+        });
+
+        submitFeedbackBtn.addEventListener('click', async () => {
+            if (selectedRating === 0 || !dbTicketId) return;
+            
+            submitFeedbackBtn.disabled = true;
+            submitFeedbackBtn.textContent = 'Submitting...';
+            
+            try {
+                await fetch(`${BACKEND_URL}/api/tickets/${dbTicketId}/rating`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating: selectedRating })
+                });
+                
+                feedbackArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <i data-lucide="check-circle" style="color: #10b981; width: 32px; height: 32px; margin-bottom: 10px;"></i>
+                        <p style="margin:0; font-weight: 600; color: #10b981;">Thank you for your feedback!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            } catch(err) {
+                console.error("Failed to submit rating", err);
+                submitFeedbackBtn.disabled = false;
+                submitFeedbackBtn.textContent = 'Submit Feedback';
+            }
+        });
+    }
+
 });
