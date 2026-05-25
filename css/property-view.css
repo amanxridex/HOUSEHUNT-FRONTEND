@@ -19,13 +19,16 @@
 
 body {
     background-color: var(--bg-light);
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
     position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
     width: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 .app-container {
