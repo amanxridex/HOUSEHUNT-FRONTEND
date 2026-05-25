@@ -442,6 +442,28 @@ async function fetchAndRenderDevelopers() {
             a.href = dev.link || '#';
             if (dev.link) a.target = '_blank';
             
+            const logoHtml = dev.logo_url 
+                ? `<img src="${dev.logo_url}" alt="${dev.name}" style="width: 100%; height: 60px; object-fit: contain; margin-bottom: 10px;">`
+                : `<div class="dev-logo">${dev.short_code}</div>`;
+
+            a.innerHTML = `
+                ${logoHtml}
+                <span>${dev.name}</span>
+            `;
+            grid.appendChild(a);
+        });
+    } catch (err) {
+        console.error('Error fetching developers:', err);
+        grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: red;">Failed to load developers</p>';
+    }
+}
+
+        developers.forEach(dev => {
+            const a = document.createElement('a');
+            a.className = 'dev-card';
+            a.href = dev.link || '#';
+            if (dev.link) a.target = '_blank';
+            
             a.innerHTML = `
                 <div class="dev-logo">${dev.short_code}</div>
                 <span>${dev.name}</span>
