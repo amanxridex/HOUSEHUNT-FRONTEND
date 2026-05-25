@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Render cards
         filteredData.forEach(prop => {
             const item = document.createElement('a');
-            item.href = \`property-view.html?id=\${prop.id}\`;
+            item.href = `property-view.html?id=${prop.id}`;
             item.className = 'list-item';
             
             item.innerHTML = `
