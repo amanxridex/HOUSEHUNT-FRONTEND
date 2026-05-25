@@ -419,3 +419,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 });
+
+
+async function fetchAndRenderDevelopers() {
+    const grid = document.getElementById('dynamic-developers-grid');
+    if (!grid) return;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/developers`);
+        const developers = await response.json();
+        
+        grid.innerHTML = ''; // clear skeletons
+        
+        if (developers.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666;">No developers listed yet.</p>';
+            return;
+        }
+
+        developers.forEach(dev => {
+            const a = document.createElement('a');
+            a.className = 'dev-card';
+            a.href = dev.link || '#';
+            if (dev.link) a.target = '_blank';
+            
+            a.innerHTML = `
+                <div class="dev-logo">${dev.short_code}</div>
+                <span>${dev.name}</span>
+            `;
+            grid.appendChild(a);
+        });
+    } catch (err) {
+        console.error('Error fetching developers:', err);
+        grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: red;">Failed to load developers</p>';
+    }
+}
+
+// Call it inside DOMContentLoaded
