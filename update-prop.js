@@ -1,13 +1,56 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const BACKEND_URL = 'https://backend.househunt.live';
-    const urlParams = new URLSearchParams(window.location.search);
-    const propertyId = urlParams.get('id');
+const fs = require('fs');
 
-    if (!propertyId) {
-        console.error('No property ID provided');
-        return;
-    }
+// 1. Modify HTML
+let html = fs.readFileSync('html/property-view.html', 'utf8');
 
+const loadingHtml = `
+    <div id="propertyLoadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+        <div class="loader" style="width: 48px; height: 48px; border: 5px solid #eee; border-bottom-color: var(--primary-color); border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite;"></div>
+        <h2 style="margin-top: 20px; color: var(--text-color); font-size: 1.2rem;">Fetching property details...</h2>
+        <p id="loadingQuote" style="margin-top: 10px; color: #64748b; font-style: italic; font-size: 0.9rem; max-width: 300px;"></p>
+        <style>
+            @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        </style>
+    </div>
+    <div class="app-container" style="display: none;" id="mainContent">
+`;
+
+html = html.replace('<div class="app-container">', loadingHtml);
+
+const detailsHtml = `
+                <!-- Description -->
+                <div class="description">
+                    <h3>About this property</h3>
+                    <p id="propDesc">Loading description...</p>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- All Property Details -->
+                <div class="all-details-section">
+                    <h3>Property Details</h3>
+                    <div class="details-grid" id="fullDetailsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <style>
+                    .all-details-section { padding: 0 0 20px 0; }
+                    .all-details-section h3 { margin-bottom: 15px; font-size: 1.1rem; color: var(--text-color); font-weight: 600; }
+                    .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+                    .detail-row { display: flex; flex-direction: column; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+                    .detail-label { font-size: 0.75rem; color: #64748b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+                    .detail-value { font-size: 0.95rem; color: var(--text-color); font-weight: 500; word-break: break-word; }
+                </style>
+`;
+
+html = html.replace(/<!-- Description -->[\s\S]*?<\/div>/, detailsHtml);
+fs.writeFileSync('html/property-view.html', html);
+
+// 2. Modify JS
+let js = fs.readFileSync('js/property-view.js', 'utf8');
+
+const jsUpdates = `
     const quotes = [
         "Home is where your story begins.",
         "The ache for home lives in all of us.",
@@ -22,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/properties`);
+        const response = await fetch(\`\${BACKEND_URL}/api/properties\`);
         const allProperties = await response.json();
         const p = allProperties.find(item => item.id == propertyId);
 
@@ -38,10 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (mainContent) mainContent.style.display = 'block';
 
         // --- Basic Info ---
-        document.querySelector('.price').textContent = `₹ ${p.price}`;
-        document.querySelector('.type-tag').textContent = `For ${p.intent}`;
-        document.querySelector('.title').textContent = p.title || `${p.property_type} in ${p.city}`;
-        document.querySelector('.location').innerHTML = `<i data-lucide="map-pin"></i> ${p.location_text || p.location || p.city}`;
+        document.querySelector('.price').textContent = \`₹ \${p.price}\`;
+        document.querySelector('.type-tag').textContent = \`For \${p.intent}\`;
+        document.querySelector('.title').textContent = p.title || \`\${p.property_type} in \${p.city}\`;
+        document.querySelector('.location').innerHTML = \`<i data-lucide="map-pin"></i> \${p.location_text || p.location || p.city}\`;
         document.querySelector('.main-img').src = (p.images && p.images[0]) || p.image || '../assets/mainappicon.png';
         
         const descEl = document.getElementById('propDesc');
@@ -124,90 +167,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const row = document.createElement('div');
                 row.className = 'detail-row';
-                row.innerHTML = `<span class="detail-label">${field.label}</span><span class="detail-value">${displayVal}</span>`;
+                row.innerHTML = \`<span class="detail-label">\${field.label}</span><span class="detail-value">\${displayVal}</span>\`;
                 fullDetailsGrid.appendChild(row);
             });
         }
+`;
 
-        const details = p.details || {}; 
-
-        const details = p.details || {};
-        
-        // Define mappings for important fields
-        const statMappings = [
-            { key: 'area', label: 'Sqft', icon: 'maximize' },
-            { key: 'bhk', label: '', icon: 'bed' },
-            { key: 'beds', label: 'Beds', icon: 'bed' },
-            { key: 'bath', label: 'Bath', icon: 'bath' },
-            { key: 'floor', label: 'Floor', icon: 'layers', prefix: 'Floor ' },
-            { key: 'facing', label: 'Facing', icon: 'navigation' },
-            { key: 'furnishing', label: '', icon: 'armchair' },
-            { key: 'plot_area', label: 'Plot Area', icon: 'map' }
-        ];
-
-        statMappings.forEach(m => {
-            if (details[m.key]) {
-                let value = details[m.key];
-                if (m.prefix) value = m.prefix + value;
-                if (m.label) value = value + ' ' + m.label;
-                addStat(statsGrid, m.icon, value);
-            }
-        });
-
-        // --- Dynamic Amenities ---
-        const amenityGrid = document.querySelector('.amenity-grid');
-        amenityGrid.innerHTML = '';
-        
-        // Collect everything else into a list of "Extra Features"
-        const skipKeys = ['area', 'bhk', 'beds', 'bath', 'floor', 'facing', 'furnishing', 'plot_area', 'carpet_area', 'total_floors', 'built_up', 'rent', 'deposit', 'price', 'desc'];
-        
-        Object.entries(details).forEach(([key, val]) => {
-            if (skipKeys.includes(key)) return;
-            
-            if (Array.isArray(val)) {
-                val.forEach(item => addAmenity(amenityGrid, item));
-            } else if (typeof val === 'boolean' && val === true) {
-                // Convert key like 'gated_society' to 'Gated Society'
-                const label = key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                addAmenity(amenityGrid, label);
-            } else if (typeof val === 'string' && val.length > 0 && val !== 'all') {
-                addAmenity(amenityGrid, val);
-            }
-        });
-
-        if (amenityGrid.innerHTML === '') {
-            document.querySelector('.amenities').style.display = 'none';
-        }
-
-        // --- Seller Info ---
-        if (p.owner_name) {
-            document.querySelector('.seller-info h4').textContent = p.owner_name;
-        }
-
-        if (window.lucide) window.lucide.createIcons();
-
-    } catch (err) {
-        console.error('Error loading property:', err);
-    }
-
-    function addStat(container, icon, text) {
-        const div = document.createElement('div');
-        div.className = 'stat-card';
-        div.innerHTML = `<i data-lucide="${icon}"></i><span>${text}</span>`;
-        container.appendChild(div);
-    }
-
-    function addAmenity(container, label) {
-        const div = document.createElement('div');
-        div.className = 'amenity-item';
-        // Simple heuristic for icons
-        let icon = 'check-circle';
-        if (label.toLowerCase().includes('parking')) icon = 'parking-circle';
-        if (label.toLowerCase().includes('power')) icon = 'zap';
-        if (label.toLowerCase().includes('security')) icon = 'shield-check';
-        if (label.toLowerCase().includes('water')) icon = 'droplet';
-        
-        div.innerHTML = `<i data-lucide="${icon}"></i> ${label}`;
-        container.appendChild(div);
-    }
-});
+js = js.replace(/try \{[\s\S]*?statsGrid\.innerHTML = '';/, jsUpdates.trim() + '\n\n        const details = p.details || {};');
+fs.writeFileSync('js/property-view.js', js);
