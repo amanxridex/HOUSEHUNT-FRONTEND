@@ -170,9 +170,14 @@
                 <h2>Edit Profile</h2>
                 <button class="close-modal" onclick="closeEditProfileModal()">&times;</button>
             </div>
-            <div class="form-group">
-                <label>Photo URL (Optional)</label>
-                <input type="text" id="editPhoto" placeholder="https://example.com/photo.jpg">
+            <div class="form-group" style="text-align: center; position: relative;">
+                <div style="position: relative; display: inline-block; margin-bottom: 10px;">
+                    <img id="editPhotoPreview" src="../assets/profile.png" alt="Profile Photo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0066ff;">
+                    <button id="editPhotoBtn" style="position: absolute; bottom: 0; right: 0; background: #0066ff; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <input type="file" id="editPhotoFile" accept="image/*" style="display: none;">
             </div>
             <div class="form-group">
                 <label>Full Name</label>
@@ -193,14 +198,37 @@
     <script>
         const BACKEND_URL = 'https://backend.househunt.live';
         
+        let base64Photo = '';
+
         function openEditProfileModal() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             document.getElementById('editName').value = user.name || '';
             document.getElementById('editEmail').value = user.email || '';
-            document.getElementById('editPhoto').value = user.photo || '';
-            document.getElementById('editPhone').value = user.phone || ''; // Fetch if we have it locally
+            document.getElementById('editPhone').value = user.phone || '';
+            
+            const preview = document.getElementById('editPhotoPreview');
+            preview.src = user.photo || '../assets/profile.png';
+            base64Photo = user.photo || '';
+            
             document.getElementById('editProfileModal').classList.add('active');
         }
+
+        // Handle Image Upload
+        document.getElementById('editPhotoBtn').addEventListener('click', () => {
+            document.getElementById('editPhotoFile').click();
+        });
+
+        document.getElementById('editPhotoFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                base64Photo = event.target.result;
+                document.getElementById('editPhotoPreview').src = base64Photo;
+            };
+            reader.readAsDataURL(file);
+        });
         
         function closeEditProfileModal() {
             document.getElementById('editProfileModal').classList.remove('active');
@@ -212,7 +240,7 @@
 
             const newName = document.getElementById('editName').value.trim();
             const newPhone = document.getElementById('editPhone').value.trim();
-            const newPhoto = document.getElementById('editPhoto').value.trim();
+            const newPhoto = base64Photo;
             const btn = document.getElementById('saveProfileBtn');
             
             btn.disabled = true;
