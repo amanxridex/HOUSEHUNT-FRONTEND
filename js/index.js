@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // Attempt to track visitor silently
+    fetch('https://backend.househunt.live/api/track-view', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page_url: window.location.pathname })
+    }).catch(e => console.error('Tracker error:', e));
+
     // Hide Splash Screen
     const splash = document.getElementById('appSplashScreen');
     if (splash) {
