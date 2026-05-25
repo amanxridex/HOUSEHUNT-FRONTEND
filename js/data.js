@@ -46,7 +46,7 @@ for (let i = 1; i <= 250; i++) {
         intent: intent,
         location: loc,
         price: price,
-        image: `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=800&q=80`,
+        image: `assets/mainappicon.png`,
         area: `${Math.floor(Math.random() * 3000 + 500)} sqft`,
         beds: (type.includes('Plot') || type.includes('Commercial') || type.includes('Shop') || type.includes('Warehouse') || type.includes('Showroom') || type.includes('Office')) ? null : Math.floor(Math.random() * 4 + 1) + ' BHK',
         tag: i % 7 === 0 ? 'Verified' : i % 5 === 0 ? 'New Launch' : 'Featured'

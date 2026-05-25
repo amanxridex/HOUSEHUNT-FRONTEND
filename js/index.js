@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderSection('top-listings-container', filteredData.slice(10, 15));
 
         // Populate Plots (Only plots)
-        const plots = filteredData.filter(p => p.type.toLowerCase().includes('plot')).slice(0, 5);
+        const plots = filteredData.filter(p => p.type && p.type.toLowerCase().includes('plot')).slice(0, 5);
         renderSection('plots-container', plots);
     };
 
