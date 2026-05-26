@@ -81,13 +81,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     window.location.href = `messages.html?chat_id=${chat.id}`;
                 };
                 
+                const otherName = otherPerson?.full_name || otherPerson?.name || otherPerson?.display_name || 'User';
+                const otherAvatar = otherPerson?.avatar_url || otherPerson?.photo || '../assets/profile.png';
+                
                 div.innerHTML = `
                     <div style="width: 50px; height: 50px; border-radius: 50%; background: #ddd; overflow: hidden; flex-shrink: 0;">
-                        <img src="${otherPerson?.avatar_url || '../assets/profile.png'}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/profile.png'">
+                        <img src="${otherAvatar}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/profile.png'">
                     </div>
                     <div style="flex: 1; min-width: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
-                            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${otherPerson?.full_name || 'User'}</h3>
+                            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${otherName}</h3>
                             <span style="font-size: 11px; color: #888;">${new Date(chat.updated_at).toLocaleDateString()}</span>
                         </div>
                         <p style="margin: 0; font-size: 13px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Re: ${property?.title || 'Property'}</p>
@@ -128,8 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Could not fetch chat details:", e);
         }
         
-        const otherName = otherPerson?.full_name || 'User';
-        const otherAvatar = otherPerson?.avatar_url || '../assets/profile.png';
+        const otherName = otherPerson?.full_name || otherPerson?.name || otherPerson?.display_name || 'User';
+        const otherAvatar = otherPerson?.avatar_url || otherPerson?.photo || '../assets/profile.png';
         const propTitle = property?.title || 'Property';
 
         // Setup beautiful header
