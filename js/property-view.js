@@ -212,14 +212,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (chatBtn && p.owner_id) {
             chatBtn.addEventListener('click', async () => {
                 const currentUser = JSON.parse(localStorage.getItem('user'));
-                if (!currentUser || !currentUser.id) {
+                const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
+                
+                if (!currentUser || !userId) {
                     alert("Please log in to chat with the owner.");
-                    window.location.href = '../login.html';
+                    window.location.href = 'login.html';
                     return;
                 }
                 
                 // Don't chat with yourself
-                if (currentUser.id === p.owner_id) {
+                if (userId === p.owner_id) {
                     alert("This is your own property!");
                     return;
                 }
@@ -234,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             property_id: p.id,
-                            buyer_id: currentUser.id,
+                            buyer_id: userId,
                             seller_id: p.owner_id
                         })
                     });

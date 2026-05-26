@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const BACKEND_URL = 'https://backend.househunt.live';
     const currentUser = JSON.parse(localStorage.getItem('user'));
     
-    if (!currentUser || !currentUser.id) {
-        window.location.href = '../login.html';
+    const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
+    
+    if (!currentUser || !userId) {
+        window.location.href = 'login.html';
         return;
     }
 
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const loading = document.getElementById('loadingChats');
         
         try {
-            const res = await fetch(`${BACKEND_URL}/api/chats/${currentUser.id}`);
+            const res = await fetch(`${BACKEND_URL}/api/chats/${userId}`);
             const chats = await res.json();
             
             loading.style.display = 'none';
@@ -46,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             container.innerHTML = '';
             chats.forEach(chat => {
                 // Determine the other person in the chat
-                const isBuyer = chat.buyer_id === currentUser.id;
+                const isBuyer = chat.buyer_id === userId;
                 const otherPerson = isBuyer ? chat.seller : chat.buyer;
                 const property = chat.properties;
                 
@@ -113,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 
                 messages.forEach(msg => {
-                    const isMe = msg.sender_id === currentUser.id;
+                    const isMe = msg.sender_id === userId;
                     const bubble = document.createElement('div');
                     bubble.style.maxWidth = '75%';
                     bubble.style.padding = '12px 16px';
@@ -167,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        sender_id: currentUser.id,
+                        sender_id: userId,
                         content: text
                     })
                 });
