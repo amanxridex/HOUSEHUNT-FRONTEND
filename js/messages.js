@@ -109,29 +109,76 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sendBtn = document.getElementById('sendBtn');
         const input = document.getElementById('messageInput');
         
-        // Setup header back button to go back to list
+        let otherPerson = null;
+        let property = null;
+        
+        // Fetch chat details
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/chats/${userId}`);
+            if (res.ok) {
+                const chats = await res.json();
+                const currentChat = chats.find(c => c.id === chatId);
+                if (currentChat) {
+                    const isBuyer = currentChat.buyer_id === userId;
+                    otherPerson = isBuyer ? currentChat.seller : currentChat.buyer;
+                    property = currentChat.properties;
+                }
+            }
+        } catch (e) {
+            console.error("Could not fetch chat details:", e);
+        }
+        
+        const otherName = otherPerson?.full_name || 'User';
+        const otherAvatar = otherPerson?.avatar_url || '../assets/profile.png';
+        const propTitle = property?.title || 'Property';
+
+        // Setup beautiful header
         const headerTop = document.querySelector('.header-top');
         headerTop.innerHTML = `
-            <button onclick="window.location.href='messages.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <i data-lucide="arrow-left" style="width: 20px; height: 20px; color: #111;"></i>
-            </button>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 900;">Chat</h1>
+            <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+                <button onclick="window.location.href='messages.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                    <i data-lucide="arrow-left" style="width: 20px; height: 20px; color: #111;"></i>
+                </button>
+                <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;">
+                    <div style="width: 42px; height: 42px; border-radius: 50%; background: #eee; overflow: hidden; flex-shrink: 0;">
+                        <img src="${otherAvatar}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/profile.png'">
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <h1 style="margin: 0; font-size: 18px; font-weight: 800; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${otherName}</h1>
+                        <p style="margin: 0; font-size: 12px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Re: ${propTitle}</p>
+                    </div>
+                </div>
+            </div>
         `;
         document.querySelector('.search-bar').style.display = 'none';
         lucide.createIcons();
+        
+        let existingMessageIds = new Set();
         
         async function fetchMessages() {
             try {
                 const res = await fetch(`${BACKEND_URL}/api/chats/${chatId}/messages`);
                 const messages = await res.json();
                 
-                messagesContainer.innerHTML = '';
-                
-                if (messages.length === 0) {
+                if (messages.length === 0 && existingMessageIds.size === 0) {
                     messagesContainer.innerHTML = '<div style="text-align: center; color: #999; margin-top: 20px; font-size: 13px;">No messages yet. Send the first message!</div>';
+                    return;
                 }
                 
+                // Clear "No messages" text if it's there
+                if (messagesContainer.innerHTML.includes('No messages yet')) {
+                    messagesContainer.innerHTML = '';
+                }
+                
+                let isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50;
+                let addedNew = false;
+                
                 messages.forEach(msg => {
+                    if (existingMessageIds.has(msg.id)) return;
+                    
+                    existingMessageIds.add(msg.id);
+                    addedNew = true;
+                    
                     const isMe = msg.sender_id === userId;
                     const bubble = document.createElement('div');
                     bubble.style.maxWidth = '75%';
@@ -140,16 +187,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                     bubble.style.background = isMe ? '#2D68FF' : 'white';
                     bubble.style.color = isMe ? 'white' : '#111';
                     bubble.style.alignSelf = isMe ? 'flex-end' : 'flex-start';
-                    bubble.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+                    bubble.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
                     bubble.style.fontSize = '14px';
                     bubble.style.lineHeight = '1.4';
+                    bubble.style.opacity = '0';
+                    bubble.style.transform = 'translateY(10px)';
+                    bubble.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
                     
                     bubble.textContent = msg.content;
                     messagesContainer.appendChild(bubble);
+                    
+                    // Trigger animation
+                    requestAnimationFrame(() => {
+                        bubble.style.opacity = '1';
+                        bubble.style.transform = 'translateY(0)';
+                    });
                 });
                 
-                // Only scroll if we are at bottom or first load
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                if (addedNew && isAtBottom) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -167,6 +224,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             input.value = '';
             
             // Optimistic UI update
+            const tempId = 'temp-' + Date.now();
+            existingMessageIds.add(tempId);
+            
+            if (messagesContainer.innerHTML.includes('No messages yet')) {
+                messagesContainer.innerHTML = '';
+            }
+            
             const bubble = document.createElement('div');
             bubble.style.maxWidth = '75%';
             bubble.style.padding = '12px 16px';
@@ -174,11 +238,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             bubble.style.background = '#2D68FF';
             bubble.style.color = 'white';
             bubble.style.alignSelf = 'flex-end';
-            bubble.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+            bubble.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
             bubble.style.fontSize = '14px';
-            bubble.style.opacity = '0.7';
+            bubble.style.opacity = '0';
+            bubble.style.transform = 'translateY(10px) scale(0.95)';
+            bubble.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
             bubble.textContent = text;
             messagesContainer.appendChild(bubble);
+            
+            requestAnimationFrame(() => {
+                bubble.style.opacity = '0.7';
+                bubble.style.transform = 'translateY(0) scale(1)';
+            });
+            
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
             try {
@@ -194,7 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fetchMessages();
             } catch (e) {
                 console.error(e);
-                bubble.style.background = 'red';
+                bubble.style.background = '#FF3B30';
             }
         }
         
