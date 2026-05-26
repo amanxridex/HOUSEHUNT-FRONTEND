@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
     
+    // Fix for mobile keyboard covering the input
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+            document.body.style.height = window.visualViewport.height + 'px';
+            window.scrollTo(0, 0);
+        });
+        // Set initial height
+        document.body.style.height = window.visualViewport.height + 'px';
+    }
+    
     if (!currentUser || !userId) {
         window.location.href = 'login.html';
         return;
