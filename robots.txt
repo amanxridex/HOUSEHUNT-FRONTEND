@@ -2,23 +2,75 @@ User-agent: GPTBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Disallow: /html/profile.html
+Disallow: /profile
+Disallow: /html/my-properties.html
+Disallow: /my-properties
+Disallow: /html/messages.html
+Disallow: /messages
+Disallow: /html/404ai.html
+Disallow: /404ai
 
 User-agent: ClaudeBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Disallow: /html/profile.html
+Disallow: /profile
+Disallow: /html/my-properties.html
+Disallow: /my-properties
+Disallow: /html/messages.html
+Disallow: /messages
+Disallow: /html/404ai.html
+Disallow: /404ai
 
 User-agent: Google-Extended
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Disallow: /html/profile.html
+Disallow: /profile
+Disallow: /html/my-properties.html
+Disallow: /my-properties
+Disallow: /html/messages.html
+Disallow: /messages
+Disallow: /html/404ai.html
+Disallow: /404ai
 
 User-agent: PerplexityBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Disallow: /html/profile.html
+Disallow: /profile
+Disallow: /html/my-properties.html
+Disallow: /my-properties
+Disallow: /html/messages.html
+Disallow: /messages
+Disallow: /html/404ai.html
+Disallow: /404ai
 
 User-agent: *
 Allow: /
+Allow: /html/explore.html
+Allow: /explore
+Allow: /html/hosttype.html
+Allow: /hosttype
+Allow: /noida
+Allow: /gurgaon
+Allow: /delhi
+Allow: /faridabad
+Allow: /ghaziabad
+Allow: /greater-noida
+Allow: /about
+
+Disallow: /html/profile.html
+Disallow: /profile
+Disallow: /html/my-properties.html
+Disallow: /my-properties
+Disallow: /html/messages.html
+Disallow: /messages
+Disallow: /html/404ai.html
+Disallow: /404ai
 
 Sitemap: https://househunt.live/sitemap.xml

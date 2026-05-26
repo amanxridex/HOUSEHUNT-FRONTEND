@@ -7,33 +7,51 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://househunt.live/html/explore.html</loc>
+    <loc>https://househunt.live/explore</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://househunt.live/about</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://househunt.live/html/about.html</loc>
+    <loc>https://househunt.live/noida</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://househunt.live/html/noida.html</loc>
+    <loc>https://househunt.live/gurgaon</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://househunt.live/html/gurgaon.html</loc>
+    <loc>https://househunt.live/delhi</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://househunt.live/html/delhi.html</loc>
+    <loc>https://househunt.live/faridabad</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://househunt.live/ghaziabad</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://househunt.live/greater-noida</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
