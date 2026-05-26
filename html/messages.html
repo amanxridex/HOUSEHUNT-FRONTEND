@@ -12,18 +12,18 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="app-container">
+    <div class="app-container" style="background: #fafafa; min-height: 100vh;">
         <!-- Header -->
         <header class="header">
-            <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                <button onclick="window.location.href='../index.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <div class="header-top" style="display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; height: 44px;">
+                <button onclick="window.location.href='../index.html'" style="position: absolute; left: 0; background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;">
                     <i data-lucide="arrow-left" style="width: 20px; height: 20px; color: #111;"></i>
                 </button>
-                <h1 style="margin: 0; font-size: 24px; font-weight: 900;">Messages</h1>
+                <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">Messages</h1>
             </div>
-            <div class="chat-tabs" style="display: flex; gap: 10px; background: white; padding: 5px 0 10px 0;">
-                <button id="tabExploring" class="chat-tab" style="flex: 1; padding: 10px 0; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; background: #0066FF; color: white;">Exploring</button>
-                <button id="tabHosting" class="chat-tab" style="flex: 1; padding: 10px 0; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; background: #f5f5f5; color: #666;">Hosting</button>
+            <div class="chat-tabs" style="display: flex; background: #f0f2f5; padding: 4px; border-radius: 24px; margin-bottom: 10px;">
+                <button id="tabExploring" class="chat-tab" style="flex: 1; padding: 10px 0; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: white; color: #111; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">Exploring</button>
+                <button id="tabHosting" class="chat-tab" style="flex: 1; padding: 10px 0; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; color: #666; box-shadow: none;">Hosting</button>
             </div>
         </header>
 

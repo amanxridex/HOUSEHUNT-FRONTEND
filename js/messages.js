@@ -89,14 +89,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const div = document.createElement('div');
                 div.className = 'chat-item';
                 div.style.padding = '16px 20px';
-                div.style.borderBottom = '1px solid #f0f0f0';
+                div.style.margin = '0 15px 12px 15px';
+                div.style.borderRadius = '20px';
+                div.style.background = 'white';
+                div.style.border = '1px solid rgba(0,0,0,0.04)';
+                div.style.boxShadow = '0 2px 10px rgba(0,0,0,0.02)';
                 div.style.display = 'flex';
                 div.style.gap = '15px';
                 div.style.alignItems = 'center';
                 div.style.cursor = 'pointer';
-                div.style.transition = 'background 0.2s ease';
-                div.onmouseenter = () => div.style.background = '#f9fafb';
-                div.onmouseleave = () => div.style.background = 'transparent';
+                div.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                div.onmouseenter = () => {
+                    div.style.transform = 'translateY(-2px)';
+                    div.style.boxShadow = '0 6px 15px rgba(0,0,0,0.05)';
+                    div.style.borderColor = 'rgba(0,0,0,0.08)';
+                };
+                div.onmouseleave = () => {
+                    div.style.transform = 'translateY(0)';
+                    div.style.boxShadow = '0 2px 10px rgba(0,0,0,0.02)';
+                    div.style.borderColor = 'rgba(0,0,0,0.04)';
+                };
                 div.onclick = () => {
                     window.location.href = `messages.html?chat_id=${chat.id}`;
                 };
@@ -135,15 +147,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         function switchTab(tab) {
             currentTab = tab;
             if (tab === 'exploring') {
-                tabExploring.style.background = '#0066FF';
-                tabExploring.style.color = 'white';
-                tabHosting.style.background = '#f5f5f5';
+                tabExploring.style.background = 'white';
+                tabExploring.style.color = '#111';
+                tabExploring.style.fontWeight = '700';
+                tabExploring.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+                
+                tabHosting.style.background = 'transparent';
                 tabHosting.style.color = '#666';
+                tabHosting.style.fontWeight = '600';
+                tabHosting.style.boxShadow = 'none';
             } else {
-                tabHosting.style.background = '#0066FF';
-                tabHosting.style.color = 'white';
-                tabExploring.style.background = '#f5f5f5';
+                tabHosting.style.background = 'white';
+                tabHosting.style.color = '#111';
+                tabHosting.style.fontWeight = '700';
+                tabHosting.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+                
+                tabExploring.style.background = 'transparent';
                 tabExploring.style.color = '#666';
+                tabExploring.style.fontWeight = '600';
+                tabExploring.style.boxShadow = 'none';
             }
             loadChatList();
         }
