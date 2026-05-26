@@ -233,8 +233,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Populate Top Listings (Next 5)
         renderSection('top-listings-container', filteredData.slice(10, 15));
 
-        // Populate Plots (Only plots)
-        const plots = filteredData.filter(p => p.type && p.type.toLowerCase().includes('plot')).slice(0, 5);
+        // Populate Plots (Only plots) - always show plots from allData regardless of Rent/Buy tab
+        const plots = allData.filter(p => p.type && p.type.toLowerCase().includes('plot')).slice(0, 5);
         renderSection('plots-container', plots);
     };
 
