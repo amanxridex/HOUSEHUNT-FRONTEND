@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const chatRoomView = document.getElementById('chatRoomView');
     const bottomNav = document.getElementById('bottomNav');
     
+    // --- LIST VIEW LOGIC ---
+    let allChats = [];
+    let currentTab = 'exploring'; // 'exploring' or 'hosting'
+    
     // View Management
     if (activeChatId) {
         chatListView.style.display = 'none';
@@ -38,10 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         bottomNav.style.display = 'flex';
         loadChatList();
     }
-
-    // --- LIST VIEW LOGIC ---
-    let allChats = [];
-    let currentTab = 'exploring'; // 'exploring' or 'hosting'
 
     async function loadChatList() {
         const container = document.getElementById('chatListContainer');
