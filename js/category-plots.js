@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const standardList = document.getElementById('standardList');
 
     const urlParams = new URLSearchParams(window.location.search);
-    let currentMode = urlParams.get('mode') === 'Rent' ? 'Rent' : 'Buy';
+    // Ignore URL parameter for mode, plots are only for sale
+    let currentMode = 'Buy';
 
     async function loadProperties() {
         try {
@@ -46,7 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
     const renderData = () => {
-        const filtered = PROPERTIES.filter(p => p.property_type === 'Plot' && p.intent === currentMode);
+        // Enforce Buy mode for plots
+        const filtered = PROPERTIES.filter(p => p.property_type === 'Plot' && p.intent === 'Buy');
         renderFeatured(filtered.slice(0, 4));
         renderList(filtered.slice(4));
     };
