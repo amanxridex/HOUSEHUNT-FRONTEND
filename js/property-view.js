@@ -159,8 +159,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // --- Seller Info ---
-        if (p.owner_name) {
-            document.querySelector('.seller-info h4').textContent = p.owner_name;
+        if (p.owner_id) {
+            try {
+                const profileRes = await fetch(`${BACKEND_URL}/api/profiles/${p.owner_id}`);
+                if (profileRes.ok) {
+                    const profileData = await profileRes.json();
+                    if (profileData && profileData.full_name) {
+                        const sellerNameEl = document.querySelector('.seller-info h4');
+                        if (sellerNameEl) sellerNameEl.textContent = profileData.full_name;
+                        
+                        if (profileData.role) {
+                            const role = profileData.role.charAt(0).toUpperCase() + profileData.role.slice(1);
+                            const roleEl = document.querySelector('.seller-info p');
+                            if (roleEl) roleEl.textContent = role;
+                        }
+                    }
+                }
+            } catch(e) {
+                console.error("Failed to fetch seller profile");
+            }
+        } else if (p.owner_name) {
+            const sellerNameEl = document.querySelector('.seller-info h4');
+            if (sellerNameEl) sellerNameEl.textContent = p.owner_name;
         }
 
         // --- Wishlist Button Logic ---
