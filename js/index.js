@@ -104,7 +104,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    photo: user.photo
                 })
             });
         } catch (e) { console.error("Sync error", e); }
@@ -134,7 +135,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             body: JSON.stringify({ 
                                 phone,
                                 name: user.name,
-                                email: user.email
+                                email: user.email,
+                                photo: user.photo
                             })
                         });
                         
