@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Setup beautiful header
         const headerTop = document.querySelector('.header-top');
+        const chatTabs = document.querySelector('.chat-tabs');
+        if (chatTabs) chatTabs.style.display = 'none'; // Hide tabs when in a chat room
+        
         headerTop.innerHTML = `
             <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                 <button onclick="window.location.href='messages.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
@@ -201,7 +204,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             </div>
         `;
-        document.querySelector('.search-bar').style.display = 'none';
         lucide.createIcons();
         
         let existingMessageIds = new Set();
