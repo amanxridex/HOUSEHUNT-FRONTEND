@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.showSkeletons('plots-container', 3);
     }
 
+    fetchAndRenderDevelopers();
+
     try {
         const response = await fetch(`${BACKEND_URL}/api/properties`);
         const liveData = await response.json();
