@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (mainContent) mainContent.style.display = 'flex';
 
         // --- Basic Info ---
-        document.querySelector('.price').textContent = `₹ ${p.price}`;
+        document.querySelector('.price').textContent = `${p.price}`;
         document.querySelector('.type-tag').textContent = `For ${p.intent}`;
         document.querySelector('.title').textContent = p.title || `${p.property_type} in ${p.city}`;
         document.querySelector('.location').innerHTML = `<i data-lucide="map-pin"></i> ${p.location_text || p.location || p.city}`;

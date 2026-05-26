@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="plot-card" onclick="viewDetails('${p.id}')">
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="plot-info">
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div class="area">${p.details?.area || ''}</div>
                     <div style="font-size: 10px; color: #666; margin-top: 4px;">${p.location_text || p.location}</div>
                 </div>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
                     <h3>Premium Plot - ${p.details?.area || ''}</h3>
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div style="font-size: 12px; color: #666;">${p.location_text || p.location}</div>
                 </div>
             </div>

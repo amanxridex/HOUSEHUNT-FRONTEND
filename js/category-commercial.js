@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="badge-row">
                         <span class="pro-badge footfall">High Footfall 🔥</span>
                     </div>
-                    <div style="font-size: 18px; font-weight: 900;">₹${p.price}</div>
+                    <div style="font-size: 18px; font-weight: 900;">${p.price}</div>
                     <div style="font-size: 12px; opacity: 0.9;">${p.location_text || p.location}</div>
                 </div>
             </div>
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="bento-card ${size}" onclick="viewDetails('${p.id}')">
                     <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                     <div class="bento-info">
-                        <div style="font-weight: 800;">₹${p.price}</div>
+                        <div style="font-weight: 800;">${p.price}</div>
                         <div style="font-size: 10px;">${p.location_text || p.location}</div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span style="font-size: 10px; color: #666; font-weight: 800; background: #eee; padding: 2px 6px; border-radius: 4px;">${p.details?.suitable || 'Commercial Space'}</span>
                     </div>
                     <h3>${p.title || 'Premium Commercial Space'}</h3>
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div style="font-size: 12px; color: #666;">${p.location_text || p.location}</div>
                 </div>
                 <i data-lucide="chevron-right" style="color: #ccc; width: 20px;"></i>

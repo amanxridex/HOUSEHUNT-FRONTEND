@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" class="property-img" onerror="this.src='assets/mainappicon.png'; this.onerror=null;">
                     <div class="tag">${prop.tag || prop.intent}</div>
                     <div class="property-details">
-                        <div class="prop-price">₹${prop.price}</div>
+                        <div class="prop-price">${prop.price}</div>
                         <div class="prop-title">${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</div>
                         <div class="prop-loc">${prop.location}</div>
                     </div>
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="hero-slide-content">
                     <img src="${prop.image || prop.images?.[0]}" alt="${prop.type}" onerror="this.src='assets/mainappicon.png'; this.onerror=null;">
                     <div class="hero-overlay">
-                        <div class="price">₹${prop.price}</div>
+                        <div class="price">${prop.price}</div>
                         <h3>${prop.beds ? prop.beds + ' BHK ' : ''}${prop.type}</h3>
                     </div>
                 </div>

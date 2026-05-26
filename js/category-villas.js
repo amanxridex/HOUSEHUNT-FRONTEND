@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <span class="luxury-badge">Luxury</span>
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="slider-info">
-                    <div style="font-size: 22px; font-weight: 900;">₹${p.price}</div>
+                    <div style="font-size: 22px; font-weight: 900;">${p.price}</div>
                     <div style="font-size: 14px; opacity: 0.9;">${p.location_text || p.location}</div>
                 </div>
             </div>
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
                     <h3>Premium Villa in ${p.location_text || p.location.split(',')[0]}</h3>
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div style="font-size: 12px; color: #666;">${p.details?.area || ''} • ${p.details?.beds || ''}</div>
                 </div>
             </div>

@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.innerHTML = `
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="nearest-info">
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div style="font-size: 12px; color: #666;">${p.location_text || p.location}</div>
                 </div>
             `;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.innerHTML = `
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="bento-overlay">
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div class="loc">${p.location_text || p.location}</div>
                 </div>
             `;
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
                     <h3>${p.details?.beds || ''} House</h3>
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div class="loc">${p.location_text || p.location}</div>
                 </div>
                 <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>

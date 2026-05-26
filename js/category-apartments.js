@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="carousel-card" onclick="viewDetails('${p.id}')">
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="carousel-overlay">
-                    <div style="font-size: 18px; font-weight: 900;">₹${p.price}</div>
+                    <div style="font-size: 18px; font-weight: 900;">${p.price}</div>
                     <div style="font-size: 12px; opacity: 0.9;">${p.location_text || p.location}</div>
                 </div>
             </div>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="bento-card ${size}" onclick="viewDetails('${p.id}')">
                     <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                     <div class="bento-info">
-                        <div style="font-weight: 800; font-size: 14px;">₹${p.price}</div>
+                        <div style="font-weight: 800; font-size: 14px;">${p.price}</div>
                         <div style="font-size: 10px;">${p.location_text || p.location}</div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${(p.images && p.images[0]) || p.image || '../assets/mainappicon.png'}" onerror="this.src='../assets/mainappicon.png'">
                 <div class="standard-info">
                     <h3>${p.details?.beds || ''} Apartment in ${p.location_text || p.location.split(',')[0]}</h3>
-                    <div class="price">₹${p.price}</div>
+                    <div class="price">${p.price}</div>
                     <div style="font-size: 11px; color: #666;">${p.location_text || p.location}</div>
                 </div>
                 <i data-lucide="chevron-right" style="color:#ccc;width:20px;"></i>
