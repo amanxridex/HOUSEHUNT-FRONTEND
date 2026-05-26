@@ -36,11 +36,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         try {
             const res = await fetch(`${BACKEND_URL}/api/chats/${userId}`);
-            const chats = await res.json();
+            const data = await res.json();
             
             loading.style.display = 'none';
             
-            if (chats.length === 0) {
+            if (!res.ok || data.error) {
+                container.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: red;">API Error: ${data.error || 'Failed to load chats'}</div>`;
+                return;
+            }
+            
+            const chats = data;
+            
+            if (!Array.isArray(chats) || chats.length === 0) {
                 container.innerHTML = '<div style="text-align: center; padding: 50px 20px; color: #999;">No messages yet. Start chatting from a property page!</div>';
                 return;
             }
