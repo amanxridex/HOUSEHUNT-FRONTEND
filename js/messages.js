@@ -40,30 +40,47 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- LIST VIEW LOGIC ---
+    let allChats = [];
+    let currentTab = 'exploring'; // 'exploring' or 'hosting'
+
     async function loadChatList() {
         const container = document.getElementById('chatListContainer');
         const loading = document.getElementById('loadingChats');
         
         try {
-            const res = await fetch(`${BACKEND_URL}/api/chats/${userId}`);
-            const data = await res.json();
-            
-            loading.style.display = 'none';
-            
-            if (!res.ok || data.error) {
-                container.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: red;">API Error: ${data.error || 'Failed to load chats'}</div>`;
-                return;
+            // Only fetch if we don't have the chats yet to avoid unnecessary API calls when switching tabs
+            if (allChats.length === 0) {
+                const res = await fetch(`${BACKEND_URL}/api/chats/${userId}`);
+                const data = await res.json();
+                
+                loading.style.display = 'none';
+                
+                if (!res.ok || data.error) {
+                    container.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: red;">API Error: ${data.error || 'Failed to load chats'}</div>`;
+                    return;
+                }
+                
+                allChats = Array.isArray(data) ? data : [];
+            } else {
+                loading.style.display = 'none';
             }
             
-            const chats = data;
+            // Filter based on tab
+            const filteredChats = allChats.filter(chat => {
+                if (currentTab === 'exploring') {
+                    return chat.buyer_id === userId; // User is the buyer exploring properties
+                } else {
+                    return chat.seller_id === userId; // User is the seller hosting properties
+                }
+            });
             
-            if (!Array.isArray(chats) || chats.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 50px 20px; color: #999;">No messages yet. Start chatting from a property page!</div>';
+            if (filteredChats.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: #999;">No ${currentTab} messages yet.</div>`;
                 return;
             }
             
             container.innerHTML = '';
-            chats.forEach(chat => {
+            filteredChats.forEach(chat => {
                 // Determine the other person in the chat
                 const isBuyer = chat.buyer_id === userId;
                 const otherPerson = isBuyer ? chat.seller : chat.buyer;
@@ -102,6 +119,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error(e);
             loading.innerHTML = 'Error loading chats.';
         }
+    }
+
+    // Tab Switcher Logic
+    const tabExploring = document.getElementById('tabExploring');
+    const tabHosting = document.getElementById('tabHosting');
+
+    if (tabExploring && tabHosting) {
+        function switchTab(tab) {
+            currentTab = tab;
+            if (tab === 'exploring') {
+                tabExploring.style.background = '#111';
+                tabExploring.style.color = 'white';
+                tabHosting.style.background = '#f5f5f5';
+                tabHosting.style.color = '#666';
+            } else {
+                tabHosting.style.background = '#111';
+                tabHosting.style.color = 'white';
+                tabExploring.style.background = '#f5f5f5';
+                tabExploring.style.color = '#666';
+            }
+            loadChatList();
+        }
+
+        tabExploring.addEventListener('click', () => switchTab('exploring'));
+        tabHosting.addEventListener('click', () => switchTab('hosting'));
     }
 
     // --- CHAT ROOM LOGIC ---
