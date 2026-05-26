@@ -22,21 +22,21 @@
 <body>
     <div class="app-container">
         <!-- Search Header -->
-        <header class="explore-header">
+        <header class="explore-header" role="search" aria-label="Explore properties search bar">
             <div class="search-row">
-                <button class="back-btn" onclick="window.location.href='../index.html'"><i data-lucide="chevron-left"></i></button>
+                <button class="back-btn" aria-label="Back to Home Dashboard" onclick="window.location.href='../index.html'"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
                 <div class="search-box">
-                    <i data-lucide="search"></i>
-                    <input type="text" placeholder="Search locality, project...">
+                    <i data-lucide="search" aria-hidden="true"></i>
+                    <input type="text" id="exploreSearchInput" placeholder="Search locality, project..." aria-label="Search properties by location, developer, or society name">
                 </div>
-                <button class="filter-btn"><i data-lucide="sliders-horizontal"></i></button>
+                <button class="filter-btn" aria-label="Open search filter modal" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="sliders-horizontal" aria-hidden="true"></i></button>
             </div>
             <!-- Quick Chips -->
-            <div class="filter-chips">
-                <div class="f-chip active">All</div>
-                <div class="f-chip">Rent</div>
-                <div class="f-chip">Sale</div>
-                <div class="f-chip">Commercial</div>
+            <div class="filter-chips" role="tablist" aria-label="Quick Filters">
+                <div class="f-chip active" role="tab" aria-selected="true" tabindex="0" aria-label="Show all properties">All</div>
+                <div class="f-chip" role="tab" aria-selected="false" tabindex="0" aria-label="Show properties for rent">Rent</div>
+                <div class="f-chip" role="tab" aria-selected="false" tabindex="0" aria-label="Show properties for sale">Sale</div>
+                <div class="f-chip" role="tab" aria-selected="false" tabindex="0" aria-label="Show commercial properties">Commercial</div>
             </div>
         </header>
 
