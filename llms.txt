@@ -12,9 +12,9 @@
 
 ## Page Map
 
-- [Home Page](https://househunt-frontend-one.vercel.app/index.html) - Main dashboard with featured listings near you, top developers, and city selector.
-- [Explore Properties](https://househunt-frontend-one.vercel.app/html/explore.html) - Complete property catalog with advanced sorting, price filters, and locality searches.
-- [HuntAI Chatbot](https://househunt-frontend-one.vercel.app/html/404ai.html) - Interactive AI-powered conversational search for real estate guidance.
-- [Post Property (Free)](https://househunt-frontend-one.vercel.app/html/hosttype.html) - Free listing posting gateway for property owners.
-- [User Profiles & Messages](https://househunt-frontend-one.vercel.app/html/messages.html) - Secure messaging hub for direct owner-buyer negotiations.
-- [Mortgage Calculator](https://househunt-frontend-one.vercel.app/html/mortgage.html) - Localized home loan and mortgage payment estimator.
+- [Home Page](https://househunt.live/index.html) - Main dashboard with featured listings near you, top developers, and city selector.
+- [Explore Properties](https://househunt.live/html/explore.html) - Complete property catalog with advanced sorting, price filters, and locality searches.
+- [HuntAI Chatbot](https://househunt.live/html/404ai.html) - Interactive AI-powered conversational search for real estate guidance.
+- [Post Property (Free)](https://househunt.live/html/hosttype.html) - Free listing posting gateway for property owners.
+- [User Profiles & Messages](https://househunt.live/html/messages.html) - Secure messaging hub for direct owner-buyer negotiations.
+- [Mortgage Calculator](https://househunt.live/html/mortgage.html) - Localized home loan and mortgage payment estimator.

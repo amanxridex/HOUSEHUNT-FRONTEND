@@ -21,4 +21,4 @@ Allow: /llms-full.txt
 User-agent: *
 Allow: /
 
-Sitemap: https://househunt-frontend-one.vercel.app/sitemap.xml
+Sitemap: https://househunt.live/sitemap.xml
