@@ -88,12 +88,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 const div = document.createElement('div');
                 div.className = 'chat-item';
-                div.style.padding = '15px 20px';
+                div.style.padding = '16px 20px';
                 div.style.borderBottom = '1px solid #f0f0f0';
                 div.style.display = 'flex';
                 div.style.gap = '15px';
                 div.style.alignItems = 'center';
                 div.style.cursor = 'pointer';
+                div.style.transition = 'background 0.2s ease';
+                div.onmouseenter = () => div.style.background = '#f9fafb';
+                div.onmouseleave = () => div.style.background = 'transparent';
                 div.onclick = () => {
                     window.location.href = `messages.html?chat_id=${chat.id}`;
                 };
@@ -102,15 +105,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const otherAvatar = otherPerson?.avatar_url || otherPerson?.photo || '../assets/profile.png';
                 
                 div.innerHTML = `
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #ddd; overflow: hidden; flex-shrink: 0;">
+                    <div style="width: 55px; height: 55px; border-radius: 50%; background: #e5e7eb; overflow: hidden; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                         <img src="${otherAvatar}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/profile.png'">
                     </div>
-                    <div style="flex: 1; min-width: 0;">
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                             <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${otherName}</h3>
-                            <span style="font-size: 11px; color: #888;">${new Date(chat.updated_at).toLocaleDateString()}</span>
+                            <span style="font-size: 12px; color: #888; font-weight: 500;">${new Date(chat.updated_at).toLocaleDateString()}</span>
                         </div>
-                        <p style="margin: 0; font-size: 13px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Re: ${property?.title || 'Property'}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <p style="margin: 0; font-size: 14px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; font-weight: 500;">Re: ${property?.title || 'Property'}</p>
+                            <i data-lucide="chevron-right" style="width: 18px; height: 18px; color: #ccc; margin-left: 10px;"></i>
+                        </div>
                     </div>
                 `;
                 container.appendChild(div);
@@ -129,12 +135,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         function switchTab(tab) {
             currentTab = tab;
             if (tab === 'exploring') {
-                tabExploring.style.background = '#111';
+                tabExploring.style.background = '#0066FF';
                 tabExploring.style.color = 'white';
                 tabHosting.style.background = '#f5f5f5';
                 tabHosting.style.color = '#666';
             } else {
-                tabHosting.style.background = '#111';
+                tabHosting.style.background = '#0066FF';
                 tabHosting.style.color = 'white';
                 tabExploring.style.background = '#f5f5f5';
                 tabExploring.style.color = '#666';
