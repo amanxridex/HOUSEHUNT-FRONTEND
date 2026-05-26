@@ -273,7 +273,16 @@
             </div>
             <div class="hero-slider-container">
                 <div id="featured-listings-container" class="hero-slider">
-                    <!-- Dynamic auto-sliding featured listings will be injected here -->
+                    <!-- Static Fallback for Crawlers (Cleared by index.js) -->
+                    <div class="hero-slide" style="cursor: pointer;">
+                        <div class="hero-slide-content">
+                            <img src="assets/mainappicon.png" alt="Premium 3 BHK Apartment in Sector 62 Noida">
+                            <div class="hero-overlay">
+                                <div class="price">₹ 85.50 L</div>
+                                <h3>3 BHK Apartment Sector 62 Noida</h3>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="slider-dots" id="slider-dots"></div>
             </div>
@@ -284,7 +293,31 @@
                 <h2>Near You</h2>
                 <a href="html/explore.html" class="see-all">See All</a>
             </div>
-            <div id="near-you-container" class="horizontal-scroll"></div>
+            <div id="near-you-container" class="horizontal-scroll">
+                <!-- Static Fallback for Crawlers (Cleared by index.js) -->
+                <a href="html/property-view.html?id=1" style="text-decoration: none;" aria-label="View Details for 2 BHK Apartment Noida Sector 15">
+                    <div class="property-card">
+                        <img src="assets/mainappicon.png" alt="2 BHK Apartment for Rent in Sector 15 Noida" class="property-img">
+                        <div class="tag">Verified</div>
+                        <div class="property-details">
+                            <div class="prop-price">₹ 24,000/mo</div>
+                            <div class="prop-title">2 BHK Apartment Noida Sector 15</div>
+                            <div class="prop-loc">Sector 15, Noida</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="html/property-view.html?id=2" style="text-decoration: none;" aria-label="View Details for Independent House Gurgaon DLF 3">
+                    <div class="property-card">
+                        <img src="assets/mainappicon.png" alt="Independent House for Sale in DLF Phase 3 Gurgaon" class="property-img">
+                        <div class="tag">New</div>
+                        <div class="property-details">
+                            <div class="prop-price">₹ 2.50 Cr</div>
+                            <div class="prop-title">Independent House Gurgaon DLF 3</div>
+                            <div class="prop-loc">DLF Phase 3, Gurgaon</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
 
         <!-- Top Developers -->
@@ -306,7 +339,31 @@
                 <h2>Top Listings</h2>
                 <a href="html/explore.html" class="see-all">See All</a>
             </div>
-            <div id="top-listings-container" class="horizontal-scroll"></div>
+            <div id="top-listings-container" class="horizontal-scroll">
+                <!-- Static Fallback for Crawlers (Cleared by index.js) -->
+                <a href="html/property-view.html?id=3" style="text-decoration: none;" aria-label="View Details for 3 BHK Luxury Villa Noida Sec 150">
+                    <div class="property-card">
+                        <img src="assets/mainappicon.png" alt="Luxury Villa for Sale in Sector 150 Noida" class="property-img">
+                        <div class="tag">Featured</div>
+                        <div class="property-details">
+                            <div class="prop-price">₹ 4.20 Cr</div>
+                            <div class="prop-title">3 BHK Luxury Villa Sec 150 Noida</div>
+                            <div class="prop-loc">Sector 150, Noida</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="html/property-view.html?id=4" style="text-decoration: none;" aria-label="View Details for Commercial Office Space Delhi">
+                    <div class="property-card">
+                        <img src="assets/mainappicon.png" alt="Commercial Office for Rent in South Ext Delhi" class="property-img">
+                        <div class="tag">Verified</div>
+                        <div class="property-details">
+                            <div class="prop-price">₹ 75,000/mo</div>
+                            <div class="prop-title">Commercial Office Space Delhi</div>
+                            <div class="prop-loc">South Ext, Delhi</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
 
             <!-- Plots Section -->
@@ -315,7 +372,20 @@
                     <h2>Investment Plots</h2>
                     <a href="html/explore.html" class="see-all">See All</a>
                 </div>
-                <div id="plots-container" class="horizontal-scroll"></div>
+                <div id="plots-container" class="horizontal-scroll">
+                    <!-- Static Fallback for Crawlers (Cleared by index.js) -->
+                    <a href="html/property-view.html?id=5" style="text-decoration: none;" aria-label="View Details for 200 Sqyd Plot Greater Noida West">
+                        <div class="property-card">
+                            <img src="assets/mainappicon.png" alt="Residential Plot for Sale in Greater Noida West" class="property-img">
+                            <div class="tag">Verified</div>
+                            <div class="property-details">
+                                <div class="prop-price">₹ 45.00 L</div>
+                                <div class="prop-title">200 Sqyd Plot Greater Noida West</div>
+                                <div class="prop-loc">Greater Noida West</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
 
             <!-- Sexy Footer -->
@@ -465,44 +535,112 @@
         </div>
     </div>
 
-    <!-- Massive Hidden SEO Dictionary & GEO Optimization -->
-    <section aria-label="About HouseHunt Platform & Property Directory" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
-        <h2>What is HouseHunt?</h2>
-        <p>HouseHunt is the premier real estate platform in India for buying, selling, and renting properties. We offer direct connections between buyers and verified property owners, eliminating middleman friction.</p>
-        <h2>Extensive Property Keyword Dictionary for Search Engines</h2>
-        <p>
-            Real Estate, Property, Flats, Apartments, Villas, Independent House, Builder Floor, 
-            Plots, Land, Commercial Space, Office Space, Shop, Showroom, Godown, Warehouse, 
-            Co-working, Rent, Buy, Sell, PG, Paying Guest, Hostel, Flatmates, Shared Accommodation,
-            1 BHK, 2 BHK, 3 BHK, 4 BHK, 5 BHK, Studio, Penthouse, Duplex, Luxury Apartments,
-            Affordable Housing, Ready to Move, Under Construction, New Launch, Resale,
-            Brokerage Free, No Broker, Direct Owner, Direct Contact, Zero Brokerage,
-            Delhi, New Delhi, NCR, Noida, Greater Noida, Gurgaon, Gurugram, Faridabad, Ghaziabad,
-            Mumbai, Navi Mumbai, Thane, Pune, Bangalore, Bengaluru, Hyderabad, Chennai, Kolkata,
-            Ahmedabad, Surat, Jaipur, Lucknow, Chandigarh, Property in Delhi, Flats in Noida,
-            House for sale, House for rent, Flats for rent, Commercial property for rent,
-            Real estate app, Best property website in India, Property search, HouseHunt, House Hunt,
-            Real estate investment, Property valuation, Home loan, Vastu compliant, Gated community,
-            Swimming pool, Gym, Club house, Power backup, Security, Car parking, Best property dealer,
-            Online property, Buy flat, Rent flat, Property listings, Top real estate brokers.
-        </p>
+    <!-- Visible Premium Platform FAQ & Accordion Section -->
+    <section class="visible-faq-section" style="padding: 40px 20px; background: #ffffff; border-top: 1px solid #e2e8f0; font-family: 'Inter', sans-serif;">
+        <h2 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 20px; letter-spacing: -0.5px; text-align: left;">Frequently Asked Questions</h2>
+        
+        <div class="faq-container" style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc; transition: all 0.3s ease;">
+                <button class="faq-question" style="width: 100%; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; background: none; border: none; text-align: left; font-size: 0.95rem; font-weight: 700; color: #0f172a; cursor: pointer; outline: none;">
+                    <span>Which is the best zero brokerage real estate app in Delhi NCR?</span>
+                    <i data-lucide="chevron-down" style="width: 18px; height: 18px; color: #64748b; transition: transform 0.3s ease;"></i>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #ffffff;">
+                    <p style="padding: 0 20px 20px 20px; font-size: 0.9rem; line-height: 1.6; color: #475569; margin: 0;">
+                        <strong>HouseHunt</strong>, powered by Aarambh Realtors, is the absolute best zero brokerage real estate platform in Delhi NCR, covering Noida, Gurgaon, Delhi, Ghaziabad, and Faridabad. We connect you directly with verified owners, eliminating agent commissions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc; transition: all 0.3s ease;">
+                <button class="faq-question" style="width: 100%; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; background: none; border: none; text-align: left; font-size: 0.95rem; font-weight: 700; color: #0f172a; cursor: pointer; outline: none;">
+                    <span>How do I list my property for free on HouseHunt?</span>
+                    <i data-lucide="chevron-down" style="width: 18px; height: 18px; color: #64748b; transition: transform 0.3s ease;"></i>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #ffffff;">
+                    <p style="padding: 0 20px 20px 20px; font-size: 0.9rem; line-height: 1.6; color: #475569; margin: 0;">
+                        Listing is 100% free! Simply click "Post your property" on our homepage, select your hosting type (owner, builder, developer), fill out the property details, and complete your mobile verification. Your listing will go live after our admin check.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc; transition: all 0.3s ease;">
+                <button class="faq-question" style="width: 100%; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; background: none; border: none; text-align: left; font-size: 0.95rem; font-weight: 700; color: #0f172a; cursor: pointer; outline: none;">
+                    <span>How does the built-in HuntAI assistant help me find homes?</span>
+                    <i data-lucide="chevron-down" style="width: 18px; height: 18px; color: #64748b; transition: transform 0.3s ease;"></i>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #ffffff;">
+                    <p style="padding: 0 20px 20px 20px; font-size: 0.9rem; line-height: 1.6; color: #475569; margin: 0;">
+                        HuntAI is our state-of-the-art conversational assistant. You can chat with it to find flats matching specific budgets, ask for neighborhood insights, check Vastu compliance, or compute home loan rates using the mortgage calculator.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc; transition: all 0.3s ease;">
+                <button class="faq-question" style="width: 100%; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; background: none; border: none; text-align: left; font-size: 0.95rem; font-weight: 700; color: #0f172a; cursor: pointer; outline: none;">
+                    <span>Is HouseHunt backed by professional real estate brokers?</span>
+                    <i data-lucide="chevron-down" style="width: 18px; height: 18px; color: #64748b; transition: transform 0.3s ease;"></i>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #ffffff;">
+                    <p style="padding: 0 20px 20px 20px; font-size: 0.9rem; line-height: 1.6; color: #475569; margin: 0;">
+                        HouseHunt is a digital direct-owner platform created by Aarambh Realtors. It allows direct, unmediated P2P connections, backed by the expert support and verifications of a trusted regional partner.
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Visible Premium SEO Footer -->
-    <footer style="margin-top: 40px; padding: 30px 20px 100px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-family: 'Inter', sans-serif;">
-        <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Popular Searches</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Flats in Noida</span>
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Properties in Delhi</span>
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Buy 3 BHK Gurgaon</span>
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Zero Brokerage Flats</span>
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Commercial Space Rent</span>
-            <span style="font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0;">Independent Houses</span>
+    <footer style="padding: 30px 20px 100px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-family: 'Inter', sans-serif;">
+        <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Popular Localities</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px;">
+            <a href="html/noida.html" style="text-decoration: none; font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.2s;">Flats in Noida</a>
+            <a href="html/delhi.html" style="text-decoration: none; font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.2s;">Properties in Delhi</a>
+            <a href="html/gurgaon.html" style="text-decoration: none; font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.2s;">Buy 3 BHK Gurgaon</a>
+            <a href="html/explore.html?filter=zero-brokerage" style="text-decoration: none; font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.2s;">Zero Brokerage Flats</a>
+            <a href="html/explore.html?type=commercial" style="text-decoration: none; font-size: 12px; color: #64748b; background: white; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.2s;">Commercial Space Rent</a>
         </div>
-        <div style="margin-top: 25px; text-align: center;">
-            <p style="font-size: 12px; color: #94a3b8; margin: 0;">&copy; 2026 HouseHunt. The smartest way to find your home.</p>
+        
+        <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">About & Trust</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+            <a href="html/about.html" style="text-decoration: none; font-size: 13px; color: #0066ff; font-weight: 700;">About HouseHunt</a>
+            <a href="html/help.html" style="text-decoration: none; font-size: 13px; color: #64748b;">Help Center</a>
+            <a href="html/terms.html" style="text-decoration: none; font-size: 13px; color: #64748b;">Terms of Service</a>
+            <a href="html/privacy.html" style="text-decoration: none; font-size: 13px; color: #64748b;">Privacy Policy</a>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <p style="font-size: 12px; color: #94a3b8; margin: 0;">&copy; 2026 HouseHunt. The smartest way to find your home without brokers.</p>
+            <p style="font-size: 10px; color: #cbd5e1; margin-top: 5px;">Powered by Aarambh Realtors. Regulated under UP RERA.</p>
         </div>
     </footer>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const answer = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                const isOpen = faqItem.classList.contains('active');
+                
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.style.borderColor = '#e2e8f0';
+                    item.querySelector('.faq-answer').style.maxHeight = '0';
+                    const otherIcon = item.querySelector('.faq-question i');
+                    if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                });
+
+                if (!isOpen) {
+                    faqItem.classList.add('active');
+                    faqItem.style.borderColor = '#0066ff';
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    if (icon) icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
 
     <!-- PWA & Scripts -->
     <script src="js/firebase-auth.js" type="module"></script>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>About Us | HouseHunt</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .about-content { padding: 20px; font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #1e293b; }
+        .hero-section {
+            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+            padding: 30px 20px;
+            border-radius: 16px;
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.15);
+        }
+        .hero-section h2 { font-size: 1.5rem; margin-bottom: 8px; font-weight: 800; }
+        .hero-section p { font-size: 0.9rem; opacity: 0.9; margin: 0; line-height: 1.5; }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h3 i { color: #0066ff; }
+        .card p { font-size: 0.9rem; color: #475569; margin: 0 0 12px 0; line-height: 1.6; }
+        .card p:last-child { margin-bottom: 0; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .stat-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            text-align: center;
+        }
+        .stat-num { font-size: 1.4rem; font-weight: 800; color: #0066ff; display: block; }
+        .stat-lbl { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+        .office-details { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .office-details h3 i { color: #16a34a; }
+    </style>
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header" style="padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; background: #ffffff;">
+            <button onclick="window.location.href='../index.html'" style="background: none; border: none; font-size: 20px; color: #0f172a; cursor: pointer; display: flex; align-items: center;"><i data-lucide="arrow-left"></i></button>
+            <h1 style="font-size: 1.1rem; font-weight: 700; margin: 0; color: #0f172a;">About HouseHunt</h1>
+        </header>
+
+        <div class="about-content">
+            <!-- Hero -->
+            <section class="hero-section">
+                <h2>Direct Owner Property Search</h2>
+                <p>Welcome to HouseHunt, the smartest zero-brokerage real estate platform in Delhi NCR. We believe finding your dream home shouldn't involve paying middleman fees.</p>
+            </section>
+
+            <!-- Who We Are -->
+            <section class="card" aria-labelledby="who-we-are">
+                <h3 id="who-we-are"><i data-lucide="shield-check"></i> Backed by Aarambh Realtors</h3>
+                <p>HouseHunt is the flagship digital product of <strong>Aarambh Realtors</strong>, a leading and licensed real estate consulting organization in India. Operating under strict regulatory compliance, we bridge the gap between traditional reliability and modern technology.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-num">10,000+</span>
+                        <span class="stat-lbl">Verified Listings</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">0%</span>
+                        <span class="stat-lbl">Brokerage Fees</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verification System -->
+            <section class="card" aria-labelledby="verification">
+                <h3 id="verification"><i data-lucide="check-circle-2"></i> Our Verification Process</h3>
+                <p>Trust is our core value. Every property listing published on our platform goes through a multi-step verification sequence before it becomes searchable:</p>
+                <ul style="padding-left: 20px; font-size: 0.9rem; color: #475569; line-height: 1.6; margin: 0;">
+                    <li><strong>Phone Verification</strong>: Mandatory mobile number checks for all owners.</li>
+                    <li><strong>Document Screening</strong>: Spot checking ownership proofs and title records.</li>
+                    <li><strong>Geocoding Integrity</strong>: Automated location boundary checks and PACI coordinate matching.</li>
+                </ul>
+            </section>
+
+            <!-- RERA and Office Address -->
+            <section class="card office-details" aria-labelledby="regulatory">
+                <h3 id="regulatory" style="color: #16a34a;"><i data-lucide="building"></i> Regulatory & Office Details</h3>
+                <p style="color: #14532d;">Aarambh Realtors is completely regulated under the **Uttar Pradesh Real Estate Regulatory Authority (UP RERA)**, assuring maximum safety for all real estate listings and transactions.</p>
+                
+                <div style="font-size: 0.85rem; color: #166534; line-height: 1.5; margin-top: 15px;">
+                    <strong>Office Address:</strong><br>
+                    Aarambh Realtors Office, Sector 62,<br>
+                    Noida, Uttar Pradesh, 201301, India<br>
+                    <strong>Email:</strong> support@househunt.live
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="../js/tracker.js"></script>
+</body>
+</html>
