@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://househunt-frontend-one.vercel.app/sitemap.xml

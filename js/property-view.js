@@ -157,6 +157,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (amenityGrid.innerHTML === '') {
             document.querySelector('.amenities').style.display = 'none';
         }
+        
+        // --- Dynamic SEO & GEO Optimization ---
+        document.title = `${p.title} in ${p.location} | HouseHunt`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute("content", p.description || `Beautiful property located in ${p.location} available for ₹${p.price.toLocaleString()}`);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "RealEstateListing",
+            "name": p.title,
+            "description": p.description || `Property in ${p.location}`,
+            "image": p.images || [p.image],
+            "url": window.location.href,
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "INR",
+                "price": p.price
+            }
+        };
+
+        const scriptTag = document.createElement('script');
+        scriptTag.type = 'application/ld+json';
+        scriptTag.text = JSON.stringify(structuredData);
+        document.head.appendChild(scriptTag);
 
         // --- Seller Info ---
         if (p.owner_id) {

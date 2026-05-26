@@ -69,23 +69,21 @@
             }
         </style>
     </div>
-    <div class="app-container" style="display: none;" id="mainContent">
 
-        <!-- Scrollable Content -->
-        <div class="content-wrapper">
-            <!-- Image Gallery -->
-            <div class="gallery-container">
-                <button class="floating-back" onclick="window.history.back()">
-                    <i data-lucide="chevron-left"></i>
-                </button>
-                <img src="../assets/house.png" alt="Property Image" class="main-img">
-                <div class="gallery-badge">
-                    <i data-lucide="image"></i> 1/8
-                </div>
+    <main class="property-container" style="display: none;" id="mainContent">
+        
+        <section class="image-gallery">
+            <button class="floating-back" onclick="window.history.back()">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <img src="../assets/house.png" alt="Property Image" class="main-img">
+            <div class="gallery-badge">
+                <i data-lucide="image"></i> 1/8
             </div>
+        </section>
 
-            <!-- Property Info -->
-            <div class="info-section">
+        <article class="property-content">
+            <header class="header-info">
                 <div class="price-row">
                     <h1 class="price">₹ 85.50 L</h1>
                     <div class="type-tag">For Sale</div>
@@ -115,22 +113,21 @@
 
                 <div class="divider"></div>
 
-                
                 <!-- Description -->
-                <div class="description">
+                <section class="description">
                     <h3>About this property</h3>
                     <p id="propDesc">Loading description...</p>
-                </div>
+                </section>
 
                 <div class="divider"></div>
 
                 <!-- All Property Details -->
-                <div class="all-details-section">
+                <section class="all-details-section">
                     <h3>Property Details</h3>
                     <div class="details-grid" id="fullDetailsGrid">
                         <!-- Populated by JS -->
                     </div>
-                </div>
+                </section>
 
                 <style>
                     .all-details-section { padding: 0 0 20px 0; }
@@ -141,9 +138,8 @@
                     .detail-value { font-size: 0.95rem; color: var(--text-color); font-weight: 500; word-break: break-word; }
                 </style>
 
-
                 <!-- Amenities -->
-                <div class="amenities">
+                <section class="amenities">
                     <h3>Key Amenities</h3>
                     <div class="amenity-grid">
                         <div class="amenity-item"><i data-lucide="shield-check"></i> Gated Society</div>
@@ -151,29 +147,29 @@
                         <div class="amenity-item"><i data-lucide="zap"></i> Power Backup</div>
                         <div class="amenity-item"><i data-lucide="droplet"></i> 24/7 Water</div>
                     </div>
-                </div>
+                </section>
 
                 <!-- Seller Info -->
-                <div class="seller-card">
+                <section class="seller-card">
                     <img src="../assets/profile.png" alt="Seller" class="seller-img">
                     <div class="seller-info">
                         <h4>Aman Mishra</h4>
                         <p>Individual Owner</p>
                     </div>
                     <button class="verify-badge"><i data-lucide="check-circle"></i> Verified</button>
-                </div>
-            </div>
-        </div>
+                </section>
+            </header>
+        </article>
 
-        <!-- Sticky Action Bar -->
-        <div class="action-bar">
+        <!-- Bottom Action Bar -->
+        <footer class="action-bar">
             <button class="wishlist-btn"><i data-lucide="heart"></i></button>
             <button class="chat-btn"><i data-lucide="message-circle"></i> Chat Now</button>
             <button class="call-btn"><i data-lucide="phone"></i> Call</button>
-        </div>
-    </div>
+        </footer>
+    </main>
 
-    <script src="../js/property-view.js"></script>
+    <script src="../js/property-view.js" type="module"></script>
     <script>
         lucide.createIcons();
     </script>
