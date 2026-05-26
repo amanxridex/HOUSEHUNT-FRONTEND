@@ -207,6 +207,54 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
+        // --- Chat Now Logic ---
+        const chatBtn = document.querySelector('.chat-btn');
+        if (chatBtn && p.owner_id) {
+            chatBtn.addEventListener('click', async () => {
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+                if (!currentUser || !currentUser.id) {
+                    alert("Please log in to chat with the owner.");
+                    window.location.href = '../login.html';
+                    return;
+                }
+                
+                // Don't chat with yourself
+                if (currentUser.id === p.owner_id) {
+                    alert("This is your own property!");
+                    return;
+                }
+                
+                // Change button text to show loading
+                const originalText = chatBtn.innerHTML;
+                chatBtn.innerHTML = '<i class="lucide-loader"></i> Starting...';
+                
+                try {
+                    const chatRes = await fetch(`${BACKEND_URL}/api/chats`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            property_id: p.id,
+                            buyer_id: currentUser.id,
+                            seller_id: p.owner_id
+                        })
+                    });
+                    
+                    if (chatRes.ok) {
+                        const chatData = await chatRes.json();
+                        // Redirect to messages page and open this chat
+                        window.location.href = `messages.html?chat_id=${chatData.id}`;
+                    } else {
+                        alert("Could not start chat. Please try again.");
+                        chatBtn.innerHTML = originalText;
+                    }
+                } catch(e) {
+                    console.error("Chat initiation error:", e);
+                    alert("Network error starting chat.");
+                    chatBtn.innerHTML = originalText;
+                }
+            });
+        }
+
         if (window.lucide) window.lucide.createIcons();
 
     } catch (err) {

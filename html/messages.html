@@ -21,61 +21,64 @@
                 </button>
                 <h1 style="margin: 0; font-size: 24px; font-weight: 900;">Messages</h1>
             </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Messages | HouseHunt</title>
+    <link rel="stylesheet" href="../css/messages.css">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <button onclick="window.location.href='../index.html'" style="background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <i data-lucide="arrow-left" style="width: 20px; height: 20px; color: #111;"></i>
+                </button>
+                <h1 style="margin: 0; font-size: 24px; font-weight: 900;">Messages</h1>
+            </div>
             <div class="search-bar">
                 <i data-lucide="search"></i>
                 <input type="text" placeholder="Search chats...">
             </div>
         </header>
 
-        <!-- Chat List -->
-        <div class="content-wrapper">
-            <!-- Chat Item 1 -->
-            <div class="chat-item unread">
-                <div class="img-container">
-                    <img src="../assets/profile.png" alt="Profile" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
-                    <div class="online-indicator"></div>
+        <!-- Dynamic Container -->
+        <div class="content-wrapper" id="mainContainer" style="padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100vh;">
+            
+            <!-- LIST VIEW -->
+            <div id="chatListView" style="display: flex; flex-direction: column; flex: 1; overflow-y: auto;">
+                <div style="text-align: center; margin-top: 50px; color: #666;" id="loadingChats">
+                    <i class="lucide-loader" style="animation: spin 1s linear infinite;"></i> Loading chats...
                 </div>
-                <div class="chat-info">
-                    <div class="name-row">
-                        <h3>Rahul Sharma</h3>
-                        <span class="time">10:45 AM</span>
-                    </div>
-                    <p class="last-msg">Is the 3BHK flat still available for visit today?</p>
-                </div>
-                <div class="badge">2</div>
+                <div id="chatListContainer"></div>
             </div>
 
-            <!-- Chat Item 2 -->
-            <div class="chat-item">
-                <div class="img-container">
-                    <img src="../assets/profile.png" alt="Profile">
+            <!-- CHAT ROOM VIEW (Hidden by default) -->
+            <div id="chatRoomView" style="display: none; flex-direction: column; flex: 1; height: 100%; background: #f5f5f5;">
+                <div id="messagesContainer" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Messages go here -->
                 </div>
-                <div class="chat-info">
-                    <div class="name-row">
-                        <h3>Priya Kapoor</h3>
-                        <span class="time">Yesterday</span>
-                    </div>
-                    <p class="last-msg">Thank you, I will discuss with my family and get back.</p>
+                
+                <div class="chat-input-area" style="padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; align-items: center; position: sticky; bottom: 0;">
+                    <input type="text" id="messageInput" placeholder="Type a message..." style="flex: 1; padding: 15px; border-radius: 25px; border: 1px solid #ddd; outline: none; font-size: 14px;">
+                    <button id="sendBtn" style="background: #2D68FF; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(45,104,255,0.3);">
+                        <i data-lucide="send"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Chat Item 3 -->
-            <div class="chat-item">
-                <div class="img-container">
-                    <img src="../assets/profile.png" alt="Profile">
-                </div>
-                <div class="chat-info">
-                    <div class="name-row">
-                        <h3>Vikas Mehta</h3>
-                        <span class="time">2 days ago</span>
-                    </div>
-                    <p class="last-msg">What is the final negotiable price for the plot?</p>
-                </div>
-            </div>
         </div>
 
         <!-- Bottom Navigation -->
-                <nav class="bottom-nav">
+        <nav class="bottom-nav" id="bottomNav">
             <a href="../index.html" class="nav-item">
                 <i data-lucide="home"></i>
                 <span>Home</span>
@@ -90,7 +93,7 @@
                 </div>
                 <span>HuntAI</span>
             </a>
-            <a href="messages.html" class="nav-item">
+            <a href="messages.html" class="nav-item active">
                 <i data-lucide="message-square"></i>
                 <span>Messages</span>
             </a>
@@ -101,9 +104,11 @@
         </nav>
     </div>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="../js/messages.js"></script>
+
     <script>
         lucide.createIcons();
     </script>
     <script src="../js/tracker.js"></script>
-</body>
 </html>
