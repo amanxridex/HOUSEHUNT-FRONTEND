@@ -18,20 +18,19 @@
             <button class="back-btn" id="openMoreFilters"><i data-lucide="sliders-horizontal"></i></button>
         </header>
 
-        <div class="plots-hero" style="padding: 0 20px; margin-top: 10px; margin-bottom: 5px;">
-            <div style="background: linear-gradient(135deg, #2D68FF 0%, #00d2ff 100%); border-radius: 20px; padding: 25px 20px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(45, 104, 255, 0.3);">
-                <div style="position: relative; z-index: 2;">
-                    <span style="background: rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: inline-block;">Premium Investments</span>
-                    <h2 style="font-size: 22px; font-weight: 900; margin: 0 0 5px 0;">Plots & Land for Sale</h2>
-                    <p style="margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.4; max-width: 80%;">Build your dream home or secure high-yield assets.</p>
+        <div class="content-wrapper" style="overflow-y: auto; flex: 1; padding: 0;">
+            <div class="plots-hero" style="padding: 0 20px; margin-top: 10px; margin-bottom: 5px;">
+                <div style="background: linear-gradient(135deg, #2D68FF 0%, #00d2ff 100%); border-radius: 20px; padding: 25px 20px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(45, 104, 255, 0.3);">
+                    <div style="position: relative; z-index: 2;">
+                        <span style="background: rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: inline-block;">Premium Investments</span>
+                        <h2 style="font-size: 22px; font-weight: 900; margin: 0 0 5px 0;">Plots & Land for Sale</h2>
+                        <p style="margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.4; max-width: 80%;">Build your dream home or secure high-yield assets.</p>
+                    </div>
+                    <i data-lucide="map" style="position: absolute; right: -20px; bottom: -20px; width: 120px; height: 120px; opacity: 0.15; transform: rotate(-15deg);"></i>
                 </div>
-                <i data-lucide="map" style="position: absolute; right: -20px; bottom: -20px; width: 120px; height: 120px; opacity: 0.15; transform: rotate(-15deg);"></i>
             </div>
-        </div>
 
-        <div class="quick-chips" id="quickChips" style="display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto; scrollbar-width: none;"></div>
-
-        <div class="content-wrapper" style="overflow-y: auto; flex: 1;">
+            <div class="quick-chips" id="quickChips" style="display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto; scrollbar-width: none;"></div>
             <div class="plots-grid" id="featuredPlots">
                 <!-- Dynamic plot cards -->
             </div>
