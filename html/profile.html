@@ -146,11 +146,36 @@
 
         // Sync User Data
         const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            if (user.name) document.getElementById('profileName').innerText = user.name;
-            if (user.photo) document.getElementById('profileAvatar').src = user.photo;
-            if (user.email) document.getElementById('userHandle').innerText = user.email;
+        
+        async function fetchLatestProfile() {
+            if (!user || !user.uid) return;
+            try {
+                // Instantly update from local storage first for perceived performance
+                if (user.name) document.getElementById('profileName').innerText = user.name;
+                if (user.photo) document.getElementById('profileAvatar').src = user.photo;
+                if (user.email) document.getElementById('userHandle').innerText = user.email;
+
+                // Then fetch real latest data from backend
+                const res = await fetch(`https://backend.househunt.live/api/user/profile/${user.uid}`);
+                if (res.ok) {
+                    const profileData = await res.json();
+                    if (profileData.phone) user.phone = profileData.phone;
+                    if (profileData.avatar_url) user.photo = profileData.avatar_url;
+                    if (profileData.full_name) user.name = profileData.full_name;
+                    
+                    // Save to local storage
+                    localStorage.setItem('user', JSON.stringify(user));
+
+                    // Update UI with latest backend truth
+                    if (user.name) document.getElementById('profileName').innerText = user.name;
+                    if (user.photo) document.getElementById('profileAvatar').src = user.photo;
+                }
+            } catch(e) {
+                console.error("Could not sync latest profile", e);
+            }
         }
+        
+        fetchLatestProfile();
 
         // Logout Logic
         document.getElementById('logoutBtn').onclick = () => {
