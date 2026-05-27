@@ -12,11 +12,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user.uid) {
         container.innerHTML = `
-            <div class="empty-state">
-                <i data-lucide="log-in" style="width: 48px; height: 48px; color: #ccc;"></i>
-                <h3>Not Logged In</h3>
-                <p>Please log in to view your properties.</p>
-                <button onclick="window.location.href='login.html?returnTo=my-properties.html'" style="margin-top: 15px; padding: 10px 20px; background: #111; color: white; border: none; border-radius: 8px;">Login</button>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; margin-top: 20px;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+                    <i data-lucide="layout-list" style="width: 48px; height: 48px; color: #4f46e5;"></i>
+                </div>
+                <h2 style="font-size: 26px; font-weight: 800; color: #111; margin-bottom: 12px; letter-spacing: -0.5px;">Login Required</h2>
+                <p style="color: #64748b; margin-bottom: 40px; font-size: 16px; line-height: 1.5; max-width: 280px;">Log in to manage your properties and respond to potential leads.</p>
+                <button onclick="window.location.href='login.html?returnTo=my-properties.html'" style="background: #111; color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; font-size: 16px; width: 100%; max-width: 320px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 25px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)'">Log In Now</button>
             </div>
         `;
         if (typeof lucide !== 'undefined') { lucide.createIcons(); }

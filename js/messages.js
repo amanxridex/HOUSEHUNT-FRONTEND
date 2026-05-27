@@ -15,34 +15,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     if (!currentUser || !userId) {
-        document.body.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #fafafa; padding: 20px; text-align: center;">
-                <div style="width: 80px; height: 80px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i data-lucide="message-circle" style="width: 40px; height: 40px; color: #ccc;"></i>
+        const mainContainer = document.getElementById('mainContainer') || document.body;
+        mainContainer.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px 20px; text-align: center; background: #fafafa;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+                    <i data-lucide="message-square" style="width: 48px; height: 48px; color: #4f46e5;"></i>
                 </div>
-                <h2 style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 10px;">Login Required</h2>
-                <p style="color: #666; margin-bottom: 30px; font-size: 15px;">Please log in to view your messages and chat with property owners.</p>
-                <button onclick="window.location.href='login.html?returnTo=messages.html'" style="background: #111; color: white; border: none; padding: 14px 30px; border-radius: 12px; font-weight: 600; font-size: 16px; width: 100%; max-width: 300px;">Log In Now</button>
-                
-                <!-- Simple Bottom Nav for Guest -->
-                <nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 12px 0 24px 0; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); z-index: 1000;">
-                    <a href="../index.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                        <i data-lucide="home"></i>
-                        <span style="font-size: 11px; font-weight: 600;">Home</span>
-                    </a>
-                    <a href="messages.html" class="nav-item active" style="color: #111; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                        <i data-lucide="message-square"></i>
-                        <span style="font-size: 11px; font-weight: 600;">Chat</span>
-                    </a>
-                    <a href="my-properties.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                        <i data-lucide="building-2"></i>
-                        <span style="font-size: 11px; font-weight: 600;">My Props</span>
-                    </a>
-                    <a href="profile.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                        <i data-lucide="user"></i>
-                        <span style="font-size: 11px; font-weight: 600;">Profile</span>
-                    </a>
-                </nav>
+                <h2 style="font-size: 26px; font-weight: 800; color: #111; margin-bottom: 12px; letter-spacing: -0.5px;">Login Required</h2>
+                <p style="color: #64748b; margin-bottom: 40px; font-size: 16px; line-height: 1.5; max-width: 280px;">Unlock your inbox to chat with property owners and manage your leads.</p>
+                <button onclick="window.location.href='login.html?returnTo=messages.html'" style="background: #111; color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; font-size: 16px; width: 100%; max-width: 320px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 25px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)'">Log In Now</button>
             </div>
         `;
         if (window.lucide) window.lucide.createIcons();
