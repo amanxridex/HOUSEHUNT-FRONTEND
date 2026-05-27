@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`${BACKEND_URL}/api/properties`);
             const data = await response.json();
             if (data && data.length > 0) {
-                PROPERTIES = data.map(p => ({ ...p, price: formatPrice(p) }));
+                PROPERTIES = data.map(p => ({ 
+                    ...p, 
+                    price: formatPrice(p),
+                    location_text: p.city || (p.location_text ? p.location_text.split(',').slice(-2).join(',').trim() : (p.location || 'Location Not Specified'))
+                }));
             } else {
                 PROPERTIES = window.propertyData || [];
             }

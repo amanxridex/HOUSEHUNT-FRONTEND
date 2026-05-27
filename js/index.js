@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     type: p.property_type || p.type || 'Property',
                     intent: p.intent || 'Buy',
                     price: displayPrice,
-                    location: p.location_text || p.city || p.location || 'Location Not Specified',
+                    location: p.city || (p.location_text ? p.location_text.split(',').slice(-2).join(',').trim() : (p.location || 'Location Not Specified')),
                     image: (p.images && p.images.length > 0) ? p.images[0] : 'assets/mainappicon.png',
                     beds: (p.details && (p.details.bedrooms || p.details.beds)) ? `${p.details.bedrooms || p.details.beds}` : '',
                     tag: p.status === 'approved' ? 'Verified' : 'New'

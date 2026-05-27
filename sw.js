@@ -1,4 +1,4 @@
-const CACHE_NAME = 'househunt-v9';
+const CACHE_NAME = 'househunt-v10';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
