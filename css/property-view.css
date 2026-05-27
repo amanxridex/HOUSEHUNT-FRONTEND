@@ -51,16 +51,30 @@ body {
 .content-wrapper::-webkit-scrollbar { display: none; }
 
 /* Gallery */
-.gallery-container {
+.image-gallery {
     position: relative;
     height: 350px;
     width: 100%;
 }
 
-.main-img {
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    width: 100%;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.carousel-container::-webkit-scrollbar { display: none; }
+
+.carousel-container img {
+    flex: 0 0 100%;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    scroll-snap-align: center;
 }
 
 .floating-back {

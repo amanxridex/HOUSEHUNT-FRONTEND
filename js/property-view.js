@@ -42,7 +42,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.type-tag').textContent = `For ${p.intent}`;
         document.querySelector('.title').textContent = p.title || `${p.property_type} in ${p.city}`;
         document.querySelector('.location').innerHTML = `<i data-lucide="map-pin"></i> ${p.location_text || p.location || p.city}`;
-        document.querySelector('.main-img').src = (p.images && p.images[0]) || p.image || '../assets/mainappicon.png';
+        // --- Image Carousel Setup ---
+        const carousel = document.getElementById('imageCarousel');
+        const currentIndexSpan = document.getElementById('currentImageIndex');
+        const totalSpan = document.getElementById('totalImagesCount');
+        
+        let imagesArray = [];
+        if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+            imagesArray = p.images;
+        } else if (p.image) {
+            imagesArray = [p.image];
+        } else {
+            imagesArray = ['../assets/mainappicon.png'];
+        }
+        
+        if (carousel) {
+            carousel.innerHTML = '';
+            imagesArray.forEach((imgUrl, idx) => {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = `Property Image ${idx + 1}`;
+                carousel.appendChild(img);
+            });
+            
+            if (totalSpan) totalSpan.textContent = imagesArray.length;
+            
+            // Update badge on scroll
+            carousel.addEventListener('scroll', () => {
+                const scrollLeft = carousel.scrollLeft;
+                const width = carousel.clientWidth;
+                const activeIndex = Math.round(scrollLeft / width);
+                if (currentIndexSpan) currentIndexSpan.textContent = activeIndex + 1;
+            });
+        }
         
         const descEl = document.getElementById('propDesc');
         if (descEl) descEl.textContent = p.description || 'No description available.';

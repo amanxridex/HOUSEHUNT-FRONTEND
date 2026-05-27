@@ -75,15 +75,17 @@
         </style>
     </div>
 
-    <main class="property-container" style="display: none;" id="mainContent">
+    <main class="app-container content-wrapper" style="display: none;" id="mainContent">
         
         <section class="image-gallery">
             <button class="floating-back" onclick="window.history.back()">
                 <i data-lucide="chevron-left"></i>
             </button>
-            <img src="../assets/house.png" alt="Property Image" class="main-img">
-            <div class="gallery-badge">
-                <i data-lucide="image"></i> 1/8
+            <div class="carousel-container" id="imageCarousel">
+                <!-- Images injected by JS -->
+            </div>
+            <div class="gallery-badge" id="galleryBadge">
+                <i data-lucide="image"></i> <span id="currentImageIndex">1</span>/<span id="totalImagesCount">1</span>
             </div>
         </section>
 
