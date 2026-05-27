@@ -64,18 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
 
-    const createImageUpload = () => `
-        <div class="form-group">
-            <label>Add Property Images (Max 6, Min 2 Required)</label>
-            <div class="image-upload-grid" id="imageGrid">
-                <div class="upload-box add-box" onclick="document.getElementById('fileInput').click()">
-                    <i data-lucide="plus"></i>
+    const createImageUpload = () => {
+        let boxes = '';
+        for (let i = 0; i < 6; i++) {
+            boxes += `
+                <div class="upload-box empty-box" id="upload-box-${i}" onclick="triggerFileInput(${i})">
+                    <i data-lucide="image-plus"></i>
+                    <img src="" alt="preview" style="display:none;" id="preview-${i}">
+                    <button type="button" class="remove-btn" id="remove-btn-${i}" onclick="removeImage(event, ${i})" style="display:none;"><i data-lucide="x"></i></button>
+                    <input type="file" id="fileInput-${i}" accept="image/*" style="display: none;" onchange="handleImageSelect(event, ${i})">
                 </div>
-                <!-- Previews will appear here -->
+            `;
+        }
+        return `
+        <div class="form-group">
+            <label>Add Property Images (Choose up to 6, Min 2 Required)</label>
+            <div class="image-upload-grid" id="imageGrid">
+                ${boxes}
             </div>
-            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
         </div>
-    `;
+        `;
+    };
 
     // --- SELL SCHEMAS ---
     const schemas = {
@@ -244,45 +253,57 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 
     // --- IMAGE HANDLING ---
-    let selectedFiles = [];
-    const fileInput = document.getElementById('fileInput');
-    const imageGrid = document.getElementById('imageGrid');
+    window.imageFiles = [null, null, null, null, null, null];
 
-    if (fileInput) {
-        fileInput.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            if (selectedFiles.length + files.length > 6) {
-                alert('Max 6 images allowed');
-                return;
-            }
+    window.triggerFileInput = (index) => {
+        document.getElementById(`fileInput-${index}`).click();
+    };
 
-            files.forEach(file => {
-                selectedFiles.push(file);
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const box = document.createElement('div');
-                    box.className = 'upload-box';
-                    box.innerHTML = `
-                        <img src="${event.target.result}" alt="preview">
-                        <button class="remove-btn" data-name="${file.name}">&times;</button>
-                    `;
-                    imageGrid.insertBefore(box, imageGrid.firstChild);
-                };
-                reader.readAsDataURL(file);
-            });
-            fileInput.value = ''; // Reset for next selection
-        });
-    }
+    window.handleImageSelect = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            window.imageFiles[index] = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const box = document.getElementById(`upload-box-${index}`);
+                const img = document.getElementById(`preview-${index}`);
+                const removeBtn = document.getElementById(`remove-btn-${index}`);
+                
+                box.classList.remove('empty-box');
+                box.classList.add('filled-box');
+                
+                img.src = e.target.result;
+                img.style.display = 'block';
+                removeBtn.style.display = 'flex';
+                
+                // Hide the plus icon
+                const icon = box.querySelector('.lucide-image-plus');
+                if (icon) icon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+        event.target.value = ''; // reset
+    };
 
-    if (imageGrid) {
-        imageGrid.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-btn')) {
-                const name = e.target.dataset.name;
-                selectedFiles = selectedFiles.filter(f => f.name !== name);
-                e.target.parentElement.remove();
-            }
-        });
-    }
+    window.removeImage = (event, index) => {
+        event.stopPropagation(); // prevent opening file selector
+        window.imageFiles[index] = null;
+        
+        const box = document.getElementById(`upload-box-${index}`);
+        const img = document.getElementById(`preview-${index}`);
+        const removeBtn = document.getElementById(`remove-btn-${index}`);
+        
+        box.classList.remove('filled-box');
+        box.classList.add('empty-box');
+        
+        img.src = '';
+        img.style.display = 'none';
+        removeBtn.style.display = 'none';
+        
+        // Show the plus icon
+        const icon = box.querySelector('.lucide-image-plus');
+        if (icon) icon.style.display = 'block';
+    };
 
     // --- INTERACTIVITY ---
     formContainer.addEventListener('click', (e) => {
@@ -310,7 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const BACKEND_URL = 'https://backend.househunt.live';
 
     document.getElementById('submitBtn').addEventListener('click', async () => {
-        if (selectedFiles.length < 2) {
+        const actualFilesToUpload = window.imageFiles.filter(f => f !== null);
+        if (actualFilesToUpload.length < 2) {
             alert('Please upload at least 2 images of the property.');
             return;
         }
@@ -339,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // 2. Upload Images First
             const imageFormData = new FormData();
-            selectedFiles.forEach(file => imageFormData.append('images', file));
+            actualFilesToUpload.forEach(file => imageFormData.append('images', file));
             
             const uploadRes = await fetch(`${BACKEND_URL}/api/upload`, {
                 method: 'POST',

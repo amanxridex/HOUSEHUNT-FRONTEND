@@ -1045,19 +1045,26 @@ header {
 
 .upload-box {
     aspect-ratio: 1;
-    background: #f0f4f8;
-    border: 2px dashed #cbd5e0;
+    background: #f8fafc;
     border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
     cursor: pointer;
     transition: var(--transition);
 }
 
-.upload-box:hover {
+.upload-box.empty-box {
+    border: 2px dashed #cbd5e0;
+}
+
+.upload-box.filled-box {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.upload-box:hover.empty-box {
     border-color: var(--primary);
     background: #eef4ff;
 }
@@ -1066,25 +1073,38 @@ header {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 16px;
 }
 
 .upload-box .remove-btn {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(255, 0, 0, 0.8);
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
     color: white;
     border: none;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
 }
 
-.add-box i {
+.upload-box .remove-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+.upload-box .remove-btn:hover {
+    transform: scale(1.1);
+}
+
+.upload-box .lucide-image-plus {
     color: var(--text-muted);
     width: 32px;
     height: 32px;
