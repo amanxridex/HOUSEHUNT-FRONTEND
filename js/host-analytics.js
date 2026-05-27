@@ -14,11 +14,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // Fetch property details from backend
         const BACKEND_URL = 'https://backend.househunt.live';
-        const res = await fetch(`${BACKEND_URL}/api/properties/${propertyId}`);
-        if (!res.ok) throw new Error('Property not found');
-        const property = await res.json();
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.uid) {
+            throw new Error('User not authenticated');
+        }
+
+        const res = await fetch(`${BACKEND_URL}/api/user/properties/${user.uid}`);
+        if (!res.ok) throw new Error('Failed to fetch properties');
+        const properties = await res.json();
+        
+        const property = properties.find(p => p.id === propertyId);
+        if (!property) throw new Error('Property not found');
 
         // Populate Property Info
         document.getElementById('prop-title').textContent = property.title || property.property_type;
