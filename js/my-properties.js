@@ -74,6 +74,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        const getMockAnalytics = (id, status) => {
+            const isPending = status === 'pending';
+            if (isPending) return { impressions: 0, clicks: 0, leads: 0 };
+            
+            const seed = parseInt(id.replace(/-/g, '').substring(0, 5), 16) || 12345;
+            const baseMultiplier = (seed % 50) + 10;
+            const impressions = Math.floor(baseMultiplier * 124.5);
+            const clicks = Math.floor(impressions * (((seed % 15) + 5) / 100));
+            const calls = Math.floor(clicks * (((seed % 10) + 2) / 100));
+            const chats = Math.floor(clicks * ((((seed * 2) % 10) + 5) / 100));
+            return { impressions, clicks, leads: calls + chats };
+        };
+
         displayList.forEach(prop => {
             const card = document.createElement('div');
             
@@ -83,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 card.innerHTML = `
                     <div class="card-img-container">
-                        <div style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 16px;">
                             <i data-lucide="edit-3" style="color: #999;"></i>
                         </div>
                         <div class="status-badge warn">Draft</div>
@@ -92,13 +105,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <h3>Draft: ${propertyType}</h3>
                         <p class="loc"><i data-lucide="clock"></i> Last updated: ${new Date(prop.lastUpdated || Date.now()).toLocaleDateString()}</p>
                     </div>
-                    <div class="card-actions">
-                        <button class="edit-btn" onclick="resumeDraft('${prop.id}')">Resume</button>
-                        <button class="edit-btn" onclick="deleteDraft('${prop.id}')" style="background: #ef4444; color: white; margin-left: 10px;">Delete</button>
+                    <div class="card-actions" style="width: 100%; display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="edit-btn" onclick="resumeDraft('${prop.id}')" style="flex: 1;">Resume</button>
+                        <button class="edit-btn" onclick="deleteDraft('${prop.id}')" style="background: #fee2e2; color: #ef4444; flex: 1;">Delete</button>
                     </div>
                 `;
             } else {
-                card.className = `property-card ${prop.status === 'pending' ? 'pending' : ''}`;
+                card.className = `property-card premium-card`;
                 const isPending = prop.status === 'pending';
                 const isRejected = prop.status === 'rejected';
                 
@@ -109,25 +122,48 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const imageUrl = prop.images && prop.images.length > 0 ? prop.images[0] : '../assets/househuntlogo.png';
                 const formattedPrice = prop.price ? '₹ ' + (prop.price >= 10000000 ? (prop.price/10000000).toFixed(2) + ' Cr' : (prop.price/100000).toFixed(2) + ' L') : 'Price on request';
 
+                const analytics = getMockAnalytics(prop.id || '', prop.status);
+
                 card.innerHTML = `
-                    <div class="card-img-container">
-                        <img src="${imageUrl}" alt="Property" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
-                        ${badgeHtml}
-                    </div>
-                    <div class="card-info">
-                        <div class="price">${formattedPrice}</div>
-                        <h3>${prop.title || prop.property_type}</h3>
-                        <p class="loc"><i data-lucide="map-pin"></i> ${prop.location_text || prop.city || 'Location N/A'}</p>
-                        ${!isPending && !isRejected ? `
-                        <div class="stats">
-                            <span><i data-lucide="eye"></i> 0 Views</span>
-                            <span><i data-lucide="message-circle"></i> 0 Leads</span>
+                    <div class="premium-card-header">
+                        <div class="premium-img-box">
+                            <img src="${imageUrl}" alt="Property" onerror="this.src='../assets/househuntlogo.png'; this.onerror=null;">
+                            ${badgeHtml}
                         </div>
-                        ` : ''}
+                        <div class="premium-info">
+                            <div class="premium-price">${formattedPrice}</div>
+                            <h3 class="premium-title">${prop.title || prop.property_type}</h3>
+                            <p class="premium-loc"><i data-lucide="map-pin"></i> ${prop.location_text || prop.city || 'Location N/A'}</p>
+                        </div>
                     </div>
-                    <div class="card-actions">
-                        <button class="edit-btn" onclick="window.location.href='/host-analytics?id=${prop.id}'">View Details</button>
+                    
+                    ${!isPending && !isRejected ? `
+                    <div class="premium-stats-grid">
+                        <div class="stat-item">
+                            <i data-lucide="scan-eye" style="color: #9333ea; background: #f3e8ff;"></i>
+                            <div>
+                                <strong>${analytics.impressions.toLocaleString()}</strong>
+                                <span>Impressions</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i data-lucide="mouse-pointer-click" style="color: #2d68ff; background: #eef3ff;"></i>
+                            <div>
+                                <strong>${analytics.clicks.toLocaleString()}</strong>
+                                <span>Views</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i data-lucide="users" style="color: #10b981; background: #ecfdf5;"></i>
+                            <div>
+                                <strong>${analytics.leads.toLocaleString()}</strong>
+                                <span>Leads</span>
+                            </div>
+                        </div>
                     </div>
+                    ` : ''}
+
+                    <button class="premium-action-btn" onclick="window.location.href='/host-analytics?id=${prop.id}'">View Analytics</button>
                 `;
             }
             container.appendChild(card);

@@ -52,14 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             statusEl.style.color = '#ef4444';
         }
 
-        // Mock Analytics Data Generation (Based on how long it's been active or just random for now)
-        // In the future, this will come from the backend.
-        let baseMultiplier = isPending ? 0 : Math.floor(Math.random() * 50) + 10;
+        const seed = parseInt(propertyId.replace(/-/g, '').substring(0, 5), 16) || 12345;
+        const baseMultiplier = isPending ? 0 : (seed % 50) + 10;
         
         const impressions = isPending ? 0 : Math.floor(baseMultiplier * 124.5);
-        const clicks = isPending ? 0 : Math.floor(impressions * (Math.random() * 0.15 + 0.05)); // 5-20% CTR
-        const calls = isPending ? 0 : Math.floor(clicks * (Math.random() * 0.1 + 0.02));
-        const chats = isPending ? 0 : Math.floor(clicks * (Math.random() * 0.1 + 0.05));
+        const clicks = isPending ? 0 : Math.floor(impressions * (((seed % 15) + 5) / 100)); // 5-20% CTR
+        const calls = isPending ? 0 : Math.floor(clicks * (((seed % 10) + 2) / 100));
+        const chats = isPending ? 0 : Math.floor(clicks * ((((seed * 2) % 10) + 5) / 100));
         const leads = calls + chats;
 
         const ctr = impressions > 0 ? ((clicks / impressions) * 100).toFixed(1) : 0;
