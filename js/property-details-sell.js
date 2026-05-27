@@ -104,6 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${createChips('Furnishing Status', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Ready to Move'])}
             `},
             {
+                title: 'Address & Location', icon: 'map-pin', content: `
+                ${createInput('City', 'city_input', 'text', 'map', 'e.g. Noida')}
+                ${createInput('State', 'state_input', 'text', 'map', 'e.g. Uttar Pradesh')}
+                ${createTextArea('Full Address', 'address_input', 'e.g. Sector 62, Near Metro Station')}
+            `},
+            {
                 title: 'Pricing & Brokerage', icon: 'banknote', content: `
                 ${createInput('Total Price', 'price', 'number', 'indian-rupee', 'e.g. 75,00,000')}
                 ${createToggle('Price Negotiable', 'negotiable')}
@@ -141,6 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${createInput('Total Price', 'price', 'number', 'indian-rupee')}
                 ${createInput('Price per Sq. Yd/Ft', 'price_unit', 'number', 'calculator')}
                 ${createToggle('Negotiable', 'negotiable')}
+            `},
+            {
+                title: 'Address & Location', icon: 'map-pin', content: `
+                ${createInput('City', 'city_input', 'text', 'map', 'e.g. Noida')}
+                ${createInput('State', 'state_input', 'text', 'map', 'e.g. Uttar Pradesh')}
+                ${createTextArea('Full Address', 'address_input', 'e.g. Sector 62, Near Metro Station')}
             `},
             {
                 title: 'Legal & Ownership', icon: 'shield-check', content: `
@@ -374,7 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. Gather All Data
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const contactDetails = JSON.parse(sessionStorage.getItem('househunt_contact_details') || '{}');
-            const city = localStorage.getItem('userCity') || 'Unknown';
+            
+            const cityInput = document.getElementById('city_input')?.value || localStorage.getItem('userCity') || 'Unknown';
+            const stateInput = document.getElementById('state_input')?.value || '';
+            const addressInput = document.getElementById('address_input')?.value || '';
+            const fullLocationText = [addressInput, cityInput, stateInput].filter(Boolean).join(', ');
 
             if (!user.uid) {
                 alert("Please log in to post a property.");
@@ -389,22 +405,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = {
                 owner_id: user.uid,
-                title: `${dbPropertyType} for Sale in ${city}`,
+                title: `${dbPropertyType} for Sale in ${cityInput}`,
                 description: desc,
                 property_type: dbPropertyType,
                 intent: 'Buy',
                 price: parseFloat(document.getElementById('price')?.value || 0),
-                location_text: city,
-                city: city,
+                location_text: fullLocationText,
+                city: cityInput,
                 images: urls,
-                details: {}
+                details: {
+                    state: stateInput,
+                    address: addressInput
+                }
             };
             
             if (draftId) formData.id = draftId;
 
             // Collect all inputs
             document.querySelectorAll('input[id], textarea[id]').forEach(input => {
-                if (['price', 'desc', 'fileInput'].includes(input.id)) return;
+                if (['price', 'desc', 'fileInput', 'city_input', 'state_input', 'address_input'].includes(input.id)) return;
                 if (input.type === 'checkbox') {
                     formData.details[input.id] = input.checked;
                 } else {

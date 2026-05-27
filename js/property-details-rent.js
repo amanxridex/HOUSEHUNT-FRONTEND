@@ -99,13 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
             `},
             {
                 title: 'Property Configuration', icon: 'settings', content: `
-                ${createChips('BHK Type', 'bhk', ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '4+ BHK'])}
-                ${createInput('Super Area (Sqft)', 'area', 'number', 'maximize')}
+                ${createChips('BHK Type', 'bhk', ['1 RK', '1 BHK', '2 BHK', '3 BHK', '4+ BHK'])}
                 ${createInput('Carpet Area (Sqft)', 'carpet_area', 'number', 'maximize')}
                 ${createInput('Total Floors', 'total_floors', 'number', 'layers')}
                 ${createInput('Floor Number', 'floor', 'number', 'layers')}
                 ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'])}
-                ${createChips('Furnishing', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Fully Furnished'])}
+                ${createChips('Furnishing Status', 'furnishing', ['Unfurnished', 'Semi-Furnished', 'Fully-Furnished'])}
+                ${createChips('Preferred Tenants', 'tenants', ['Bachelors', 'Family', 'Company Lease', 'Any'])}
+            `},
+            {
+                title: 'Address & Location', icon: 'map-pin', content: `
+                ${createInput('City', 'city_input', 'text', 'map', 'e.g. Noida')}
+                ${createInput('State', 'state_input', 'text', 'map', 'e.g. Uttar Pradesh')}
+                ${createTextArea('Full Address', 'address_input', 'e.g. Sector 62, Near Metro Station')}
             `},
             {
                 title: 'Pricing & Charges', icon: 'banknote', content: `
@@ -162,10 +168,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${createChips('Facing', 'facing', ['East', 'West', 'North', 'South'])}
             `},
             {
-                title: 'Pricing', icon: 'banknote', content: `
-                ${createInput('Monthly Rent', 'rent', 'number', 'indian-rupee')}
-                ${createInput('Deposit', 'deposit', 'number', 'shield')}
-                ${createInput('Maintenance/Society Charges', 'maint', 'number', 'settings')}
+                title: 'Pricing & Brokerage', icon: 'banknote', content: `
+                ${createInput('Monthly Rent', 'price', 'number', 'indian-rupee')}
+                ${createInput('Security Deposit', 'deposit', 'number', 'shield')}
+                ${createInput('Maintenance (Monthly)', 'maint', 'number', 'settings')}
+                ${createToggle('Rent Negotiable', 'negotiable')}
+                ${createChips('Brokerage', 'brokerage', ['None', '15 Days', '1 Month'])}
+            `},
+            {
+                title: 'Address & Location', icon: 'map-pin', content: `
+                ${createInput('City', 'city_input', 'text', 'map', 'e.g. Noida')}
+                ${createInput('State', 'state_input', 'text', 'map', 'e.g. Uttar Pradesh')}
+                ${createTextArea('Full Address', 'address_input', 'e.g. Sector 62, Near Metro Station')}
             `},
             {
                 title: 'Luxury Features', icon: 'crown', content: `
@@ -374,7 +388,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. Gather All Data
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const contactDetails = JSON.parse(sessionStorage.getItem('househunt_contact_details') || '{}');
-            const city = localStorage.getItem('userCity') || 'Unknown';
+            
+            const cityInput = document.getElementById('city_input')?.value || localStorage.getItem('userCity') || 'Unknown';
+            const stateInput = document.getElementById('state_input')?.value || '';
+            const addressInput = document.getElementById('address_input')?.value || '';
+            const fullLocationText = [addressInput, cityInput, stateInput].filter(Boolean).join(', ');
 
             if (!user.uid) {
                 alert("Please log in to post a property.");
@@ -389,22 +407,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = {
                 owner_id: user.uid,
-                title: `${dbPropertyType} for Rent in ${city}`,
+                title: `${dbPropertyType} for Rent in ${cityInput}`,
                 description: desc,
                 property_type: dbPropertyType,
                 intent: 'Rent',
                 price: parseFloat(document.getElementById('rent')?.value || document.getElementById('price')?.value || 0),
-                location_text: city,
-                city: city,
+                location_text: fullLocationText,
+                city: cityInput,
                 images: urls,
-                details: {}
+                details: {
+                    state: stateInput,
+                    address: addressInput
+                }
             };
 
             if (draftId) formData.id = draftId;
 
             // Collect all inputs
             document.querySelectorAll('input[id], textarea[id]').forEach(input => {
-                if (['rent', 'deposit', 'desc', 'fileInput'].includes(input.id)) return;
+                if (['rent', 'price', 'deposit', 'desc', 'fileInput', 'city_input', 'state_input', 'address_input'].includes(input.id)) return;
                 if (input.type === 'checkbox') {
                     formData.details[input.id] = input.checked;
                 } else {

@@ -1,3 +1,6 @@
+let currentProperty = null;
+let editImages = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
     if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const property = properties.find(p => p.id === propertyId);
         if (!property) throw new Error('Property not found');
+        currentProperty = property;
 
         // Populate Property Info
         document.getElementById('prop-title').textContent = property.title || property.property_type;
@@ -134,21 +138,138 @@ window.handleAction = function(action) {
 };
 
 window.openEditModal = function() {
-    const titleEl = document.getElementById('prop-title');
-    const priceEl = document.getElementById('prop-price');
+    if (!currentProperty) return;
+
+    document.getElementById('edit-title').value = currentProperty.title || '';
+    document.getElementById('edit-price').value = currentProperty.price || '';
     
-    document.getElementById('edit-title').value = titleEl.textContent;
-    // Extract numbers from price string (e.g. "₹ 1.50 Cr" -> we'll just leave it empty or extract roughly)
-    // For simplicity, we just leave the price blank for them to type the new raw number
-    document.getElementById('edit-price').value = '';
+    document.getElementById('edit-city').value = currentProperty.city || '';
+    document.getElementById('edit-state').value = currentProperty.details?.state || '';
+    document.getElementById('edit-address').value = currentProperty.details?.address || '';
+    
+    editImages = [...(currentProperty.images || [])];
+    renderEditImages();
     
     const modal = document.getElementById('edit-modal');
     modal.style.display = 'flex';
-    // Small delay to allow display:flex to apply before adding opacity class for transition
     setTimeout(() => {
         modal.classList.add('active');
     }, 10);
 };
+
+window.renderEditImages = function() {
+    const grid = document.getElementById('edit-image-grid');
+    grid.innerHTML = '';
+    
+    editImages.forEach((imgUrl, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.flex = '0 0 100px';
+        wrapper.style.height = '100px';
+        wrapper.style.borderRadius = '8px';
+        wrapper.style.overflow = 'hidden';
+        wrapper.style.border = '1px solid #e2e8f0';
+        
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        
+        // Delete Button
+        const delBtn = document.createElement('button');
+        delBtn.innerHTML = '<i data-lucide="x" style="width: 14px; height: 14px;"></i>';
+        delBtn.style.position = 'absolute';
+        delBtn.style.top = '4px';
+        delBtn.style.right = '4px';
+        delBtn.style.background = '#ef4444';
+        delBtn.style.color = 'white';
+        delBtn.style.border = 'none';
+        delBtn.style.borderRadius = '50%';
+        delBtn.style.width = '20px';
+        delBtn.style.height = '20px';
+        delBtn.style.display = 'flex';
+        delBtn.style.alignItems = 'center';
+        delBtn.style.justifyContent = 'center';
+        delBtn.onclick = () => {
+            editImages.splice(index, 1);
+            renderEditImages();
+        };
+        
+        // Move Left
+        if (index > 0) {
+            const leftBtn = document.createElement('button');
+            leftBtn.innerHTML = '<i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>';
+            leftBtn.style.position = 'absolute';
+            leftBtn.style.bottom = '4px';
+            leftBtn.style.left = '4px';
+            leftBtn.style.background = 'rgba(0,0,0,0.6)';
+            leftBtn.style.color = 'white';
+            leftBtn.style.border = 'none';
+            leftBtn.style.borderRadius = '4px';
+            leftBtn.onclick = () => {
+                [editImages[index - 1], editImages[index]] = [editImages[index], editImages[index - 1]];
+                renderEditImages();
+            };
+            wrapper.appendChild(leftBtn);
+        }
+        
+        // Move Right
+        if (index < editImages.length - 1) {
+            const rightBtn = document.createElement('button');
+            rightBtn.innerHTML = '<i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>';
+            rightBtn.style.position = 'absolute';
+            rightBtn.style.bottom = '4px';
+            rightBtn.style.right = '4px';
+            rightBtn.style.background = 'rgba(0,0,0,0.6)';
+            rightBtn.style.color = 'white';
+            rightBtn.style.border = 'none';
+            rightBtn.style.borderRadius = '4px';
+            rightBtn.onclick = () => {
+                [editImages[index], editImages[index + 1]] = [editImages[index + 1], editImages[index]];
+                renderEditImages();
+            };
+            wrapper.appendChild(rightBtn);
+        }
+        
+        wrapper.appendChild(img);
+        wrapper.appendChild(delBtn);
+        grid.appendChild(wrapper);
+    });
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const addImageInput = document.getElementById('edit-add-image');
+    if (addImageInput) {
+        addImageInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            
+            showToast('Uploading images...', 'loader-2');
+            try {
+                const BACKEND_URL = 'https://backend.househunt.live';
+                const formData = new FormData();
+                files.forEach(file => formData.append('images', file));
+                
+                const uploadRes = await fetch(`${BACKEND_URL}/api/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!uploadRes.ok) throw new Error('Image upload failed');
+                const { urls } = await uploadRes.json();
+                
+                editImages = [...editImages, ...urls];
+                renderEditImages();
+                showToast('Images added successfully!', 'check-circle');
+            } catch (err) {
+                showToast('Failed to upload images', 'alert-circle');
+            }
+            addImageInput.value = ''; // reset
+        });
+    }
+});
 
 window.closeEditModal = function() {
     const modal = document.getElementById('edit-modal');
@@ -161,6 +282,9 @@ window.closeEditModal = function() {
 window.saveEdit = async function() {
     const newTitle = document.getElementById('edit-title').value.trim();
     const newPrice = document.getElementById('edit-price').value.trim();
+    const city = document.getElementById('edit-city').value.trim();
+    const state = document.getElementById('edit-state').value.trim();
+    const address = document.getElementById('edit-address').value.trim();
     
     if (!newTitle) {
         showToast('Title cannot be empty', 'alert-circle');
@@ -177,23 +301,54 @@ window.saveEdit = async function() {
         const urlParams = new URLSearchParams(window.location.search);
         const propId = urlParams.get('id');
 
-        // Attempt to send PATCH to backend (this might fail if route doesn't exist yet, but we handle it gracefully)
+        const location_text = [address, city, state].filter(Boolean).join(', ');
+        
+        const payload = {
+            title: newTitle,
+            city: city,
+            location_text: location_text,
+            images: editImages
+        };
+        
+        if (newPrice) payload.price = Number(newPrice);
+        
+        // Merge with existing details
+        if (currentProperty) {
+            payload.details = { ...currentProperty.details, state, address };
+        }
+
         try {
             await fetch(`${BACKEND_URL}/api/properties/${propId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: newTitle, price: newPrice ? Number(newPrice) : undefined })
+                body: JSON.stringify(payload)
             });
         } catch (e) {
             console.warn("Backend PATCH failed, simulating success locally.");
         }
 
-        // Update UI locally to reflect the change instantly!
+        // Update UI locally
         document.getElementById('prop-title').textContent = newTitle;
+        if (location_text) {
+            document.getElementById('prop-loc').textContent = location_text;
+        }
+        if (editImages.length > 0) {
+            document.getElementById('prop-image').src = editImages[0];
+        }
         if (newPrice) {
             const numPrice = Number(newPrice);
             const formattedPrice = '₹ ' + (numPrice >= 10000000 ? (numPrice/10000000).toFixed(2) + ' Cr' : (numPrice/100000).toFixed(2) + ' L');
             document.getElementById('prop-price').textContent = formattedPrice;
+        }
+        
+        // Update current property state
+        if (currentProperty) {
+            currentProperty.title = newTitle;
+            currentProperty.price = newPrice ? Number(newPrice) : currentProperty.price;
+            currentProperty.city = city;
+            currentProperty.location_text = location_text;
+            currentProperty.images = [...editImages];
+            currentProperty.details = payload.details;
         }
 
         closeEditModal();
