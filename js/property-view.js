@@ -57,9 +57,43 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }
+        // --- Share Button Logic ---
+        const shareBtn = document.getElementById('propertyShareButton');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: p.title || `${p.property_type} in ${p.city}`,
+                    text: `Check out this amazing property on HouseHunt: ${p.location_text || p.location || p.city}`,
+                    url: window.location.href
+                };
+                try {
+                    if (navigator.share) {
+                        await navigator.share(shareData);
+                    } else {
+                        await navigator.clipboard.writeText(window.location.href);
+                        alert("Property link copied to clipboard!");
+                    }
+                } catch(err) {
+                    console.error("Error sharing:", err);
+                }
+            });
+        }
 
         // --- Basic Info ---
-        document.querySelector('.price').textContent = `${p.price}`;
+        let displayPrice = p.price;
+        if (typeof p.price === 'number') {
+            if (p.intent === 'Rent') {
+                displayPrice = `₹ ${p.price.toLocaleString()}/mo`;
+            } else {
+                const inCr = p.price / 10000000;
+                if (inCr >= 1) displayPrice = `₹ ${inCr.toFixed(2)} Cr`;
+                else displayPrice = `₹ ${(p.price / 100000).toFixed(2)} L`;
+            }
+        } else if (!displayPrice || displayPrice.toString().trim() === '') {
+            displayPrice = 'Price on Request';
+        }
+        
+        document.querySelector('.price').textContent = displayPrice;
         document.querySelector('.type-tag').textContent = `For ${p.intent}`;
         document.querySelector('.title').textContent = p.title || `${p.property_type} in ${p.city}`;
         document.querySelector('.location').innerHTML = `<i data-lucide="map-pin"></i> ${p.location_text || p.location || p.city}`;

@@ -77,10 +77,9 @@ body {
     scroll-snap-align: center;
 }
 
-.floating-back {
+.floating-back, .floating-share {
     position: absolute;
     top: 20px;
-    left: 20px;
     width: 44px;
     height: 44px;
     border-radius: 16px;
@@ -93,6 +92,8 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     z-index: 10;
 }
+.floating-back { left: 20px; }
+.floating-share { right: 20px; }
 
 .gallery-badge {
     position: absolute;
