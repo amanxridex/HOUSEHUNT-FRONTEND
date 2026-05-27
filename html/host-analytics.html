@@ -148,6 +148,29 @@
         </div>
     </div>
 
+    <!-- Edit Property Modal -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Quick Edit</h3>
+                <button class="close-btn" onclick="closeEditModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Property Title</label>
+                    <input type="text" id="edit-title" placeholder="e.g. 3 BHK Luxury Villa">
+                </div>
+                <div class="input-group">
+                    <label>Price (₹)</label>
+                    <input type="number" id="edit-price" placeholder="e.g. 15000000">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="saveEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/host-analytics.js"></script>
     <script>
         lucide.createIcons();
