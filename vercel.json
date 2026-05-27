@@ -13,6 +13,7 @@
     { "source": "/404ai", "destination": "/html/404ai" },
     { "source": "/profile", "destination": "/html/profile" },
     { "source": "/my-properties", "destination": "/html/my-properties" },
+    { "source": "/property-view", "destination": "/html/property-view" },
     { "source": "/messages", "destination": "/html/messages" },
     { "source": "/login", "destination": "/html/login" },
     { "source": "/host-analytics", "destination": "/html/host-analytics" },
