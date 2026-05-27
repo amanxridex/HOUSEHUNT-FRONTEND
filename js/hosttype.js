@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Draft handling via Backend
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (!user.uid) {
-            alert('Please login first to save your draft.');
-            window.location.href = 'login.html';
+            alert('Please login first to add a property.');
+            window.location.href = 'login.html?returnTo=hosttype.html';
             return;
         }
 

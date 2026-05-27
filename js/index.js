@@ -42,13 +42,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn("Backend unavailable, using mock data.", e);
     }
 
+    // Geolocation Logic (Runs for both logged in and guests)
+    const locEl = document.getElementById('headerUserLocation');
+    if (locEl) {
+        const updateLocationUI = (city) => {
+            locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>${city}`;
+            locEl.classList.remove('skeleton');
+            locEl.style.height = 'auto';
+            locEl.style.width = 'auto';
+            if (window.lucide) window.lucide.createIcons();
+        };
+
+        const cachedCity = localStorage.getItem('userCity');
+        if (cachedCity) updateLocationUI(cachedCity);
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                try {
+                    const { latitude, longitude } = position.coords;
+                    const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const geoData = await geoRes.json();
+                    const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || "India";
+                    
+                    localStorage.setItem('userCity', city);
+                    updateLocationUI(city);
+                } catch (err) {
+                    console.error("Geocoding failed", err);
+                    if (!cachedCity) updateLocationUI("India");
+                }
+            }, (err) => {
+                console.warn("Location denied/failed", err);
+                if (!cachedCity) updateLocationUI("India");
+            });
+        } else {
+            if (!cachedCity) updateLocationUI("India");
+        }
+    }
+
     // User Auth Check & Phone Enforcement
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        const nameEl = document.getElementById('headerUserName');
-        const picEl = document.getElementById('headerProfilePic');
-        const locEl = document.getElementById('headerUserLocation');
+    const nameEl = document.getElementById('headerUserName');
+    const picEl = document.getElementById('headerProfilePic');
+    const profileLink = document.getElementById('userProfile');
 
+    if (user) {
         if (nameEl) {
             nameEl.innerText = user.name;
             nameEl.classList.remove('skeleton');
@@ -59,41 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             picEl.src = user.photo;
             picEl.classList.remove('skeleton');
         }
-        if (locEl) {
-            // Geolocation Logic
-            const updateLocationUI = (city) => {
-                locEl.innerHTML = `<i data-lucide="map-pin" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>${city}`;
-                locEl.classList.remove('skeleton');
-                locEl.style.height = 'auto';
-                locEl.style.width = 'auto';
-                if (window.lucide) window.lucide.createIcons();
-            };
-
-            const cachedCity = localStorage.getItem('userCity');
-            if (cachedCity) updateLocationUI(cachedCity);
-
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    try {
-                        const { latitude, longitude } = position.coords;
-                        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                        const geoData = await geoRes.json();
-                        const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || "India";
-                        
-                        localStorage.setItem('userCity', city);
-                        updateLocationUI(city);
-                    } catch (err) {
-                        console.error("Geocoding failed", err);
-                        if (!cachedCity) updateLocationUI("India");
-                    }
-                }, (err) => {
-                    console.warn("Location denied/failed", err);
-                    if (!cachedCity) updateLocationUI("India");
-                });
-            } else {
-                if (!cachedCity) updateLocationUI("India");
-            }
-        }
+        // Removed geolocation from here
         const profileLink = document.getElementById('userProfile');
         if (profileLink) profileLink.onclick = () => window.location.href = 'html/profile.html';
 
@@ -153,6 +156,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (e) {
             console.error("Profile check failed", e);
         }
+    } else {
+        // GUEST MODE UI
+        if (nameEl) {
+            nameEl.innerText = "Guest";
+            nameEl.classList.remove('skeleton');
+            nameEl.style.height = 'auto';
+            nameEl.style.width = 'auto';
+        }
+        if (picEl) {
+            picEl.src = "assets/mainappicon.png";
+            picEl.classList.remove('skeleton');
+        }
+        if (profileLink) profileLink.onclick = () => window.location.href = 'html/login.html';
     }
 
     let allData = [];

@@ -263,24 +263,64 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
+        // --- Action Interceptors (Guest Mode) ---
+        const handleProtectedAction = () => {
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+            const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
+            if (!currentUser || !userId) {
+                // Show a nice visual cue before redirecting
+                const btnContainer = document.querySelector('.bottom-actions');
+                const returnUrl = encodeURIComponent(window.location.href);
+                if (btnContainer) {
+                    btnContainer.innerHTML = `<div style="width: 100%; text-align: center; padding: 10px; background: #111; color: white; border-radius: 12px; cursor: pointer;" onclick="window.location.href='login.html?returnTo=${returnUrl}'">Login to view owner details & contact</div>`;
+                } else {
+                    alert("Please log in to contact the owner.");
+                    window.location.href = `login.html?returnTo=${returnUrl}`;
+                }
+                return false;
+            }
+            if (userId === p.owner_id) {
+                alert("This is your own property!");
+                return false;
+            }
+            return { currentUser, userId };
+        };
+
+        const callBtn = document.querySelector('.call-btn');
+        if (callBtn) {
+            callBtn.addEventListener('click', async () => {
+                const userCheck = handleProtectedAction();
+                if (!userCheck) return;
+
+                // If passed auth, fetch owner profile to get phone
+                try {
+                    callBtn.innerHTML = '<i class="lucide-loader"></i> Fetching...';
+                    const profileRes = await fetch(`${BACKEND_URL}/api/profiles/${p.owner_id}`);
+                    if (profileRes.ok) {
+                        const profileData = await profileRes.json();
+                        if (profileData.phone) {
+                            window.location.href = `tel:${profileData.phone}`;
+                        } else {
+                            alert("Owner hasn't provided a public phone number.");
+                        }
+                    }
+                    callBtn.innerHTML = '<i data-lucide="phone"></i> Call';
+                    if (window.lucide) window.lucide.createIcons();
+                } catch(e) {
+                    console.error(e);
+                    callBtn.innerHTML = '<i data-lucide="phone"></i> Call';
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            });
+        }
+
         // --- Chat Now Logic ---
         const chatBtn = document.querySelector('.chat-btn');
         if (chatBtn && p.owner_id) {
             chatBtn.addEventListener('click', async () => {
-                const currentUser = JSON.parse(localStorage.getItem('user'));
-                const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
-                
-                if (!currentUser || !userId) {
-                    alert("Please log in to chat with the owner.");
-                    window.location.href = 'login.html';
-                    return;
-                }
-                
-                // Don't chat with yourself
-                if (userId === p.owner_id) {
-                    alert("This is your own property!");
-                    return;
-                }
+                const userCheck = handleProtectedAction();
+                if (!userCheck) return;
+                const { userId } = userCheck;
                 
                 // Change button text to show loading
                 const originalText = chatBtn.innerHTML;

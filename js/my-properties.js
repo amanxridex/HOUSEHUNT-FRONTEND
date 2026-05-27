@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <i data-lucide="log-in" style="width: 48px; height: 48px; color: #ccc;"></i>
                 <h3>Not Logged In</h3>
                 <p>Please log in to view your properties.</p>
-                <button onclick="window.location.href='login.html'" style="margin-top: 15px; padding: 10px 20px; background: #111; color: white; border: none; border-radius: 8px;">Login</button>
+                <button onclick="window.location.href='login.html?returnTo=my-properties.html'" style="margin-top: 15px; padding: 10px 20px; background: #111; color: white; border: none; border-radius: 8px;">Login</button>
             </div>
         `;
         if (typeof lucide !== 'undefined') { lucide.createIcons(); }

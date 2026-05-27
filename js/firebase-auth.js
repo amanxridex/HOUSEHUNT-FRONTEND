@@ -26,7 +26,13 @@ window.signInWithGoogle = async () => {
             email: user.email,
             photo: user.photoURL
         }));
-        window.location.href = '/';
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnTo = urlParams.get('returnTo');
+        if (returnTo) {
+            window.location.href = returnTo; // URL is already decoded by URLSearchParams, but let's be safe. Actually, returnTo is just the URL string.
+        } else {
+            window.location.href = '../index.html';
+        }
     } catch (error) {
         console.error("Auth Error:", error.code, error.message);
         alert("Authentication failed: " + error.message);

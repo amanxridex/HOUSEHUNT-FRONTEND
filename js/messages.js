@@ -15,7 +15,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     if (!currentUser || !userId) {
-        window.location.href = 'login.html';
+        document.body.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #fafafa; padding: 20px; text-align: center;">
+                <div style="width: 80px; height: 80px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                    <i data-lucide="message-circle" style="width: 40px; height: 40px; color: #ccc;"></i>
+                </div>
+                <h2 style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 10px;">Login Required</h2>
+                <p style="color: #666; margin-bottom: 30px; font-size: 15px;">Please log in to view your messages and chat with property owners.</p>
+                <button onclick="window.location.href='login.html?returnTo=messages.html'" style="background: #111; color: white; border: none; padding: 14px 30px; border-radius: 12px; font-weight: 600; font-size: 16px; width: 100%; max-width: 300px;">Log In Now</button>
+                
+                <!-- Simple Bottom Nav for Guest -->
+                <nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 12px 0 24px 0; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); z-index: 1000;">
+                    <a href="../index.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <i data-lucide="home"></i>
+                        <span style="font-size: 11px; font-weight: 600;">Home</span>
+                    </a>
+                    <a href="messages.html" class="nav-item active" style="color: #111; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <i data-lucide="message-square"></i>
+                        <span style="font-size: 11px; font-weight: 600;">Chat</span>
+                    </a>
+                    <a href="my-properties.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <i data-lucide="building-2"></i>
+                        <span style="font-size: 11px; font-weight: 600;">My Props</span>
+                    </a>
+                    <a href="profile.html" class="nav-item" style="color: #999; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <i data-lucide="user"></i>
+                        <span style="font-size: 11px; font-weight: 600;">Profile</span>
+                    </a>
+                </nav>
+            </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
         return;
     }
 

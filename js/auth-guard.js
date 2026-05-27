@@ -18,20 +18,15 @@ const auth = getAuth(app);
 const path = window.location.pathname;
 const isLoginPage = path.includes('login.html') || path === '/login' || path === '/html/login';
 
-if (!localStorage.getItem('user') && !isLoginPage) {
-    window.location.href = '/login';
-}
-
 // Firebase Real-time Check
 onAuthStateChanged(auth, (user) => {
     const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname === '/login' || window.location.pathname === '/html/login';
     
-    if (!user && !isLoginPage) {
-        // Not logged in -> Redirect to login
+    if (!user) {
+        // Not logged in -> Just remove local state, don't force redirect
         localStorage.removeItem('user');
-        window.location.href = '/login';
     } else if (user && isLoginPage) {
         // Logged in but on login page -> Redirect to home
-        window.location.href = '/';
+        window.location.href = '../index.html';
     }
 });
