@@ -268,15 +268,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             const currentUser = JSON.parse(localStorage.getItem('user'));
             const userId = currentUser ? (currentUser.uid || currentUser.id) : null;
             if (!currentUser || !userId) {
-                // Show a nice visual cue before redirecting
-                const btnContainer = document.querySelector('.bottom-actions');
+                // IN-APP MODAL for Guest Mode
                 const returnUrl = encodeURIComponent(window.location.href);
-                if (btnContainer) {
-                    btnContainer.innerHTML = `<div style="width: 100%; text-align: center; padding: 10px; background: #111; color: white; border-radius: 12px; cursor: pointer;" onclick="window.location.href='login.html?returnTo=${returnUrl}'">Login to view owner details & contact</div>`;
-                } else {
-                    alert("Please log in to contact the owner.");
-                    window.location.href = `login.html?returnTo=${returnUrl}`;
-                }
+                
+                // Remove existing if any
+                const existing = document.getElementById('guestLoginModal');
+                if (existing) existing.remove();
+                
+                const modalOverlay = document.createElement('div');
+                modalOverlay.id = 'guestLoginModal';
+                modalOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;';
+                
+                const modalBox = document.createElement('div');
+                modalBox.style.cssText = 'background: white; width: 90%; max-width: 340px; padding: 24px; border-radius: 24px; text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 40px rgba(0,0,0,0.2);';
+                
+                modalBox.innerHTML = `
+                    <div style="width: 60px; height: 60px; background: #f0f4ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+                        <i data-lucide="lock" style="width: 30px; height: 30px; color: #0066ff;"></i>
+                    </div>
+                    <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 800; color: #111;">Login Required</h3>
+                    <p style="margin: 0 0 24px 0; font-size: 14px; color: #666; line-height: 1.5;">You must be logged in to contact the owner and view their details.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="closeGuestModalBtn" style="flex: 1; padding: 12px; border: none; background: #f1f5f9; color: #475569; font-weight: 700; border-radius: 12px; cursor: pointer; font-size: 15px;">Cancel</button>
+                        <button onclick="window.location.href='login.html?returnTo=${returnUrl}'" style="flex: 1; padding: 12px; border: none; background: #111; color: white; font-weight: 700; border-radius: 12px; cursor: pointer; font-size: 15px;">Log In</button>
+                    </div>
+                `;
+                
+                modalOverlay.appendChild(modalBox);
+                document.body.appendChild(modalOverlay);
+                
+                if (window.lucide) window.lucide.createIcons();
+                
+                // Animate In
+                requestAnimationFrame(() => {
+                    modalOverlay.style.opacity = '1';
+                    modalBox.style.transform = 'scale(1)';
+                });
+                
+                document.getElementById('closeGuestModalBtn').addEventListener('click', () => {
+                    modalOverlay.style.opacity = '0';
+                    modalBox.style.transform = 'scale(0.9)';
+                    setTimeout(() => modalOverlay.remove(), 300);
+                });
+                
                 return false;
             }
             if (userId === p.owner_id) {
@@ -294,6 +328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // If passed auth, fetch owner profile to get phone
                 try {
+                    const originalHtml = callBtn.innerHTML;
                     callBtn.innerHTML = '<i class="lucide-loader"></i> Fetching...';
                     const profileRes = await fetch(`${BACKEND_URL}/api/profiles/${p.owner_id}`);
                     if (profileRes.ok) {
@@ -303,8 +338,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         } else {
                             alert("Owner hasn't provided a public phone number.");
                         }
+                    } else {
+                        alert("Could not fetch owner details.");
                     }
-                    callBtn.innerHTML = '<i data-lucide="phone"></i> Call';
+                    callBtn.innerHTML = originalHtml;
                     if (window.lucide) window.lucide.createIcons();
                 } catch(e) {
                     console.error(e);
