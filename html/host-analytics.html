@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Property Analytics | HouseHunt</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#f0f2f5">
+    <link rel="stylesheet" href="../css/host-analytics.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/mainappicon.png">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="analytics-header">
+            <div class="header-top">
+                <button onclick="window.location.href='my-properties.html'" class="back-btn"><i data-lucide="arrow-left"></i></button>
+                <h1>Analytics Hub</h1>
+            </div>
+        </header>
+
+        <div class="content-wrapper" id="analytics-content">
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-spinner">
+                <i data-lucide="loader-2" class="spin"></i>
+                <p>Fetching your property insights...</p>
+            </div>
+
+            <div id="dashboard" style="display: none;">
+                <!-- Property Overview -->
+                <section class="property-overview card">
+                    <img id="prop-image" src="" alt="Property" onerror="this.src='../assets/househuntlogo.png';">
+                    <div class="prop-details">
+                        <div class="status-badge" id="prop-status">Live</div>
+                        <h2 id="prop-title">Loading...</h2>
+                        <p class="loc"><i data-lucide="map-pin"></i> <span id="prop-loc">Loading...</span></p>
+                        <div class="price" id="prop-price">₹ --</div>
+                    </div>
+                </section>
+
+                <!-- Performance Funnel -->
+                <h3 class="section-title">Performance Funnel <span class="timeframe">Last 30 Days</span></h3>
+                
+                <div class="funnel-container">
+                    <!-- Impressions -->
+                    <div class="metric-card fade-in">
+                        <div class="metric-icon impression-icon">
+                            <i data-lucide="scan-eye"></i>
+                        </div>
+                        <div class="metric-data">
+                            <h4>Impressions</h4>
+                            <p class="desc">Times scrolled past in search</p>
+                            <div class="value" id="val-impressions">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Connect Line -->
+                    <div class="funnel-connector"></div>
+
+                    <!-- Clicks -->
+                    <div class="metric-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="metric-icon click-icon">
+                            <i data-lucide="mouse-pointer-click"></i>
+                        </div>
+                        <div class="metric-data">
+                            <h4>Total Clicks / Views</h4>
+                            <p class="desc">Times the property was opened</p>
+                            <div class="value" id="val-clicks">--</div>
+                            <div class="conversion-rate">
+                                <div class="progress-bar"><div class="fill click-fill" id="bar-clicks" style="width: 0%;"></div></div>
+                                <span id="conv-clicks">--% CTR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connect Line -->
+                    <div class="funnel-connector"></div>
+
+                    <!-- Leads -->
+                    <div class="metric-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="metric-icon lead-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="metric-data">
+                            <h4>Total Leads</h4>
+                            <p class="desc">Combined calls & chat clicks</p>
+                            <div class="value" id="val-leads">--</div>
+                            <div class="conversion-rate">
+                                <div class="progress-bar"><div class="fill lead-fill" id="bar-leads" style="width: 0%;"></div></div>
+                                <span id="conv-leads">--% Conversion</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engagement Breakdown -->
+                <h3 class="section-title" style="margin-top: 30px;">Lead Breakdown</h3>
+                <div class="breakdown-grid">
+                    <div class="breakdown-card fade-in" style="animation-delay: 0.3s;">
+                        <i data-lucide="phone-call" style="color: #3b82f6;"></i>
+                        <h5>Call Button</h5>
+                        <h2 id="breakdown-calls">--</h2>
+                    </div>
+                    <div class="breakdown-card fade-in" style="animation-delay: 0.4s;">
+                        <i data-lucide="message-square" style="color: #10b981;"></i>
+                        <h5>Chat Button</h5>
+                        <h2 id="breakdown-chats">--</h2>
+                    </div>
+                </div>
+
+                <div class="tip-card fade-in" style="animation-delay: 0.5s;">
+                    <i data-lucide="lightbulb" style="color: #f59e0b; margin-top: 2px;"></i>
+                    <div>
+                        <strong>Pro Tip</strong>
+                        <p>High impressions but low clicks? Try uploading a better quality cover photo to improve your Click-Through Rate (CTR).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/host-analytics.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

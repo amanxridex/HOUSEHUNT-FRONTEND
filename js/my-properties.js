@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ` : ''}
                     </div>
                     <div class="card-actions">
-                        <button class="edit-btn">View Details</button>
+                        <button class="edit-btn" onclick="window.location.href='/host-analytics?id=${prop.id}'">View Details</button>
                     </div>
                 `;
             }

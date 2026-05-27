@@ -15,6 +15,7 @@
     { "source": "/my-properties", "destination": "/html/my-properties" },
     { "source": "/messages", "destination": "/html/messages" },
     { "source": "/login", "destination": "/html/login" },
+    { "source": "/host-analytics", "destination": "/html/host-analytics" },
     { "source": "/api/:path*", "destination": "https://backend.househunt.live/api/:path*" }
   ]
 }
