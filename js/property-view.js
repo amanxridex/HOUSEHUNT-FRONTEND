@@ -37,6 +37,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (loadingScreen) loadingScreen.style.display = 'none';
         if (mainContent) mainContent.style.display = 'flex';
 
+        // --- Smart Back Button Logic ---
+        const backBtn = document.getElementById('propertyBackButton');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    let categoryUrl = '../index.html';
+                    if (p.property_type) {
+                        const t = p.property_type.toLowerCase();
+                        if (t.includes('independent')) categoryUrl = 'category-independent.html';
+                        else if (t.includes('apartment')) categoryUrl = 'category-apartments.html';
+                        else if (t.includes('villa')) categoryUrl = 'category-villas.html';
+                        else if (t.includes('plot')) categoryUrl = 'category-plots.html';
+                        else if (t.includes('commercial')) categoryUrl = 'category-commercial.html';
+                    }
+                    window.location.href = categoryUrl;
+                }
+            });
+        }
+
         // --- Basic Info ---
         document.querySelector('.price').textContent = `${p.price}`;
         document.querySelector('.type-tag').textContent = `For ${p.intent}`;
