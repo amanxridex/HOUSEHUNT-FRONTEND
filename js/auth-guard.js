@@ -15,18 +15,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Immediate Local Check to prevent flicker
-if (!localStorage.getItem('user') && !window.location.pathname.includes('login.html')) {
-    window.location.href = 'html/login.html';
+const path = window.location.pathname;
+const isLoginPage = path.includes('login.html') || path === '/login' || path === '/html/login';
+
+if (!localStorage.getItem('user') && !isLoginPage) {
+    window.location.href = '/login';
 }
 
 // Firebase Real-time Check
 onAuthStateChanged(auth, (user) => {
-    const isLoginPage = window.location.pathname.includes('login.html');
+    const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname === '/login' || window.location.pathname === '/html/login';
     
     if (!user && !isLoginPage) {
         // Not logged in -> Redirect to login
         localStorage.removeItem('user');
-        window.location.href = '/html/login.html';
+        window.location.href = '/login';
     } else if (user && isLoginPage) {
         // Logged in but on login page -> Redirect to home
         window.location.href = '/';
