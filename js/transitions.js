@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: 'power2.out'
     });
 
+    // Handle bfcache restore (Fixes blank screen on swipe back)
+    window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+            gsap.set('body', { opacity: 1, clearProps: 'all' });
+        }
+    });
+
     // Handle Link Clicks for Fade Out
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', (e) => {
