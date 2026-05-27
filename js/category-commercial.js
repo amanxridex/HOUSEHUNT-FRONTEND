@@ -20,11 +20,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn.classList.toggle('active', btn.dataset.mode === currentMode);
     });
 
+    function formatPrice(p) {
+        if (typeof p.price !== 'number') return p.price || 'Price on Request';
+        if (p.intent === 'Rent') return `₹ ${p.price.toLocaleString()}/mo`;
+        const inCr = p.price / 10000000;
+        if (inCr >= 1) return `₹ ${inCr.toFixed(2)} Cr`;
+        return `₹ ${(p.price / 100000).toFixed(2)} L`;
+    }
+
     async function loadProperties() {
         try {
             const response = await fetch(`${BACKEND_URL}/api/properties`);
             const data = await response.json();
-            PROPERTIES = data.length > 0 ? data : (window.propertyData || []);
+            if (data && data.length > 0) {
+                PROPERTIES = data.map(p => ({ ...p, price: formatPrice(p) }));
+            } else {
+                PROPERTIES = window.propertyData || [];
+            }
             renderData();
         } catch (e) {
             console.warn("Backend unavailable, using mock data.", e);
