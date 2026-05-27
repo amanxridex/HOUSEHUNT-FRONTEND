@@ -363,3 +363,99 @@ h1 {
         transform: translateY(0);
     }
 }
+
+/* Quick Actions */
+.quick-actions-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 15px 10px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.action-btn:active {
+    transform: scale(0.92);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.action-icon i {
+    width: 20px;
+    height: 20px;
+}
+
+.action-btn span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background: rgba(15, 23, 42, 0.95);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.toast i {
+    width: 18px;
+    height: 18px;
+}
+
+.toast.fade-out {
+    animation: toastOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}

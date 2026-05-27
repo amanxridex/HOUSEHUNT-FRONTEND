@@ -44,6 +44,29 @@
                     </div>
                 </section>
 
+                <!-- Quick Actions -->
+                <div class="quick-actions-grid fade-in">
+                    <div class="action-btn" onclick="handleAction('edit')">
+                        <div class="action-icon" style="background: #eef2ff; color: #4f46e5;"><i data-lucide="pencil"></i></div>
+                        <span>Edit</span>
+                    </div>
+                    <div class="action-btn" onclick="handleAction('share')">
+                        <div class="action-icon" style="background: #ecfdf5; color: #10b981;"><i data-lucide="share-2"></i></div>
+                        <span>Share</span>
+                    </div>
+                    <div class="action-btn" onclick="handleAction('boost')">
+                        <div class="action-icon" style="background: #fef3c7; color: #f59e0b;"><i data-lucide="rocket"></i></div>
+                        <span>Boost</span>
+                    </div>
+                    <div class="action-btn" onclick="handleAction('pause')">
+                        <div class="action-icon" style="background: #fee2e2; color: #ef4444;"><i data-lucide="pause-circle"></i></div>
+                        <span>Pause</span>
+                    </div>
+                </div>
+
+                <!-- Toast Notification Container -->
+                <div id="toast-container" class="toast-container"></div>
+
                 <!-- Performance Funnel -->
                 <h3 class="section-title">Performance Funnel <span class="timeframe">Last 30 Days</span></h3>
                 

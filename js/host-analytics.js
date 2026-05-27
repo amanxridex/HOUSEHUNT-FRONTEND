@@ -111,3 +111,40 @@ function animateValue(id, start, end, duration) {
     };
     window.requestAnimationFrame(step);
 }
+
+window.handleAction = function(action) {
+    if (action === 'share') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+        const shareUrl = `https://househunt.live/property-view?id=${propId}`;
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showToast('Link copied to clipboard!', 'check-circle');
+            });
+        } else {
+            showToast('Unable to copy link', 'alert-circle');
+        }
+    } else if (action === 'boost') {
+        showToast('Boost feature coming soon!', 'rocket');
+    } else if (action === 'edit') {
+        showToast('Edit feature coming soon!', 'pencil');
+    } else if (action === 'pause') {
+        showToast('Status update coming soon!', 'pause-circle');
+    }
+};
+
+window.showToast = function(message, icon) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+    
+    container.appendChild(toast);
+    lucide.createIcons();
+    
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
+};
