@@ -5,26 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Subscription | HouseHunt</title>
     <link rel="stylesheet" href="../css/subscription.css">
-    <meta name="theme-color" content="#0f172a">
+    <link rel="stylesheet" href="../css/profile.css"> <!-- Fallback for bottom nav if needed -->
+    <meta name="theme-color" content="#0066ff">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/transitions.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        <div class="header fade-up">
-            <button class="back-btn" onclick="window.location.href='profile.html'">
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">
                 <i data-lucide="arrow-left"></i>
             </button>
             <h1>HouseHunt Pro</h1>
         </div>
 
-        <div class="pricing-cards">
-            <!-- Basic Plan -->
-            <div class="card basic fade-up">
-                <div class="card-title">Basic</div>
-                <div class="card-price">Free<span>/forever</span></div>
-                <ul class="features">
+        <div class="hero-section fade-up">
+            <h2>Unlock Premium Features</h2>
+            <p>Choose the perfect plan to accelerate your real estate journey. Swipe to explore all 10 plans.</p>
+            <div class="swipe-indicator">
+                <i data-lucide="chevrons-right"></i> Swipe left to see more
+            </div>
+        </div>
+
+        <div class="plans-container">
+            
+            <!-- Plan 1 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="user"></i></div>
+                <div class="plan-title">Basic</div>
+                <div class="plan-price">Free<span>/forever</span></div>
+                <div class="plan-desc">For everyday home seekers.</div>
+                <ul class="features-list">
                     <li><i data-lucide="check-circle-2"></i> Browse all properties</li>
                     <li><i data-lucide="check-circle-2"></i> Save up to 10 favorites</li>
                     <li><i data-lucide="check-circle-2"></i> Standard support</li>
@@ -32,46 +45,162 @@
                 <button class="subscribe-btn">Current Plan</button>
             </div>
 
-            <!-- Premium Plan -->
-            <div class="card premium fade-up">
-                <div class="card-title">Premium</div>
-                <div class="card-price">₹499<span>/month</span></div>
-                <ul class="features">
-                    <li><i data-lucide="check-circle-2"></i> Ad-free browsing experience</li>
-                    <li><i data-lucide="check-circle-2"></i> Unlimited favorites & saved searches</li>
+            <!-- Plan 2 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="key"></i></div>
+                <div class="plan-title">Tenant Pass</div>
+                <div class="plan-price">₹99<span>/month</span></div>
+                <div class="plan-desc">Perfect for active renters.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Contact 5 owners directly</li>
+                    <li><i data-lucide="check-circle-2"></i> Ad-free experience</li>
+                    <li><i data-lucide="check-circle-2"></i> Save 50 favorites</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Tenant Pass')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="home"></i></div>
+                <div class="plan-title">Starter</div>
+                <div class="plan-price">₹199<span>/month</span></div>
+                <div class="plan-desc">For individual owners.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> List 1 property</li>
+                    <li><i data-lucide="check-circle-2"></i> Get basic analytics</li>
+                    <li><i data-lucide="check-circle-2"></i> Direct chat with tenants</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Starter')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 4 -->
+            <div class="plan-card recommended fade-up">
+                <div class="recommended-badge">Most Popular</div>
+                <div class="plan-icon"><i data-lucide="zap"></i></div>
+                <div class="plan-title">Premium</div>
+                <div class="plan-price">₹499<span>/month</span></div>
+                <div class="plan-desc">The ultimate buyer & owner experience.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> List up to 3 properties</li>
+                    <li><i data-lucide="check-circle-2"></i> Unlimited direct owner chats</li>
                     <li><i data-lucide="check-circle-2"></i> Priority 24/7 support</li>
                     <li><i data-lucide="check-circle-2"></i> Early access to new listings</li>
-                    <li><i data-lucide="check-circle-2"></i> Direct chat with top hosts</li>
                 </ul>
-                <button class="subscribe-btn" onclick="subscribePremium()">Upgrade Now</button>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Premium')">Upgrade to Premium</button>
             </div>
+
+            <!-- Plan 5 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="star"></i></div>
+                <div class="plan-title">Pro</div>
+                <div class="plan-price">₹999<span>/month</span></div>
+                <div class="plan-desc">For active property flippers.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> List up to 5 properties</li>
+                    <li><i data-lucide="check-circle-2"></i> Featured listing tags</li>
+                    <li><i data-lucide="check-circle-2"></i> Advanced lead analytics</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Pro')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 6 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="briefcase"></i></div>
+                <div class="plan-title">Broker Basic</div>
+                <div class="plan-price">₹1999<span>/month</span></div>
+                <div class="plan-desc">For small real estate agents.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Up to 20 active listings</li>
+                    <li><i data-lucide="check-circle-2"></i> Agent profile page</li>
+                    <li><i data-lucide="check-circle-2"></i> Basic CRM tools</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Broker Basic')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 7 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="building"></i></div>
+                <div class="plan-title">Broker Plus</div>
+                <div class="plan-price">₹3999<span>/month</span></div>
+                <div class="plan-desc">For established real estate agencies.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Up to 50 active listings</li>
+                    <li><i data-lucide="check-circle-2"></i> Advanced CRM & Lead tracking</li>
+                    <li><i data-lucide="check-circle-2"></i> Sub-agent accounts (Up to 3)</li>
+                    <li><i data-lucide="check-circle-2"></i> Premium agent badge</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Broker Plus')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 8 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="hammer"></i></div>
+                <div class="plan-title">Builder Starter</div>
+                <div class="plan-price">₹7999<span>/month</span></div>
+                <div class="plan-desc">Perfect for launching new projects.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Up to 100 listings</li>
+                    <li><i data-lucide="check-circle-2"></i> Project showcase page</li>
+                    <li><i data-lucide="check-circle-2"></i> Mass lead export</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Builder Starter')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 9 -->
+            <div class="plan-card fade-up">
+                <div class="plan-icon"><i data-lucide="crown"></i></div>
+                <div class="plan-title">VIP Investor</div>
+                <div class="plan-price">₹14999<span>/month</span></div>
+                <div class="plan-desc">Exclusive insights for high-net-worth investors.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Pre-market property alerts</li>
+                    <li><i data-lucide="check-circle-2"></i> Deep market data & trends</li>
+                    <li><i data-lucide="check-circle-2"></i> Dedicated investment advisor</li>
+                    <li><i data-lucide="check-circle-2"></i> Private bidding access</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'VIP Investor')">Upgrade Now</button>
+            </div>
+
+            <!-- Plan 10 -->
+            <div class="plan-card dark fade-up">
+                <div class="plan-icon"><i data-lucide="gem"></i></div>
+                <div class="plan-title">Enterprise</div>
+                <div class="plan-price">₹29999<span>/month</span></div>
+                <div class="plan-desc">For massive brokerages & top-tier developers.</div>
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle-2"></i> Unlimited property listings</li>
+                    <li><i data-lucide="check-circle-2"></i> Front-page banner ads</li>
+                    <li><i data-lucide="check-circle-2"></i> Custom API integrations</li>
+                    <li><i data-lucide="check-circle-2"></i> Dedicated account manager</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePlan(this, 'Enterprise')">Contact Sales</button>
+            </div>
+
         </div>
     </div>
 
     <script>
         lucide.createIcons();
         
-        // GSAP Animations
+        // Ensure the GSAP animation matches the new UI
         gsap.to(".fade-up", {
             y: 0,
             opacity: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out"
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+            clearProps: "all"
         });
 
-        function subscribePremium() {
-            const btn = document.querySelector('.card.premium .subscribe-btn');
+        function subscribePlan(btn, planName) {
             btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Processing...';
             lucide.createIcons();
             
-            // Add a simple spin animation for loading
-            gsap.to(".spin", { rotation: 360, repeat: -1, duration: 1, ease: "linear" });
+            gsap.to(btn.querySelector('.spin'), { rotation: 360, repeat: -1, duration: 1, ease: "linear" });
 
-            // Simulate API call
             setTimeout(() => {
-                alert("Redirecting to payment gateway...");
-                btn.innerHTML = 'Upgrade Now';
+                alert(`Redirecting to payment gateway for the ${planName} plan...`);
+                btn.innerHTML = planName === 'Enterprise' ? 'Contact Sales' : 'Upgrade Now';
             }, 1500);
         }
     </script>
