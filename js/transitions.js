@@ -1,5 +1,20 @@
 // Page Transitions and Smooth Loading
 document.addEventListener('DOMContentLoaded', () => {
+    // Global Interactive Click Effect
+    const style = document.createElement('style');
+    style.textContent = `
+        /* App-like click animations for interactive elements */
+        button, a, .property-card, .menu-item, .category-item, .tab, .card, .nav-item, .filter-btn, .sort-btn, .see-all {
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+        button:active, a:active, .property-card:active, .menu-item:active, .category-item:active, .tab:active, .card:active, .nav-item:active, .filter-btn:active, .sort-btn:active, .see-all:active {
+            transform: scale(0.96) !important;
+            opacity: 0.85;
+        }
+    `;
+    document.head.appendChild(style);
+
     // Initial Fade In
     gsap.from('body', {
         opacity: 0,

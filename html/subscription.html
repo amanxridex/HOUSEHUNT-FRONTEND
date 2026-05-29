@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Subscription | HouseHunt</title>
+    <link rel="stylesheet" href="../css/subscription.css">
+    <meta name="theme-color" content="#0f172a">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header fade-up">
+            <button class="back-btn" onclick="window.location.href='profile.html'">
+                <i data-lucide="arrow-left"></i>
+            </button>
+            <h1>HouseHunt Pro</h1>
+        </div>
+
+        <div class="pricing-cards">
+            <!-- Basic Plan -->
+            <div class="card basic fade-up">
+                <div class="card-title">Basic</div>
+                <div class="card-price">Free<span>/forever</span></div>
+                <ul class="features">
+                    <li><i data-lucide="check-circle-2"></i> Browse all properties</li>
+                    <li><i data-lucide="check-circle-2"></i> Save up to 10 favorites</li>
+                    <li><i data-lucide="check-circle-2"></i> Standard support</li>
+                </ul>
+                <button class="subscribe-btn">Current Plan</button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="card premium fade-up">
+                <div class="card-title">Premium</div>
+                <div class="card-price">₹499<span>/month</span></div>
+                <ul class="features">
+                    <li><i data-lucide="check-circle-2"></i> Ad-free browsing experience</li>
+                    <li><i data-lucide="check-circle-2"></i> Unlimited favorites & saved searches</li>
+                    <li><i data-lucide="check-circle-2"></i> Priority 24/7 support</li>
+                    <li><i data-lucide="check-circle-2"></i> Early access to new listings</li>
+                    <li><i data-lucide="check-circle-2"></i> Direct chat with top hosts</li>
+                </ul>
+                <button class="subscribe-btn" onclick="subscribePremium()">Upgrade Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // GSAP Animations
+        gsap.to(".fade-up", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out"
+        });
+
+        function subscribePremium() {
+            const btn = document.querySelector('.card.premium .subscribe-btn');
+            btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Processing...';
+            lucide.createIcons();
+            
+            // Add a simple spin animation for loading
+            gsap.to(".spin", { rotation: 360, repeat: -1, duration: 1, ease: "linear" });
+
+            // Simulate API call
+            setTimeout(() => {
+                alert("Redirecting to payment gateway...");
+                btn.innerHTML = 'Upgrade Now';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
