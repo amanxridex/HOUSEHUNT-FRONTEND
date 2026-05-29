@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Secure Checkout | HouseHunt</title>
+    <link rel="stylesheet" href="../css/checkout.css">
+    <meta name="theme-color" content="#ffffff">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/transitions.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">
+            <i data-lucide="arrow-left"></i>
+        </button>
+        <h1>Secure Checkout</h1>
+    </div>
+
+    <div class="app-container">
+        <!-- Order Summary -->
+        <div class="section fade-up">
+            <div class="section-title">
+                <i data-lucide="receipt"></i> Order Summary
+            </div>
+            <div class="summary-card">
+                <div class="plan-info">
+                    <div class="plan-details">
+                        <h3 id="planName">Premium Plan</h3>
+                        <p>Monthly Subscription</p>
+                    </div>
+                    <div class="plan-price-large" id="planPriceDisplay">₹499</div>
+                </div>
+                
+                <div class="price-row">
+                    <span>Subtotal</span>
+                    <span id="subtotalAmount">₹499</span>
+                </div>
+                <div class="price-row">
+                    <span>Taxes (GST 18%)</span>
+                    <span id="taxAmount">₹90</span>
+                </div>
+                <div class="price-row discount-row" id="discountRow">
+                    <span>Discount (<span id="appliedCodeText"></span>)</span>
+                    <span id="discountAmount">-₹0</span>
+                </div>
+                
+                <div class="price-row total">
+                    <span>Total Amount</span>
+                    <span id="totalAmount">₹589</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offers & Promo -->
+        <div class="section fade-up" style="animation-delay: 0.1s;">
+            <div class="section-title">
+                <i data-lucide="tag"></i> Offers & Promo Code
+            </div>
+            <div class="promo-section">
+                <div class="promo-input-group">
+                    <input type="text" id="promoCodeInput" placeholder="Enter Code (e.g. WELCOME50)">
+                    <button onclick="applyPromoCode()">Apply</button>
+                </div>
+                
+                <div class="available-offers">
+                    <div class="offer-card" onclick="document.getElementById('promoCodeInput').value='WELCOME50'; applyPromoCode()">
+                        <div class="offer-details">
+                            <h4>WELCOME50</h4>
+                            <p>Get ₹50 flat discount on your subscription.</p>
+                        </div>
+                        <i data-lucide="chevron-right" style="color: var(--primary); width: 16px;"></i>
+                    </div>
+                    <div class="offer-card" onclick="document.getElementById('promoCodeInput').value='FESTIVE20'; applyPromoCode()">
+                        <div class="offer-details">
+                            <h4>FESTIVE20</h4>
+                            <p>20% off on all plans above ₹999.</p>
+                        </div>
+                        <i data-lucide="chevron-right" style="color: var(--primary); width: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="section fade-up" style="animation-delay: 0.2s;">
+            <div class="section-title">
+                <i data-lucide="credit-card"></i> Payment Method
+            </div>
+            <div class="payment-methods">
+                <div class="payment-option active" onclick="selectPayment(this)">
+                    <div class="payment-icon"><i data-lucide="smartphone"></i></div>
+                    <div class="payment-info">
+                        <h4>UPI</h4>
+                        <p>Google Pay, PhonePe, Paytm</p>
+                    </div>
+                    <div class="radio-circle"></div>
+                </div>
+                
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <div class="payment-icon"><i data-lucide="credit-card"></i></div>
+                    <div class="payment-info">
+                        <h4>Credit / Debit Card</h4>
+                        <p>Visa, MasterCard, RuPay</p>
+                    </div>
+                    <div class="radio-circle"></div>
+                </div>
+                
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <div class="payment-icon"><i data-lucide="building-2"></i></div>
+                    <div class="payment-info">
+                        <h4>Net Banking</h4>
+                        <p>All major Indian banks</p>
+                    </div>
+                    <div class="radio-circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="bottom-pay-bar fade-up" style="animation-delay: 0.3s;">
+        <div class="pay-container">
+            <div class="total-pay-info">
+                <h4>Total to Pay</h4>
+                <div class="final-amount" id="stickyTotal">₹589</div>
+            </div>
+            <button class="pay-btn" id="payNowBtn" onclick="processPayment()">
+                Pay Securely <i data-lucide="arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // GSAP Animations
+        gsap.to(".fade-up", {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+
+        // Dynamic Data Parsing from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const planName = urlParams.get('plan') || 'Premium';
+        const basePrice = parseInt(urlParams.get('price')) || 499;
+        let discount = 0;
+
+        // Calculate and Update UI
+        function updatePricing() {
+            const tax = Math.round(basePrice * 0.18);
+            const total = basePrice + tax - discount;
+            
+            document.getElementById('planName').innerText = planName + ' Plan';
+            document.getElementById('planPriceDisplay').innerText = `₹${basePrice}`;
+            document.getElementById('subtotalAmount').innerText = `₹${basePrice}`;
+            document.getElementById('taxAmount').innerText = `₹${tax}`;
+            
+            document.getElementById('totalAmount').innerText = `₹${total}`;
+            document.getElementById('stickyTotal').innerText = `₹${total}`;
+            
+            const discountRow = document.getElementById('discountRow');
+            if (discount > 0) {
+                discountRow.style.display = 'flex';
+                document.getElementById('discountAmount').innerText = `-₹${discount}`;
+            } else {
+                discountRow.style.display = 'none';
+            }
+        }
+        
+        updatePricing();
+
+        // Payment Selection Logic
+        function selectPayment(element) {
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Add a slight pop animation
+            gsap.from(element, { scale: 0.98, duration: 0.2, ease: "back.out(2)" });
+        }
+
+        // Promo Code Logic
+        function applyPromoCode() {
+            const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+            if (!code) return;
+            
+            if (code === 'WELCOME50') {
+                discount = 50;
+                document.getElementById('appliedCodeText').innerText = 'WELCOME50';
+                alert('₹50 Discount Applied!');
+            } else if (code === 'FESTIVE20') {
+                if (basePrice >= 999) {
+                    discount = Math.round(basePrice * 0.20);
+                    document.getElementById('appliedCodeText').innerText = 'FESTIVE20';
+                    alert(`20% Discount Applied! You saved ₹${discount}`);
+                } else {
+                    alert('FESTIVE20 is only valid on plans above ₹999.');
+                    return;
+                }
+            } else {
+                alert('Invalid Promo Code');
+                return;
+            }
+            updatePricing();
+        }
+
+        // Process Payment Mock
+        function processPayment() {
+            const btn = document.getElementById('payNowBtn');
+            btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Processing...';
+            lucide.createIcons();
+            
+            gsap.to(".spin", { rotation: 360, repeat: -1, duration: 1, ease: "linear" });
+
+            setTimeout(() => {
+                alert("Payment Successful! Welcome to HouseHunt Pro.");
+                window.location.href = 'profile.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

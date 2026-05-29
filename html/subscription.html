@@ -193,15 +193,31 @@
         });
 
         function subscribePlan(btn, planName) {
+            // Enterprise plan has a custom behavior (Contact Sales)
+            if (planName === 'Enterprise') {
+                alert("Please contact our sales team at sales@househunt.live");
+                return;
+            }
+            
+            // Find price from the card
+            const card = btn.closest('.plan-card');
+            const priceText = card.querySelector('.plan-price').innerText;
+            const priceMatch = priceText.match(/\d+/);
+            const price = priceMatch ? priceMatch[0] : 0;
+            
+            if (price == 0) {
+                alert("You are already on the Free plan.");
+                return;
+            }
+
             btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Processing...';
             lucide.createIcons();
             
             gsap.to(btn.querySelector('.spin'), { rotation: 360, repeat: -1, duration: 1, ease: "linear" });
 
             setTimeout(() => {
-                alert(`Redirecting to payment gateway for the ${planName} plan...`);
-                btn.innerHTML = planName === 'Enterprise' ? 'Contact Sales' : 'Upgrade Now';
-            }, 1500);
+                window.location.href = `checkout.html?plan=${encodeURIComponent(planName)}&price=${price}`;
+            }, 800);
         }
     </script>
 </body>
